@@ -1,0 +1,87 @@
+extends ./../layout.pug
+
+block pre-include
+  - var menu = 'setting'
+  - var childMenu = 'testimonial'
+  title Tạo mới
+
+block post-include
+  script(src=staticURI() + '/js/admin/testimonial.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a Đối tác
+      li
+        a Nói về chúng tôi
+      li
+        a Tạo mới
+
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      li
+        a.btn.btn-admin.btn-create-update
+          i.fa.fa-floppy-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Lưu lại
+  section.content.article
+    .row
+      .col-xs-12.col-sm-12.col-md-8
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .pull-left.title-tab THÔNG TIN
+              if multiLang
+                include ../snippet/nav-tabs-lang
+            .box-body
+              .tab-content
+                #tab-vi.tab-pane.fade.in.active
+                  .form-group
+                    .col-sm-2.control-label Tên đối tác
+                      strong.required  *
+                    .col-sm-10
+                      input.form-control(name="name", placeholder="Tên đối tác")
+                  .form-group
+                    .col-sm-2.control-label Nội dung
+                    .col-sm-10
+                      textarea.form-control.tinymce#content
+                if multiLang
+                  each item, index in languages()
+                    .tab-pane.fade.in(id="tab-" + item data-lang=item)
+                      .form-group
+                        .col-sm-2.control-label Tên đối tác
+                        .col-sm-10
+                          input.form-control(name="name_" + item, placeholder="Tên đối tác")
+                      .form-group
+                        .col-sm-2.control-label Nội dung
+                        .col-sm-10
+                          textarea.form-control.tinymce(id="content_" + item)
+        - var post_type = 'testimonial'
+        include ../snippet/box-custom-field.pug
+      .col-xs-12.col-sm-12.col-md-4
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title ĐỘ ƯU TIÊN
+            .box-body
+              input.form-control.value(type="text" name="priority" maxlength="8" value=1000 min=1)
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title Logo
+                if (getMetaAdmin("image_resolution_testimonial_text"))
+                  span.title-size=' (' + getMetaAdmin("image_resolution_testimonial_text") + ')'
+            .box-body
+              .item-choose-image(data-default=staticURI() + "/img/default.jpg")
+                img(src=staticURI() + "/img/default.jpg")
+                span.remove-image
+                  i.fa.fa-times
+                input.value(type="hidden" name="logo")
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title TRẠNG THÁI
+            .box-body
+              select.form-control(name="status")
+                option(value="active") Hiển thị
+                option(value="inactive") Ẩn

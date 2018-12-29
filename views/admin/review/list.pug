@@ -1,0 +1,109 @@
+extends ./../layout.pug
+
+block pre-include
+  - var menu = 'review';
+  title Đánh giá
+  
+block post-include
+  script(src=staticURI() + '/js/admin/review.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a Đánh giá
+      li
+        a Danh sách
+  section.content.clearfix
+    .box.box-table
+      .row.box-header
+        h3.box-title DANH SÁCH ĐÁNH GIÁ
+      .box-body
+        table.table.table-condensed.table-bordered.table-striped.display.nowrap(cellspacing="0" width="100%")
+          .action-box.hidden
+            .dropdown
+              button.btn.btn-danger.dropdown-toggle(type="button" data-toggle="dropdown")
+                i.fa.fa-share
+                |  Chọn thao tác (đang chọn
+                span.num-select
+                |  đánh giá) &ensp;
+                span.caret
+              ul.dropdown-menu
+                if (checkRemovePug('review'))
+                  li
+                    a.status-delete(data-value='delete') Xóa
+          thead
+            tr
+              th.all.text-center
+                input.select-all(type="checkbox")
+              th Tên sản phẩm hoặc bài viết
+              th Tiêu đề
+              th Khách hàng
+              th Nội dung
+              th Rating
+              th Like/dislike
+              th Thời gian
+              th Trạng thái
+          tbody
+            each item in data
+              tr
+                td.all.text-center
+                  input.checkboxes(type="checkbox" value=item.id)
+                td
+                  if item.post_type == 'product'
+                    a(href='/admin/product/'+ item.post.id)=item.post.title
+                  else
+                    a(href='/admin/article/'+ item.post.id)=item.post.title
+                    
+                td
+                  a.edit-review(data-id=item.id)=item.title
+                td=item.name
+                td=item.content
+                td=item.rating
+                td
+                  =item.like
+                  | /
+                  =item.dislike
+                td=item.updated_at
+                td
+                  case item.status
+                    when 'active'
+                      label.label.label-success Đang hiện
+                    when 'inactive'
+                      label.label.label-danger Đang ẩn
+
+        #modal-update-review.modal.fade(role="dialog")
+          .modal-dialog
+            .modal-content
+              .modal-header
+                button.close(type='button', data-dismiss='modal') ×
+                h4.modal-title Đánh giá
+              form.modal-body
+                .form-horizontal.clearfix
+                  .form-group.clearfix
+                    .col-sm-2 Tiêu đề
+                    .col-sm-10.title
+                  .form-group.clearfix
+                    .col-sm-2 Nội dung
+                    .col-sm-10.review-content
+                  .form-group.clearfix
+                    .col-sm-2.control-label Like
+                    .col-sm-10
+                      input.form-control.like(type="number" name="like")
+                  .form-group.clearfix
+                    .col-sm-2.control-label Dislike
+                    .col-sm-10
+                      input.form-control.dislike(type="number" name="dislike")
+                  .form-group.clearfix
+                    .col-sm-2.control-label Rating
+                    .col-sm-10
+                      input.form-control.rating(type="number" name="rating" step="0.01")
+                  .form-group.clearfix
+                    .col-sm-2.control-label Trạng thái
+                    .col-sm-10
+                      select.form-control.status(name="status")
+                        option(value="active") Hiển thị
+                        option(value="inactive") Ẩn
+                .modal-footer.pd-right-0
+                  button.btn.btn-default(type='button', data-dismiss='modal') Hủy
+                  button(type="submit").btn.btn-primary.btn-update-review Cập nhật

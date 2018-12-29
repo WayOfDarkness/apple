@@ -1,0 +1,116 @@
+.xpl-file {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+  justify-self: center;
+  .text {
+    padding: 2px 5px;
+    border-radius: 5px;
+    width: 100%;
+    .xpl-filename {
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      border-radius: 5px;
+    }
+    .xpl-info {
+      width: 100%;
+    }
+  }
+  &.active {
+    .xpl-file-wrapper {
+      background-color: gray;
+      border-color: white;
+    }
+    .text {
+      background-color: #8cc9ff;
+    }
+  }
+  .xpl-file-wrapper {
+    border: 1px solid #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    .xpl-icon {
+      width: 48px;
+      height: 48px;
+    }
+    &.thumb {
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center center; 
+      .xpl-icon {
+        display: none;
+      }
+    }
+  }
+  .delete-btn {
+    display: none;
+    position: absolute;
+    top: -12px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    background-color: #dc3545;
+    color: white;
+  }
+  &:hover .delete-btn {
+    display: block;
+  }
+}
+.size-s {
+  .xpl-file {
+    width: 120px;
+    height: 120px;
+    .xpl-file-wrapper {
+      width: 60px;
+      height: 60px;
+    }
+    .xpl-filename {
+      font-size: 0.75rem;
+    }
+    .xpl-info {
+      font-size: 0.55rem;
+    }
+  }
+}
+.size-m {
+  .xpl-file {
+    width: 160px;
+    height: 160px;
+    .xpl-file-wrapper {
+      width: 100px;
+      height: 100px;
+    }
+    .xpl-filename {
+      font-size: 0.9rem;
+    }
+    .xpl-info {
+      font-size: 0.8rem;
+    }
+  }
+}
+.size-l {
+  .xpl-file {
+    width: 220px;
+    height: 220px;
+    .xpl-file-wrapper {
+      width: 160px;
+      height: 160px;
+    }
+    .xpl-filename {
+      font-size: 1rem;
+    }
+    .xpl-info {
+      font-size: 0.9rem;
+    }
+  }
+}

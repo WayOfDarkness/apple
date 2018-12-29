@@ -1,0 +1,111 @@
+- var dataModal = getUploads()
+#modal-upload.modal.fade(role='dialog')
+  .modal-dialog
+    .modal-content.row
+      .modal-sidebar.col-sm-3
+        .modal-header.row.tree-header
+          .folder-name
+            span.title.fa Chọn thư mục
+        .modal-body
+          ul
+            - var i = 1
+            each element, index in dataModal
+              if i == 1
+                li.tab-folder.active.tab-home(data-name='tab-home')
+                  a(href="#")
+                    i.fa.fa-folder-open
+                      span #{' /'}
+              else
+                li.tab-folder(data-name=index)
+                  a(href="#")
+                    i.fa.fa-folder-open(aria-hidden='true')
+                      span #{' ' + index}
+                    span.remove-folder.pull-right
+                      i.fa.fa-times
+              -- i++        
+          
+        .btn.btn-link.show-folder.visible-xs 
+          i.glyphicon.glyphicon-chevron-right
+        .folder-content.folder-images.col-md-10.col-sm-10.col-xs-10      
+        
+        .modal-footer
+          .btn.btn-default.tab-new-folder
+            a(href='#' title="Thêm mới thư mục" data-toggle="modal" data-target="#modal-create-folder")
+              i.fa.fa-plus #{' Thêm thư mục'}
+
+      .modal-container.col-sm-9
+        .modal-header
+          .folder-header
+            .folder-name-show
+              .dropdown.pull-right
+                button.btn.dropdown-toggle(type="button" data-toggle="dropdown")
+                  i.fa.fa-cogs
+                    span.num-select
+                      span.caret
+                ul.dropdown-menu
+                  li
+                    a.btn-select-all Chọn tất cả
+                  li
+                    a.btn-delete Xóa
+                  li
+                    a.btn-move(data-toggle="modal", data-target="#modal-move") Chuyển qua thư mục
+              span.name Home
+        .modal-body
+          - var n = 1
+          each element,index in dataModal
+            if n == 1
+              .tab-pane.fade.active.in(id=index data-name=index)
+                .container-fuild.file-manager.clearfix
+                  .list-image.clearfix
+                    label.col-xs-3.col-sm-4.col-md-4.col-lg-3.image.add-image(for="upload-image-" + index)
+                      form.item.upload-image(style="background: url('" + staticURI() + "/img/add_image.png')", enctype="multipart/form-data")
+                        i.fa.fa-circle-o-notch.fa-spin
+                        input.hidden.upload-image(id='upload-image-' + index, type="file" name="upload[]" accept="image/*" multiple="multiple")
+                    each t in element
+                      .col-xs-3.col-sm-4.col-md-4.col-lg-3.image
+                        .item(style='background: url("/uploads/' + resize(t, 480) + '")', data-src=t)
+                          span.remove-image
+                            i.fa.fa-times
+            else
+              .tab-pane.fade(id=index data-name=index)
+                .container-fuild.file-manager.clearfix
+                  .list-image.clearfix
+                    label.col-xs-3.col-sm-4.col-md-4.col-lg-3.image.add-image(for="upload-image-" + index)
+                      form.item(style="background: url('" + staticURI() + "/img/add_image.png')", enctype="multipart/form-data")
+                        i.fa.fa-circle-o-notch.fa-spin
+                        input.hidden.upload-image(id='upload-image-' + index, type="file" name="upload[]" accept="image/*" multiple="multiple")
+                    each t in element
+                      .col-xs-3.col-sm-4.col-md-4.col-lg-3.image
+                        .item(style='background: url("/uploads/' + resize(t, 480) + '")', data-src=t)
+                          span.remove-image
+                            i.fa.fa-times
+            -- n++
+        .modal-footer
+          .col-xs-6.db-size
+            .db-btn-design-me(data-db-width="600", data-db-height="600", data-db-unit="px", data-db-title="Design Bold")
+          //- a(class="db-btn-designit", href="javascript:", data-id="8b597791-4096-09ff-c843-90b08fdb83ed", data-href="https://www.designbold.com/design-it/create/custom/400/600/px?app_id=5d46ebb068") Design Bold
+          //-   input(type="text")
+          //-   span &nbsp;x&nbsp;
+          //-   input(type="text")
+          //- .col-xs-3
+          
+
+          .col-xs-6.text-right
+            a.btn.btn-default(data-dismiss="modal") Đóng
+            a.btn.btn-primary.btn-choose-image.disabled Chọn ảnh
+
+      
+
+#modal-create-folder.modal.modal-showreel.fade(role="dialog")
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close(type='button', data-dismiss='modal') ×
+        h4.modal-title Thêm mới thư mục
+      .modal-body
+        .form-group.clearfix
+          .col-sm-12
+            input.form-control(name="name_folder" placeholder="Tên thư mục" maxlength="50")
+      .modal-footer
+        button.btn.btn-default(type='button', data-dismiss='modal') Hủy
+        button.btn.btn-primary.btn-create-folder Thêm

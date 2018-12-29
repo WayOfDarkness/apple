@@ -1,0 +1,352 @@
+{
+  "tabs": [
+    {
+      "title": "CMS",
+      "id": "home",
+      "groups": [
+        {
+          "title": "Hướng dẫn sử dụng",
+          "multi_language": true,
+          "attributes": [
+            {
+              "label": "Text",
+              "description": "Description",
+              "type": "text",
+              "name": "input_text"
+            },
+            {
+              "label": "Number",
+              "type": "number",
+              "name": "input_number"
+            },
+            {
+              "label": "Date",
+              "type": "date",
+              "name": "input_date"
+            },
+            {
+              "label": "Checkbox",
+              "type": "checkbox",
+              "name": "input_checkbox"
+            },
+            {
+              "label": "Radio",
+              "type": "radio",
+              "name": "input_radio",
+              "options": [
+                {
+                  "title": "Option 1",
+                  "value": "option_1"
+                },
+                {
+                  "title": "Option 2",
+                  "value": "option_2"
+                }
+              ]
+            },
+            {
+              "label": "Select",
+              "type": "select",
+              "name": "select",
+              "multiple": false,
+              "options": [
+                {
+                  "title": "Option 1",
+                  "value": "value_1"
+                },
+                {
+                  "title": "Option 2",
+                  "value": "value_2"
+                }
+              ]
+            },
+            {
+              "label": "Select multiple",
+              "type": "select",
+              "name": "select",
+              "multiple": true,
+              "options": [
+                {
+                  "title": "Option 1",
+                  "value": "value_1"
+                },
+                {
+                  "title": "Option 2",
+                  "value": "value_2"
+                }
+              ]
+            },
+            {
+              "label": "Tag",
+              "type": "tag",
+              "name": "tag"
+            }
+          ]
+        },
+        {
+          "multi_language": true,
+          "attributes": [
+            {
+              "label": "Image",
+              "type": "image",
+              "name": "image",
+              "size": "500x500"
+            }
+          ]
+        },
+        {
+          "attributes": [
+            {
+              "label": "File",
+              "type": "file",
+              "name": "file"
+            }
+          ]
+        },
+        {
+          "attributes": [
+            {
+              "label": "Article",
+              "type": "article",
+              "name": "article"
+            },
+            {
+              "label": "Articles",
+              "type": "articles",
+              "name": "articles"
+            },
+            {
+              "label": "Blog",
+              "type": "blog",
+              "name": "blog"
+            },
+            {
+              "label": "Blogs",
+              "type": "blogs",
+              "name": "blogs"
+            },
+            {
+              "label": "Product",
+              "type": "product",
+              "name": "product"
+            },
+            {
+              "label": "Products",
+              "type": "products",
+              "name": "products"
+            },
+            {
+              "label": "Collection",
+              "type": "collection",
+              "name": "collection"
+            },
+            {
+              "label": "Collections",
+              "type": "collections",
+              "name": "collections"
+            },
+            {
+              "label": "Page",
+              "type": "page",
+              "name": "page"
+            },
+            {
+              "label": "Pages",
+              "type": "pages",
+              "name": "pages"
+            },
+            {
+              "label": "Gallery",
+              "type": "gallery",
+              "name": "gallery"
+            },
+            {
+              "label": "Galleries",
+              "type": "galleries",
+              "name": "galleries"
+            }
+          ]
+        },
+        {
+          "attributes": [
+            {
+              "label": "Textarea",
+              "type": "textarea",
+              "name": "textarea"
+            },
+            {
+              "label": "Editor",
+              "type": "editor",
+              "name": "editor"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Blog",
+      "id": "blog"
+    },
+    {
+      "title": "Maps",
+      "id": "maps",
+      "groups": [
+        {
+          "title": "Bản đồ",
+          "attributes": [
+            {
+              "label": "Maps",
+              "type": "maps",
+              "name": "maps"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Tích hợp mã",
+      "id": "add",
+      "groups": [
+        {
+          "title": "Tích hợp mã",
+          "attributes": [
+            {
+              "label": "Google analytics",
+              "type": "textarea",
+              "name": "google_analytics"
+            },
+            {
+              "label": "Facebook pixel",
+              "type": "textarea",
+              "name": "facebook_pixel"
+            },
+            {
+              "label": "Chat online",
+              "type": "textarea",
+              "name": "chat_online"
+            },
+            {
+              "label": "Gogole Tag Manager",
+              "type": "input",
+              "name": "gtm_id"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "SEO",
+      "id": "seo",
+      "groups": [
+        {
+          "title": "SEO",
+          "multi_language": 1,
+          "attributes": [
+            {
+              "label": "Tiêu đề trang",
+              "type": "text",
+              "name": "meta_title"
+            },
+            {
+              "label": "Mô tả trang",
+              "type": "textarea",
+              "name": "meta_description"
+            },
+            {
+              "label": "Từ khóa",
+              "type": "textarea",
+              "name": "meta_keyword"
+            },
+            {
+              "label": "Meta robots",
+              "type": "select",
+              "multiple": false,
+              "name": "meta_robots",
+              "options": [
+                {
+                  "value": "index, follow",
+                  "title": "Index, Follow"
+                },
+                {
+                  "value": "noindex, follow",
+                  "title": "No Index, Follow"
+                },
+                {
+                  "value": "index, nofollow",
+                  "title": "Index, No Follow"
+                },
+                {
+                  "value": "noindex, nofollow",
+                  "title": "No Index, No Follow"
+                }
+              ]
+            },
+            {
+              "label": "Hình đại diện",
+              "type": "image",
+              "name": "meta_image",
+              "size": "500x500"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Liên hệ",
+      "id": "contact",
+      "groups": [
+        {
+          "title": "SEO",
+          "multi_language": 1,
+          "attributes": [
+            {
+              "label": "Tiêu đề trang",
+              "type": "text",
+              "name": "contact_meta_title"
+            },
+            {
+              "label": "Mô tả trang",
+              "type": "textarea",
+              "name": "contact_meta_description"
+            },
+            {
+              "label": "Từ khóa",
+              "type": "textarea",
+              "name": "contact_meta_keyword"
+            },
+            {
+              "label": "Meta robots",
+              "type": "select",
+              "multiple": false,
+              "name": "contact_meta_robots",
+              "options": [
+                {
+                  "value": "index, follow",
+                  "title": "Index, Follow"
+                },
+                {
+                  "value": "noindex, follow",
+                  "title": "No Index, Follow"
+                },
+                {
+                  "value": "index, nofollow",
+                  "title": "Index, No Follow"
+                },
+                {
+                  "value": "noindex, nofollow",
+                  "title": "No Index, No Follow"
+                }
+              ]
+            },
+            {
+              "label": "Hình đại diện",
+              "type": "image",
+              "name": "contact_meta_image",
+              "size": "500x500"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

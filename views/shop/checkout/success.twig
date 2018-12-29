@@ -1,0 +1,56 @@
+{% extends "layout.twig" %}
+
+{% block pre_include %}
+<title>Đặt hàng thành công</title>
+{% endblock pre_include %}
+
+{% block content %}
+<section class="order-step order-step3" id="order-step3">
+  <div class="order-step3__header">
+    <div class="container-large">
+      <div class="row">
+        <div class="offset-sm-3 col-sm-offset-3 col-sm-6 col-xs-8 order-process">
+          <ul class="list-inline ul-line">
+            <div class="row">
+              <li class="col-sm-6"></li>
+              <li class="col-sm-6"></li>
+            </div>
+          </ul>
+          <ul class="ul-dot">
+            <li class="">1</li>
+            <li>2</li>
+            <li class="active">3</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="order-step3__content">
+    <div class="container container--1400">
+      <div class="order-step3__wrap">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="step3-title">
+              <h2 class="txt-thank"><i class="fa fa-check-circle" aria-hidden="true"></i>Đặt hàng thành công</h2>
+              <p class="thanks">Cám ơn bạn đã đặt hàng. Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất để xác
+                nhận đơn hàng.</p>
+              <div class="step3-btn">
+                <a href="/" class="btn-custom-default continue_shop"><span> Về trang chủ</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
+{% block post_include %}
+<script type="text/javascript">
+  $('.continue_shop').on('click', function () {
+    localStorage.clear();
+    location.href = '/';
+  })
+</script>
+{% endblock %}

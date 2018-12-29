@@ -1,0 +1,459 @@
+script#tab-folder(type="text/x-tmpl").
+  <li data-name="{%=o%}" class="tab-folder">
+    <a data-toggle="tab" data-target="{%=o%}">
+      <i aria-hidden="true" class="fa fa-folder-open"> 
+        <span>{%=o%}</span>
+      </i>
+      <span class="remove-folder pull-right">
+        <i class="fa fa-times"></i>
+      </span>
+    </a>
+  </li>
+script#item-image(type="text-x/tmpl").
+  <div class="col-xs-3 col-sm-4 col-md-4 col-lg-3 image">
+    <div style='background: url("/uploads/{%=o%}")' data-src="{%=o%}" class="item">
+      <span class="remove-image"><i class="fa fa-times"></i></span>
+    </div>
+  </div>
+script#item-image(type="text/x-tmpl").
+   <div class="image col-xs-3 col-sm-2" data-index="{%=o.index%}" style="background-image:url('{%=o.src%}');">
+    <span class="rotate">
+      <i class="fa fa-undo"></i>
+    </span>
+    <span class="remove remove-base64-img">
+      <i class="fa fa-times"></i>
+    </span>
+    </div>
+  
+script#add-item-image(type="text/x-tmpl").
+   <div class="image col-xs-3 col-sm-2" data-name="{%=o.name%}" style="background-image:url('{%=o.src%}');">
+      <span class="remove">
+        <i class="fa fa-times"></i>
+      </span>
+    </div>
+    
+script#add-item-image-product(type="text/x-tmpl").
+   <div class="image col-xs-3 col-sm-2" data-name="{%=o.name%}" style="background-image:url('{%=o.src%}');">
+      <span class="remove">
+        <i class="fa fa-times"></i>
+      </span>
+      <div class="active-feauture-image">Hình đại diện</div>
+    </div>
+  
+script#item-upload-image(type="text/x-tmpl").
+  <div class="col-xs-3 col-sm-4 col-md-4 col-lg-3 image">
+    <div class="item" style='background: url("{%=o.src%}")' data-src="{%=o.image%}">
+      <span class="remove-image">
+        <i class="fa fa-times"></i>
+      </span>
+    </div>
+  </div>
+
+script#item-tab-image(type="text/x-tmpl").
+  <div id="{%=o.name%}" class="tab-pane fade" data-name="{%=o.name%}">
+    <div class="container-fuild file-manager clearfix">
+      <div class="list-image clearfix">
+        <label for="upload-image-{%=o.name%}" class="col-xs-3 col-sm-4 col-md-4 col-lg-3 image add-image">
+          <form style="background: url('/static/img/add_image.png')" enctype="multipart/form-data" class="item"><i class="fa fa-circle-o-notch fa-spin"></i>
+            <input class="upload-image hidden" id="upload-image-{%=o.name%}" type="file" name="upload[]" accept="image/*" multiple="multiple"/>
+          </form>
+        </label>
+      </div>
+    </div>
+  </div>
+
+script#item-tab-folder(type="text/x-tmpl").
+  <li class="tab-folder {%=o.name%}" data-name="{%=o.name%}">
+    <a data-toggle='tab' data-target='\#{%=o.name%}'>
+      <i aria-hidden="true" class="fa fa-folder-open">      
+        <span>{%=o.name%}</span>
+      </i>
+      <span class="remove-folder"><i class="fa fa-times"></i></span>
+    </a>
+  </li>
+
+script#sale-item-product-content(type="text/x-tmpl").
+  <div class="row">
+      <div class="col-xs-9">
+          <select name="sleproduct" class="form-control chosen-select-product" data-placeholder="Mời chọn sản phẩm...">
+              <option value="">Mời chọn sản phẩm...</option>
+          </select>
+      </div>
+      <div class="col-xs-3">
+          <button class="hidden-xs btn btn-danger btn-remove-product">Xóa &ensp;
+              <i class="fa fa-close"></i>
+          </button>
+          <button class="visible-xs btn btn-danger btn-remove-product">
+              <i class="fa fa-close"></i>
+          </button>
+      </div>
+  </div>
+
+script#sale-item-product-option(type="text/x-tmpl").
+  <option value='{%=o.id%}'>{%=o.title%}</option>
+  
+script#sale-item-product-selected(type="text/x-tmpl").
+  <select name="sleproduct" class="form-control chosen-select-product" data-placeholder="Mời chọn sản phẩm...">
+      <option value='{%=o.id%}'selected>{%=o.title%}</option>
+  </select>
+
+script#attribute-option(type="text/x-tmpl").
+  <option value='{%=o%}'>{%=o%}</option>
+
+script#subregion-option(type="text/x-tmpl").
+  <option value='{%=o.id%}'>{%=o.name%}</option>
+
+script#shipping-option(type="text/x-tmpl").
+  <option value={%=o.price%}>{%=o.name%}</option>
+script#shipping-option-checked(type="text/x-tmpl").
+  <option value={%=o.price%} selected>{%=o.name%}</option>
+
+script#list-product(type="text/x-tmpl").
+  <li class="row"><img src="{%=o.image%}"/>{%=o.title%}
+    <ul class="list-unstyled">
+      {%#o.listVariant%}
+    </ul>
+  </li>
+  <hr/>
+
+script#list-variant(type="text/x-tmpl").
+  <li class="clearfix"><a class="pull-left item-variant" data-id={%=o.id%}>{%=o.title%}</a>
+    <div class="pull-right"><span>{%=o.price%}</span></div>
+  </li>
+
+script#add-order-product(type="text/x-tmpl").
+  <tr class='tr-list-product' data-value={%=o.variant_id%}>
+    <td><img src="{%=o.image%}"/></td>
+    <td>
+      <a href="/admin/product/{%=o.product_id%}" target='__blank'>{%=o.product_title%} ({%=o.variant_title%})</a>
+    </td>
+    <td class="text-right">{%=formatMoney(o.price)%}</td>
+    <td>
+      <input type="number" class="form-control quantity" min="0" style="max-width:100px" value={%=o.quantity%} data-value={%=o.price%} data-id={%=o.variant_id%} onkeypress="inputPositiveNumbers( event )">
+    </td>
+    <td class='total text-right'>{%=formatMoney(o.price)%}</td>
+    <td>
+      <i title="Xóa sản phẩm khỏi giỏ hàng" class="btn-remove-product-icon fa fa-trash" data-value={%=o.price%} data-id={%=o.variant_id%}></i>
+    </td>
+  </tr>
+
+script#add-variant(type="text/x-tmpl").
+  <div class="col-xs-12 variant-item clearfix">
+    <div class="row">
+      <div class="col-xs-12">
+        <label class="custom-checkbox">Tạo phiên bản
+          <input type="checkbox" checked="checked" name="check-variant"/>
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <div class="clearfix">
+        <div class="col-xs-6 wrapper-variant-title">
+          <span>Tên phiên bản</span>
+          <div>
+            <input class="form-control" type="text" name="variant-title" value="{%=o.option.title%}" placeholder="Tiêu đề">
+          </div>
+        </div>
+        <div class="col-xs-6 wrapper-variant-title">
+          <span style="width: 100%;">Tên thuộc tính: {%=o.option.title%}</span>
+          <input type="hidden" name="variant-option" value='{%=JSON.stringify(o.option)%}'>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <p class="lable-variant">Giá bán:</p>
+        <input type="text" name="variant-price" placeholder="Giá bán" min="1" class="form-control formatMoney"  value="{%=o.price%}" onkeypress="inputPositiveNumbers( event )"/>
+      </div>
+      <div class="col-sm-4">
+        <p class="lable-variant">Giá so sánh:</p>
+        <input type="text" name="variant-price-compare" placeholder="Giá so sánh" min="1" class="form-control formatMoney" value="{%=o.price_compare%}" onkeypress="inputPositiveNumbers( event )"/>
+      </div>
+      <div class="col-sm-4">
+        <p class="lable-variant">Tồn kho:</p>
+        <input type="number" name="variant-inventory" placeholder="Tồn kho" min="0" class="form-control" value="1" onkeypress="inputPositiveNumbers( event )"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 variant-images">
+        <div class="col-xs-12 list-image choose-image-variant">
+          <div class="col-xs-3 col-sm-2 add-image"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+script#item-photo-gallery(type="text/x-tmpl").
+  <div class="item-photo clearfix">
+    <div class="checkbox-left"><input type="checkbox"  name ="check-gallery" value=""></div>
+    <div class="item-left"><img data-name="{%=o.name%}" src="{%=o.src%}"/></div>
+    <div class="item-right">
+      <b class="name">Chưa có tiêu đề</b>
+      <div class="description">Chưa có mô tả</div>
+      <input type="hidden" name="title">
+      <input type="hidden" name="title_en">
+      <input type="hidden" name="link">
+      <input type="hidden" name="link_type">
+      <input type="hidden" name="link_title">
+      <textarea class="hidden" name="description"></textarea>
+      <textarea class="hidden" name="description_en"></textarea>
+      <a href="#" target="_blank" class="link"></a>
+    </div>
+    <div class="group-button"><span class="edit"><i class="fa fa-pencil-square-o"></i></span><span class="remove"><i class="fa fa-trash">                   </i></span></div>
+</div>
+
+script#tr_table_custom_field(type="text/x-tmpl").
+  <tr>
+    <td class="text-center">{%=o.stt%}</td>
+    <td>{%=o.title%}</td>
+    <td>{%=o.handle%}</td>
+    <td>{%=o.post_type%}</td>
+    <td>{%=o.input_type%}</td>
+    <td>
+      <a data-handle="{%=o.handle%}" title="Chỉnh sửa" class="btn-edit btn-edit-custom-field">
+        <i class="fa fa-pencil-square-o"></i>
+      </a>
+      <a data-handle="{%=o.handle%}" data-post_type="{%=o.post_type%}" title="Xóa" class="btn-remove btn-delete-custom-field">
+        <i class="fa fa-trash"></i>
+      </a>
+    </td>
+  </tr>
+
+script#section-settings(type="text/x-tmpl").
+  <section>
+    {%#o.nav_pills%}
+  </section>
+  <div class="tab-content">
+    {%#o.tab_content%}
+  </div>
+
+script#setting-nav-pills(type="text/x-tmpl").
+  <ul class="nav nav-pills nav-tabs">
+    {% for (var i=0; i < o.items.length; i++) { %}
+      <li {% if (o.items[i].class) { %} class="{%=o.items[i].class%}" {% } %}>
+        <a data-toggle="pill" href="\#{%=o.items[i].id%}">{%=o.items[i].title%}</a>
+      </li>  
+    {% } %}
+  </ul>
+
+script#setting-tab-pane(type="text/x-tmpl").
+  <div id="{%=o.id%}" class="tab-pane fade {%=o.class%}">
+    {%#o.groups%}
+  </div>
+
+script#setting-box-item(type="text/x-tmpl").
+  <div class="box">
+    <div class="box-body">
+      {% if (o.title) { %} 
+        <p>{%=o.title%}</p>
+      {% } %}
+      <div class="form-horizontal"> 
+        {%#o.attributes%}
+      </div>
+    </div>
+  </div>
+
+script#setting-box-item-multi-lang(type="text/x-tmpl").
+  <div class="box box-setting-multi-lang">
+    <div class="box-body clearfix">
+      <div class="wrap-nav-tabs clearfix row">
+        <div class="col-xs-7">
+          {% if (o.title) { %} 
+            <span class="group-title">{%=o.title%}</span>
+          {% } %}
+        </div>
+        <div class="col-xs-5">
+          <ul class="nav nav-tabs navbar-right">
+            <li class="active">
+              <a data-toggle="tab" href="#group_setting_{%=o.id%}">Tiếng Việt</a>
+            </li>
+            {% for (var i=0; i < o.languages.length; i++) { %}
+              <li>
+                <a data-toggle="tab" href="#group_setting_{%=o.id + i + 1%}">{%=o.languages[i].title%}</a>
+              </li>  
+            {% } %}
+          </ul>
+        </div>
+      </div>
+      {%#o.tab_pane_multi_lang%}
+    </div>
+  </div>
+
+script#setting-tab-pane-content-multi-lang(type="text/x-tmpl").
+  <div id="group_setting_{%=o.id + 1%}" class="tab-pane fade">
+    <div class="form-horizontal"> 
+      {%#o.attributes_multi_lang%}
+    </div>
+  </div>
+
+script#setting-tab-pane-multi-lang(type="text/x-tmpl").
+  <div class="tab-content">
+    <div id="group_setting_{%=o.id%}" class="tab-pane fade in active">
+      <div class="form-horizontal"> 
+        {%#o.attributes%}
+      </div>
+    </div>
+    {%#o.arr_tab_content_multi_lang%}
+  </div>
+
+script#setting-attributes(type="text/x-tmpl").
+  {% for (var i=0; i < o.attributes.length; i++) { %}
+    <div class="form-group clearfix">
+      <label class="col-sm-2 control-label">{%=o.attributes[i].label%}
+      {% var size = o.attributes[i].size;
+         if (size) { 
+           var wh = size.split('x');
+      %}
+        <div>({%=size%})</div>
+      {% } %}
+      {% if (o.attributes[i].description) { %}
+        <div>({%=o.attributes[i].description%})</div>
+      {% } %}
+      </label>
+      <div class="col-sm-10">
+        {% if (o.attributes[i].type == 'text') { %}
+          <input type="text" class="form-control" name="{%=o.attributes[i].name%}{%=o.lang%}" placeholder="{%=o.attributes[i].label%}">
+        {% } else if (o.attributes[i].type == 'number') { %}
+        <input type="number" class="form-control" name="{%=o.attributes[i].name%}" placeholder="{%=o.attributes[i].label%}">
+        {% } else if (o.attributes[i].type == 'date') { %}
+        <input type="date" class="form-control" name="{%=o.attributes[i].name%}" placeholder="{%=o.attributes[i].label%}">
+        {% } else if (o.attributes[i].type == 'checkbox') { %}
+        <input type="checkbox" name="{%=o.attributes[i].name%}">
+        {% } else if (o.attributes[i].type == 'radio') { %}
+          {% for (var j=0; j < o.attributes[i].options.length; j++) { %}
+            <div class="radio">
+              <label><input type="radio" name="{%=o.attributes[i].name%}" value="{%=o.attributes[i].options[j].value%}">{%=o.attributes[i].options[j].title%}</label>
+            </div>
+          {% } %}
+        {% } else if (o.attributes[i].type == 'select') { %}
+          {% var multiple = ''
+            var check_multiple = o.attributes[i].multiple;
+            if (check_multiple) var multiple = 'multiple';
+          %}
+        <select class="form-control" name="{%=o.attributes[i].name%}" {%=multiple%}>
+          {% for (var j=0; j < o.attributes[i].options.length; j++) { %}
+            <option value="{%=o.attributes[i].options[j].value%}">{%=o.attributes[i].options[j].title%}</option>
+          {% } %}
+        </select>
+        {% } else if (o.attributes[i].type == 'image') { %}
+          <div data-default="/static/img/default.jpg" class="item-choose-image" data-width="{%=wh[0]%}" data-height="{%=wh[1]%}">
+            <img src="/static/img/default.jpg">
+            <span class="remove-image">
+              <i class="fa fa-times"></i>
+            </span>
+            <input type="hidden" name="{%=o.attributes[i].name%}{%=o.lang%}" class="value">
+          </div>
+          <div class="db-btn-design-me" data-db-width="{%=wh[0]%}" data-db-height="{%=wh[1]%}" data-db-unit="px" data-db-title="Design Bold"> </div>
+        {% } else if (o.attributes[i].type == 'textarea') { %}
+          <textarea class="form-control" name="{%=o.attributes[i].name%}{%=o.lang%}" placeholder="{%=o.attributes[i].label%}" rows="5"></textarea>
+        {% } else if (o.attributes[i].type == 'editor') { %}
+          <textarea class="form-control tinymce" name="{%=o.attributes[i].name%}{%=o.lang%}"></textarea>
+        {% } else if (o.attributes[i].type == 'tag') { %}
+          <input class="form-control tagsinput" name="{%=o.attributes[i].name%}{%=o.lang%}" placeholder="{%=o.attributes[i].label%}">
+        {% } else if (o.attributes[i].type == 'file') { %}
+          <div class="upload-file">
+            <input type="file">
+            <input type="hidden" name="{%=o.attributes[i].name%}" class="value file">
+            <button class="btn-upload-file">
+              <i class="fa fa-circle-o-notch fa-spin"></i>
+              <span>Upload</span>
+            </button>
+          </div>
+        {% } else if (o.attributes[i].type == 'article') { %}
+          <div class="box-object-setting" data-name="{%=o.attributes[i].name%}" data-type="article">
+            <input class="search-object" placeholder="Tìm bài viết...">
+          </div>
+        {% } else if (o.attributes[i].type == 'articles') { %}
+          <div class="box-object-setting" data-name="{%=o.attributes[i].name%}" data-type="article" data-multiple="true">
+            <input class="search-object" placeholder="Tìm bài viết...">
+          </div>
+        {% } else if (o.attributes[i].type == 'blog') { %}
+          <div class="box-object-setting" data-name="{%=o.attributes[i].name%}" data-type="blog">
+            <input class="search-object" placeholder="Tìm nhóm bài viết...">
+          </div>
+        {% } else if (o.attributes[i].type == 'blogs') { %}
+          <div class="box-object-setting" data-name="{%=o.attributes[i].name%}" data-type="blog" data-multiple="true">
+            <input class="search-object" placeholder="Tìm nhóm bài viết...">
+          </div>
+        {% } else if (o.attributes[i].type == 'product') { %}
+          <div class="box-object-setting" data-name="{%=o.attributes[i].name%}" data-type="product">
+            <input class="search-object" placeholder="Tìm sản phẩm...">
+          </div>
+        {% } else if (o.attributes[i].type == 'products') { %}
+          <div class="box-object-setting" data-name="{%=o.attributes[i].name%}" data-type="product" data-multiple="true">
+            <input class="search-object" placeholder="Tìm sản phẩm...">
+          </div>
+        {% } else if (o.attributes[i].type == 'collection') { %}
+          <div class="box-object-setting" data-name="{%=o.attributes[i].name%}" data-type="collection">
+            <input class="search-object" placeholder="Tìm nhóm sản phẩm...">
+          </div>
+        {% } else if (o.attributes[i].type == 'collections') { %}
+          <div class="box-object-setting" data-name="{%=o.attributes[i].name%}" data-type="collection" data-multiple="true">
+            <input class="search-object" placeholder="Tìm nhóm sản phẩm...">
+          </div>
+        {% } else if (o.attributes[i].type == 'page') { %}
+          <div class="box-object-setting" data-name="{%=o.attributes[i].name%}" data-type="page">
+            <input class="search-object" placeholder="Tìm nhóm sản phẩm...">
+          </div>
+        {% } else if (o.attributes[i].type == 'pages') { %}
+          <div class="box-object-setting" data-name="{%=o.attributes[i].name%}" data-type="page" data-multiple="true">
+            <input class="search-object" placeholder="Tìm nhóm sản phẩm...">
+          </div>
+        {% } else if (o.attributes[i].type == 'gallery') { %}
+          <div class="box-object-setting" data-name="{%=o.attributes[i].name%}" data-type="gallery">
+            <input class="search-object" placeholder="Tìm gallery...">
+          </div>
+        {% } else if (o.attributes[i].type == 'galleries') { %}
+          <div class="box-object-setting" data-name="{%=o.attributes[i].name%}" data-type="gallery" data-multiple="true">
+            <input class="search-object" placeholder="Tìm gallery...">
+          </div>
+        {% } else if (o.attributes[i].type == 'maps') { %}
+          <div class="box-object-setting" data-name="{%=o.attributes[i].name%}" data-type="maps">
+            <input class="form-control" id="google-address" type="text" name="{%=o.attributes[i].name%}" placeholder="Nhập địa chỉ để tìm kiếm">
+          </div>
+          <div id="myMap"></div>
+        {% } %}
+      </div>
+    </div>
+  {% } %}
+
+
+script#setting-attributes-multi-lang(type="text/x-tmpl").
+  <div class="form-group clearfix">
+    <label class="col-sm-2 control-label">{%=o.attribute.label%}
+    {% var size = o.attribute.size;
+        if (size) { 
+          var wh = size.split('x');
+    %}
+      <div>({%=size%})</div>
+    {% } %}
+    {% if (o.attribute.description) { %}
+      <div>({%=o.attribute.description%})</div>
+    {% } %}
+    </label>
+    <div class="col-sm-10">
+      {% if (o.attribute.type == 'text') { %}
+        <input type="text" class="form-control" name="{%=o.attribute.name%}_{%=o.lang%}" placeholder="{%=o.attribute.label%}">
+      {% } else if (o.attribute.type == 'image') { %}
+        <div data-default="/static/img/default.jpg" class="item-choose-image" data-width="{%=wh[0]%}" data-height="{%=wh[1]%}">
+          <img src="/static/img/default.jpg">
+          <span class="remove-image">
+            <i class="fa fa-times"></i>
+          </span>
+          <input type="hidden" name="{%=o.attribute.name%}_{%=o.lang%}" class="value">
+        </div>
+        <div class="db-btn-design-me" data-db-width="{%=wh[0]%}" data-db-height="{%=wh[1]%}" data-db-unit="px" data-db-title="Design Bold"> </div>
+      {% } else if (o.attribute.type == 'textarea') { %}
+        <textarea class="form-control" name="{%=o.attribute.name%}_{%=o.lang%}" placeholder="{%=o.attribute.label%}" rows="5"></textarea>
+      {% } else if (o.attribute.type == 'editor') { %}
+        <textarea class="form-control tinymce" name="{%=o.attribute.name%}_{%=o.lang%}"></textarea>
+      {% } else if (o.attribute.type == 'tag') { %}
+        <input class="form-control tagsinput" name="{%=o.attribute.name%}_{%=o.lang%}" placeholder="{%=o.attribute.label%}">
+      {% } %}
+    </div>
+  </div>
+
+
+script#search-object-item(type="text-x/tmpl").
+  <div class="div-item">
+    <label class="label item" data-handle="{%=o.handle%}">{%=o.title%}
+      <i class="fa fa-times"></i>
+    </label>
+  </div>

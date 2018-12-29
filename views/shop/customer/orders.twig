@@ -1,0 +1,77 @@
+{% extends "layout.twig" %}
+
+{% block pre_include %}
+  <title>Đơn hàng của tôi</title>
+{% endblock pre_include %}
+
+{% block content %}
+
+<!-- Content Sub Page -->
+<section  class="order-manager padding-wrap" id="order-manage">
+  <div class="container box-1400">
+    <div class="row">
+      {% include 'customer/sidebar.twig' %}
+      <div class="col-md-9">
+        <div class="order__title">
+          <div class="row">
+            <div class="col-sm-12">
+              <h3 class="title-default">Đơn hàng của tôi</h3>
+              <div class="display">
+                <label>Hiển thị: </label>
+                <select name="filter" onchange="location.href = this.value">
+                  <option value="{{status == '' ? '?filter=5' : '?status=' ~ status ~ '&filter=5'}}" {{filter=='5'?'selected':''}}>5 đơn hàng gần đây</option>
+                  <option value="{{status == '' ? '?filter=month' : '?status=' ~ status ~ '&filter=month'}}" {{filter=='month'?'selected':''}}>Đơn hàng trong tháng</option>
+                  <option value="{{status == '' ? '?filter=2-month' : '?status=' ~ status ~ '&filter=2-month'}}" {{filter=='2-month'?'selected':''}}>Đơn hàng 2 tháng gần đây</option>
+                  <option value="/customer/orders{{status == '' ? '' : '?status=' ~ status}}"  {{filter==''?'selected':''}}>Tất cả đơn hàng</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% for item in orders %}
+        <div class="order-price">
+          <div class="row">
+            <div class="col-sm-6">
+              <ul class="list-inline">
+                <li>Đơn hàng <a href="/customer/order/{{item.id}}">#{{item.created_at | date('Ymd')}}{{item.id}}</a></li>
+                <li>Đặt ngày {{item.created_at | date('d')}} thg {{item.created_at | date('m Y')}}</li>
+              </ul>
+            </div>
+            <div class="col-sm-6">
+              <p> <a href="/customer/order/{{item.id}}">QUẢN LÍ</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="order-item table-responsive">
+          <table class="table">
+            {% for prod in item.cart %}
+            <tr>
+              <td class="td-img">
+                  <a href="{{Product(prod.handle).url}}">
+                    <img src="{{prod.image | upload_url}}" alt="{{prod.title}}">
+                  </a>
+              </td>
+              <td class="td-name">
+                <a href="{{Product(prod.handle).url}}" class="">{{prod.title}}</a>
+              </td>
+              <td class="td-quanti">
+                <p><span>SL: </span>{{prod.quantity}}</p>
+              </td>
+              <td class="td-ship">
+                <p class="shipped">{{item.order_status == 'new' ? 'mới' : item.order_status == 'confirm' ? 'xác nhận' : 'hoàn thành'}}</p>
+              </td>
+              <td class="td-time">
+                <p class="text-left">Đã được {{item.order_status == 'new' ? 'tạo' : item.order_status == 'confirm' ? 'xác nhận' : 'giao'}} vào ngày {{item.updated_at | date('d')}} thg {{item.updated_at | date('m Y')}}</p>
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ./Content Sub Page -->
+
+{% endblock content %}

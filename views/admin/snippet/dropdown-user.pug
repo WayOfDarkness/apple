@@ -1,0 +1,13 @@
+.dropdown.dropdown-user
+  button.btn.btn-primary.dropdown-toggle(type='button', data-toggle='dropdown')
+    |Chào, #{name()}
+    br
+    - var role_id = getRole();
+    - var role = getRoleTitle(role_id);
+    span.role=role
+    span.caret
+  ul.dropdown-menu
+    li
+      a(data-toggle="modal" data-target="#modal-change-password") Đổi mật khẩu
+    li
+      a(href='/admin/logout') Đăng xuất

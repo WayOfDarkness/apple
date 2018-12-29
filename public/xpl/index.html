@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Demo Explorer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" charset="utf-8"></script>
+</head>
+<body>
+  <div class="container">
+
+  </div>
+  <div class="container1">
+
+  </div>
+  <script src="./loader/explorer.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    var EXPLORER = new Explorer({
+      container: ".container",
+      override: true,
+      popup: true,
+      mode: {
+        multiple: true
+      }
+    });
+    EXPLORER.registerHandler('CHOOSE_FILE', function(data) {
+      console.log('event CHOOSE_FILE');
+      console.log(data);
+    });
+    EXPLORER.registerHandler('CLOSE_MODAL', function() {
+      EXPLORER.close();
+    });
+    EXPLORER.registerHandler("READY", function() {
+      EXPLORER.open();
+    });
+
+    // var EXPLORER1 = new Explorer({
+    //   container: ".container1",
+    //   override: true,
+    //   popup: false,
+    //   customAttr: {
+    //     hehe: true
+    //   },
+    //   mode: {
+    //     multiple: true
+    //   }
+    // });
+    // EXPLORER1.registerHandler('CHOOSE_FILE', function(data) {
+    //   console.log('event CHOOSE_FILE 1');
+    //   console.log(data);
+    // });
+    // EXPLORER1.registerHandler("READY", function() {
+    //   EXPLORER1.open();
+    // });
+  </script>
+</body>
+</html>

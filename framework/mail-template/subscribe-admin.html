@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Contact new</title>
+    <link rel="stylesheet" href="style.css">
+    <style media="screen">
+        table, th, td {
+          border: 1px solid black;
+
+        }
+        table{
+          border-collapse: collapse;
+        }
+        td,th{
+          padding: 5px;
+        }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="greet">
+        <p>Xin chào {{admin_name}}</p>
+      </div>
+      <div class="notification">
+        <p>BẠN CÓ ĐĂNG KÝ MỚI TẠI {{website}}</p>
+        <p>THÔNG TIN ĐĂNG KÝ:</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <div class="customer-info">
+        <ul>
+          <li>Email(Phone): {{subscribe_email}}</li>
+        </ul>
+      </div>
+    </div>
+    <footer>
+      <p>VUI LÒNG TRUY CẬP <a href={{subscribe_link}}>LINK</a> ĐỂ XEM CHI TIẾT LIÊN HỆ</p>
+    </footer>
+  </body>
+</html>

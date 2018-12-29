@@ -1,0 +1,239 @@
+{% extends "layout.twig" %}
+{% block pre_include %}
+<title>Giỏ hàng</title>
+{% endblock pre_include %}
+
+{% block content %}
+<!-- Content Sub Page -->
+<section class="cart-content p-t60 order-step section-cart">
+
+  <!-- content -->
+  <div class="container">
+
+    {% if cart.items | length > 0 %}
+    <h3 class="title-default">Giỏ hàng
+    </h3>
+    <div class="row">
+      <div class="col-xs-12 col-sm-12">
+        <div class="bar-cart">
+          {% if deviceType() == 'desktop' %}
+          <table class="table table-bordered site-cart">
+            <tr class="d-flex">
+              <th class="text-center col-sm-2 col-2">Hình ảnh</th>
+              <th class="text-center col-sm-4 col-4">Tiêu đề</th>
+              <th class="text-center col-sm-3 col-3">Số lượng</th>
+              <th class="text-center col-sm-3 col-3">Đơn giá</th>
+            </tr>
+            {% for item in cart.items %}
+            <tr id="{{loop.index}}" class="d-flex">
+              <td class="col-sm-2 col-2">
+                <div class="site-cart__img text-center">
+                  <img src="{{(item.image | upload_url) | resize(480)}}">
+                </div>
+              </td>
+              <td class="col-sm-4 col-4">
+                <div class="site-cart__descript">
+                  <p>
+                    <a class="title" href="{{item.url}}">{{item.product_title}}</a>
+                  </p>
+                  <p>{{item.variant_title}}</p>
+                  <a class="remove-item" data-id="{{item.variant_id}}" href="javascript:;">
+                    <i class="fa fa-trash" style="color: red;"></i>
+                  </a>
+                </div>
+              </td>
+              <td class="col-sm-3 col-3 text-center">
+                <input name="quantity" class="input-quanti" type="number" value="{{item.quantity}}" min="1" max="9999"
+                  onkeypress="if(this.value.length==4) return false;" data-id="{{item.variant_id}}">
+              </td>
+              <td class="col-sm-3 col-3 text-center">
+                <h4 class="current">{{item.price | money('.')}}
+                  <span>đ</span></h4>
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+          {% else %}
+          {% for item in cart.items %}
+          <div class="site-cart clearfix" id="{{loop.index}}">
+            <div class="col-xs-2">
+              <div class="site-cart__img">
+                <img src="{{(item.image | upload_url) | resize(480)}}" alt="item">
+              </div>
+            </div>
+            <div class="col-xs-10" style="padding-left: 0;">
+              <div class="site-cart__price clearfix">
+                <div class="col-md-8 col-xs-8">
+                  <div class="site-cart__descript">
+                    <p>
+                      <a class="title" href="{{item.url}}">{{item.product_title}}</a>
+                    </p>
+                    <p>{{item.variant_title}}</p>
+                    <a class="remove-item" data-id="{{item.variant_id}}" href="javascript:;">
+                      <i class="fa fa-trash" style="color: red;"></i>
+                    </a>
+                  </div>
+                </div>
+                <div class="col-md-4 col-xs-4" style="padding: 0;">
+                  <div class="site-cart__money text-right">
+                    <h4 class="current">{{item.price | money('.')}}
+                      <span>đ</span></h4>
+                    <p class="text-quanti">Số lượng:</p>
+                    <input name="quantity" class="input-quanti" type="number" value="{{item.quantity}}" min="1" max="9999"
+                      onkeypress="if(this.value.length==4) return false;" data-id="{{item.variant_id}}">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-md-offset-8 offset-md-8 col-lg-4 col-md-4 col-xs-12">
+        <div class="bar-info">
+          <p class="price-sum">
+            <b>Tổng cộng<span class="total-sum">{{cart.total | money('.')}}
+                <u>đ</u></span></b>
+          </p>
+          <div class="site-btn">
+            <a class="btn-custom-default" href="{{customer.logged_in ? __('CHECKOUT_URL') : __('CHECKOUT_LOGIN_URL')}}">
+              Xác nhận đơn hàng
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    {% else %}
+    <div class="row">
+      <div class="col-xs-12 cart-null text-center">
+        <div class="noti">Không có sản phẩm trong giỏ hàng</div>
+        <div class="box-btn-buy">
+          <a href="/" class="btn-buy-2">
+            <span>Tiếp tục mua hàng</span></a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+</section>
+
+{% endblock content %}
+{% block post_include %}
+
+<script type="text/javascript">
+  var total = 0;
+  var subtotal = 0;
+  var total_pre;
+  var subtotal = $('.input-custom').data('subtotal');
+  var total_after;
+  var totalItems;
+  updatePrice(1);
+
+  function formatMoney(num) {
+    if (num) num = num.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+    return num;
+  };
+
+  $(document).ready(function () {
+    $("input[name=quantity]").bind('keyup input', function () {
+      var quantity = $(this).val();
+      if (!quantity) {
+        return false;
+      }
+
+      var id = $(this).data('id');
+      StoreAPI.changeItem(id, quantity, function () {
+        updatePrice(0);
+      })
+    });
+
+    $('.remove-item').on('click', function () {
+      var id = $(this).data('id');
+      var self = $(this);
+      StoreAPI.removeItem(id, function () {
+        self.closest('tr').remove();
+        updatePrice(0);
+      });
+    })
+
+
+    $('.code-down button').click(function (e) {
+      e.preventDefault();
+      var data = {};
+      StoreAPI.getCart(function (result) {
+        data.subtotal = result.cart.total;
+      });
+    });
+  });
+
+  function updatePrice(flag) {
+    total_pre = 0;
+    subtotal = 0;
+    totalItems = 0;
+    StoreAPI.getCart(function (result) {
+      var items = result.cart.items;
+      subtotal = result.cart.total;
+      if (!items.length && flag != 1) {
+        setTimeout(function () {
+          location.reload();
+        }, 1000);
+      } else {
+        $.each(items, function (i, e) {
+          totalItems += parseInt(e.quantity);
+          total_pre += parseInt(e.price) * parseInt(e.quantity);
+        });
+        $('.total-sum').html(formatMoney(subtotal) + ' <u>đ</u>');
+      }
+    });
+  }
+</script>
+
+<style>
+  @media screen and (max-width: 767px) {
+    .bar-info {
+      margin-top: 0 !important;
+    }
+
+    .bar-cart .site-cart {
+      padding: 10px 0;
+    }
+
+    .order-step input {
+      border: 1px solid #ccc;
+      width: initial;
+    }
+
+    .site-cart__money h4 {
+      font-size: 14px;
+    }
+  }
+
+  table > th, table > td {
+    border-color: #c2c2c2 !important;
+  }
+  
+  table > th {
+    border-bottom: 0 !important;
+  }
+
+  table img {
+    max-width: 100px;
+  }
+
+  table td {
+    vertical-align: middle;
+  }
+
+  .title-default {
+    margin-top: 30px;
+  }
+
+  .bar-cart {
+    padding: 0 !important;
+  }
+
+</style>
+
+{% endblock %}

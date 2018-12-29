@@ -1,0 +1,23 @@
+{
+  "require": {
+    "slim/slim": "^3.0",
+    "illuminate/database": "^5.2",
+    "monolog/monolog": "^1.20",
+    "pug-php/pug": "^2.5",
+    "mobiledetect/mobiledetectlib": "^2.8",
+    "guzzlehttp/guzzle": "~6.0",
+    "PHPOffice/PHPExcel": "^1.8",
+    "vlucas/phpdotenv": "^2.4",
+    "ifsnop/mysqldump-php": "^2.2",
+    "predis/predis": "^1.1",
+    "slim/twig-view": "^2.3",
+    "umpirsky/twig-php-function": "^0.2.0",
+    "mailgun/mailgun-php": "^2.0",
+    "php-http/httplug-bundle": "^1.9",
+    "php-http/guzzle6-adapter": "^1.1",
+    "facebook/graph-sdk": "^5.6",
+    "twig/extensions": "^1.5",
+    "firebase/php-jwt": "^5.0",
+    "wataridori/simple-fuzzy-search": "^0.1.1"
+  }
+}

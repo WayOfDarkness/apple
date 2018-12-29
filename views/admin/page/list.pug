@@ -1,0 +1,69 @@
+extends ./../layout.pug
+block pre-include
+  - var menu = 'article'
+  - var childMenu = 'page'
+  title Trang nội dung
+
+block post-include
+  script(src=staticURI() + '/js/admin/page.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li.hidden-xs
+        a(href='/admin/article') Bài viết
+      li.title-ellipsis
+        a(href='/admin/page') Trang nội dung
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      span.middle-inline-block
+      li
+        a.btn.btn-admin(href="/admin/page/create") Thêm mới
+
+  section.content
+    .box.box-table
+      .row.box-header
+        h3.box-title DANH SÁCH
+      .box-body
+        table.table.table-condensed.table-bordered.table-striped.nowrap(cellspacing="0" width="100%")
+          .action-box.hidden
+            .dropdown
+              button.btn.btn-danger.dropdown-toggle(type="button" data-toggle="dropdown")
+                i.fa.fa-share
+                |  Chọn thao tác (đang chọn
+                span.num-select
+                |  trang nội dung) &ensp;
+                span.caret
+              ul.dropdown-menu
+                li
+                  a.status-active(data-value='active') Ẩn
+                li
+                  a.status-inactive(data-value='inactive') Hiện
+                if (checkRemovePug('page'))
+                  li
+                    a.status-delete(data-value='delete') Xóa
+          thead
+            tr
+              th.all.text-center
+                input.select-all(type="checkbox")
+              th Mã
+              th.all Tiêu đề
+              th Trạng thái
+              th Ngày cập nhật
+          tbody
+            each item in data
+              tr
+                td.text-center
+                  input.checkboxes(type="checkbox" value=item.id)
+                td
+                  a(href="/admin/page/" + item.id target="_blank") #
+                    =item.id
+                td.tr-title
+                  a(href="/admin/page/" + item.id target="_blank")=item.title
+                td=item.updated_at
+                td
+                  case item.status
+                    when 'active'
+                      label.label.label-info Đang hiện
+                    when 'inactive'
+                      label.label.label-warning Đang ẩn
+                

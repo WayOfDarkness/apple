@@ -1,0 +1,59 @@
+extends ./../layout.pug
+
+block pre-include
+  - var menu = 'user';
+  - var childMenu = 'list';
+  title=data.name
+
+block post-include
+  script(src=staticURI() +'/js/admin/user.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a Quản trị viên
+      li
+        a Thêm mới
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      li
+        a.btn.btn-admin.btn-delete-object(data-id=data.id,data-type='user')
+          i.fa.fa-trash-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Xóa
+      li
+        a.btn.btn-admin.btn-create-update(data-id=data.id)
+          i.fa.fa-floppy-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Lưu lại
+  section.content
+    .row
+      .col-xs-12.col-sm-12.col-md-8
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title THÔNG TIN
+            .box-body
+              .form-group
+                .col-sm-2.control-label Họ tên
+                  strong.required  *
+                .col-sm-10
+                  input.form-control(name="name", placeholder="Họ tên", value=data.name)
+              .form-group
+                .col-sm-2.control-label Email
+                  strong.required  *
+                .col-sm-10
+                  input.form-control.inputmark-email(name="email", placeholder="Email", value=data.email)
+              .form-group
+                .col-sm-2.control-label Số điện thoại
+                .col-sm-10
+                  input.form-control.inputmark-phone(name="phone", type='number',placeholder="Số điện thoại", value=data.phone)
+      .col-xs-12.col-sm-12.col-md-4
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title PHÂN QUYỀN
+            .box-body
+              select.form-control(name="role_id", data-value=data.role_id)
+                each item in roles
+                  option(value=item.id)=item.title

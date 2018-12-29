@@ -1,0 +1,114 @@
+extends ./../layout.pug
+block pre-include
+  - var menu = 'gallery'
+  - var childMenu = 'list'
+  title=photo.title
+
+block post-include
+  script(src=staticURI() + '/js/admin/photo.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a(href='/admin/gallery') Gallery
+      li
+        a(href='/admin/gallery/' + gallery.id)=gallery.title
+      li
+        a Chỉnh sửa
+
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      li
+        a.btn.btn-admin.btn-create.btn-create-update-photo(data-id=photo.id)
+          i.fa.fa-floppy-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Lưu lại
+  section.content.gallery
+    .row
+      .col-xs-12.col-sm-12.col-md-7
+        .box.box-info-photo.box-info
+          .form-horizontal
+            .box-title.clearfix
+              .pull-left.title-tab THÔNG TIN
+              if multiLang
+                include ../snippet/nav-tabs-lang
+            .box-body
+              input(type="hidden" name="gallery_id" value=gallery.id)
+              .tab-content
+                #tab-vi.tab-pane.fade.in.active
+                  .form-group
+                    .col-lg-2.col-md-12.control-label Tiêu đề
+                      strong.required  *
+                    .col-lg-10.col-md-12
+                      input.form-control(name="title", placeholder="Tiêu đề" value=photo.title)
+                  .form-group
+                    .col-sm-2.control-label Mô tả
+                    .col-sm-10
+                      textarea.form-control.tinymce#description=photo.description
+                if multiLang
+                  each item, index in languages()
+                    - var data_lang = getObjectLanguage(photo.id, "photo", item)
+                    input(type="hidden" name="translattion_" + item value=data_lang.id)
+                    .tab-pane.fade.in(id="tab-" + item data-lang=item)
+                      .form-group
+                        .col-sm-2.control-label Tiêu đề
+                        .col-sm-10
+                          input.form-control.title(name="title_" + item, placeholder="Tiêu đề" value=data_lang.title)
+                      .form-group
+                        .col-sm-2.control-label Mô tả
+                        .col-sm-10
+                          textarea.form-control.tinymce(id="description_" + item)=data_lang.description
+        .box
+          .form-horizontal.form-product
+            .box-title.clearfix
+              .pull-left.title-tab LINK
+            .box-body
+              .tab-content
+                .form-group.clearfix
+                  span.col-sm-2.control-label Link
+                  .col-sm-10
+                    include ../snippet/search-link
+                    .group-data.hidden
+                      input(type="hidden" name="link" value=photo.link)
+                      input(type="hidden" name="link_type" value=photo.link_type)
+                      input(type="hidden" name="link_title" value=photo.link_title)
+                    script.
+                      var link = $('.group-data input[name="link"]').val();
+                      var link_type = $('.group-data input[name="link_type"]').val();
+                      var link_title = $('.group-data input[name="link_title"]').val();
+                      $('.search-link-autocomplete select[name="link_type"]').val(link_type);
+                      if (link_type == 'custom') {
+                        $('.search-link-autocomplete input[name="link"]').val(link);
+                      } else {
+                        $('.search-link-autocomplete input[name="link"]').val(link_title);
+                        $('.search-link-autocomplete input[name="link"]').attr('data-id', link);
+                      }
+        - var post_type = 'photo'
+        - var post_id = photo.id
+        include ../snippet/box-custom-field.pug
+      .col-xs-12.col-sm-12.col-md-5
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title HÌNH ẢNH
+                if (getMetaAdmin("image_resolution_article_text"))
+                  span.title-size=' (' + getMetaAdmin("image_resolution_photo_text") + ')'
+            .box-body
+              if photo.image
+                .item-choose-image.active(data-default=staticURI() + "/img/default.jpg")
+                  img(src='/uploads/' + resize(photo.image, 480))
+                  span.remove-image
+                    i.fa.fa-times
+                  input.value(type="hidden", name="image", value=photo.image)
+              else
+                .item-choose-image(data-default=staticURI() + "/img/default.jpg")
+                  img(src=staticURI() + "/img/default.jpg")
+                  input.value(type="hidden", name="image")
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-6.title TRẠNG THÁI
+            .box-body
+              select.form-control(name="status", data-value=photo.status)
+                option(value="active") Hiển thị
+                option(value="inactive") Ẩn

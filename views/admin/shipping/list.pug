@@ -1,0 +1,52 @@
+extends ./../layout.pug
+
+
+block pre-include
+  - var menu = 'setting';
+  - var childMenu = 'shipping_fee';
+  title Phí vận chuyển
+
+block post-include
+  script(src=staticURI() + '/js/admin/shipping_fee.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a Cấu hình
+      li
+        a Phí vận chuyển
+
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      span.middle-inline-block
+      li
+        a.btn.btn-admin(href='/admin/shipping_fee/create') Thêm phí vận chuyển
+
+  section.content
+    .box.box-table
+      .row.box-header
+        h3.box-title DANH SÁCH
+      .box-body
+        table.table.table-condensed.table-bordered.table-striped.display.nowrap(cellspacing="0" width="100%")
+          thead
+            tr
+              th Mã
+              th Khu vực
+              th Ngày cập nhật
+              th Phương thức
+          tbody
+            - var id = -1
+            each item in data
+              if item.id != id
+                -id = item.id
+                tr
+                  td
+                    a(href="/admin/shipping_fee/edit/" + item.id ) #
+                      =item.id
+                  td
+                    a(href="/admin/shipping_fee/edit/" + item.id )=item.name
+                  td=item.updated_at
+                  td
+                    each child in data
+                      if child.id == id
+                        p=child.title

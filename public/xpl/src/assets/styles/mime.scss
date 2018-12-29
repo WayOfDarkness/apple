@@ -1,0 +1,252 @@
+/**
+ * MIME Types
+ */
+ .xpl-icon {
+  background: url("assets/images/icons-big.png") 0 0 no-repeat;
+}
+.xpl-icon:before {
+  font-size: 10px;
+  position: relative;
+  top: 27px;
+  left: inherit;
+  padding: 1px;
+  background-color: transparent;
+}
+
+.xpl-icon-zip:before,
+.xpl-icon-x-zip:before {
+  content: 'zip' !important;
+}
+.xpl-icon-x-xz:before {
+  content: 'xz' !important;
+}
+.xpl-icon-x-7z-compressed:before {
+  content: '7z' !important;
+}
+.xpl-icon-x-gzip:before {
+  content: 'gzip' !important;
+}
+.xpl-icon-x-tar:before {
+  content: 'tar' !important;
+}
+.xpl-icon-x-bzip:before,
+.xpl-icon-x-bzip2:before {
+  content: 'bzip' !important;
+}
+.xpl-icon-x-rar:before,
+.xpl-icon-x-rar-compressed:before {
+  content: 'rar' !important;
+}
+.xpl-icon-directory {
+  background-position: 0 -50px;
+}
+.xpl-icon-application {
+  background-position: 0 -150px;
+}
+.xpl-icon-text {
+  background-position: 0 -200px;
+}
+.xpl-icon-plain,
+.xpl-icon-x-empty {
+  background-position: 0 -250px;
+}
+.xpl-icon-image {
+  background-position: 0 -300px;
+}
+.xpl-icon-vnd-adobe-photoshop {
+  background-position: 0 -350px;
+}
+.xpl-icon-vnd-adobe-photoshop:before {
+  content: none !important;
+}
+.xpl-icon-postscript {
+  background-position: 0 -400px;
+}
+.xpl-icon-audio {
+  background-position: 0 -450px;
+}
+.xpl-icon-video,
+.xpl-icon-flash-video,
+.xpl-icon-dash-xml,
+.xpl-icon-vnd-apple-mpegurl,
+.xpl-icon-x-mpegurl {
+  background-position: 0 -500px;
+}
+.xpl-icon-rtf,
+.xpl-icon-rtfd {
+  background-position: 0 -550px;
+}
+.xpl-icon-pdf {
+  background-position: 0 -600px;
+}
+.xpl-icon-x-msaccess {
+  background-position: 0 -650px;
+}
+.xpl-icon-x-msaccess:before {
+  content: none !important;
+}
+.xpl-icon-msword,
+.xpl-icon-vnd-ms-word,
+.xpl-icon-vnd-ms-word-document-macroEnabled-12,
+.xpl-icon-vnd-ms-word-template-macroEnabled-12 {
+  background-position: 0 -700px;
+}
+.xpl-icon-msword:before,
+.xpl-icon-vnd-ms-word:before,
+.xpl-icon-vnd-ms-word-document-macroEnabled-12:before,
+.xpl-icon-vnd-ms-word-template-macroEnabled-12:before {
+  content: none !important;
+}
+.xpl-icon-ms-excel,
+.xpl-icon-vnd-ms-excel,
+.xpl-icon-vnd-ms-excel-addin-macroEnabled-12,
+.xpl-icon-vnd-ms-excel-sheet-binary-macroEnabled-12,
+.xpl-icon-vnd-ms-excel-sheet-macroEnabled-12,
+.xpl-icon-vnd-ms-excel-template-macroEnabled-12 {
+  background-position: 0 -750px;
+}
+.xpl-icon-ms-excel:before,
+.xpl-icon-vnd-ms-excel:before,
+.xpl-icon-vnd-ms-excel-addin-macroEnabled-12:before,
+.xpl-icon-vnd-ms-excel-sheet-binary-macroEnabled-12:before,
+.xpl-icon-vnd-ms-excel-sheet-macroEnabled-12:before,
+.xpl-icon-vnd-ms-excel-template-macroEnabled-12:before {
+  content: none !important;
+}
+.xpl-icon-vnd-ms-powerpoint,
+.xpl-icon-vnd-ms-powerpoint-addin-macroEnabled-12,
+.xpl-icon-vnd-ms-powerpoint-presentation-macroEnabled-12,
+.xpl-icon-vnd-ms-powerpoint-slide-macroEnabled-12,
+.xpl-icon-vnd-ms-powerpoint-slideshow-macroEnabled-12,
+.xpl-icon-vnd-ms-powerpoint-template-macroEnabled-12 {
+  background-position: 0 -800px;
+}
+.xpl-icon-vnd-ms-powerpoint:before,
+.xpl-icon-vnd-ms-powerpoint-addin-macroEnabled-12:before,
+.xpl-icon-vnd-ms-powerpoint-presentation-macroEnabled-12:before,
+.xpl-icon-vnd-ms-powerpoint-slide-macroEnabled-12:before,
+.xpl-icon-vnd-ms-powerpoint-slideshow-macroEnabled-12:before,
+.xpl-icon-vnd-ms-powerpoint-template-macroEnabled-12:before {
+  content: none !important;
+}
+.xpl-icon-vnd-ms-office,
+.xpl-icon-vnd-oasis-opendocument-chart,
+.xpl-icon-vnd-oasis-opendocument-database,
+.xpl-icon-vnd-oasis-opendocument-formula,
+.xpl-icon-vnd-oasis-opendocument-graphics,
+.xpl-icon-vnd-oasis-opendocument-graphics-template,
+.xpl-icon-vnd-oasis-opendocument-image,
+.xpl-icon-vnd-oasis-opendocument-presentation,
+.xpl-icon-vnd-oasis-opendocument-presentation-template,
+.xpl-icon-vnd-oasis-opendocument-spreadsheet,
+.xpl-icon-vnd-oasis-opendocument-spreadsheet-template,
+.xpl-icon-vnd-oasis-opendocument-text,
+.xpl-icon-vnd-oasis-opendocument-text-master,
+.xpl-icon-vnd-oasis-opendocument-text-template,
+.xpl-icon-vnd-oasis-opendocument-text-web,
+.xpl-icon-vnd-openofficeorg-extension,
+.xpl-icon-vnd-openxmlformats-officedocument-presentationml-presentation,
+.xpl-icon-vnd-openxmlformats-officedocument-presentationml-slide,
+.xpl-icon-vnd-openxmlformats-officedocument-presentationml-slideshow,
+.xpl-icon-vnd-openxmlformats-officedocument-presentationml-template,
+.xpl-icon-vnd-openxmlformats-officedocument-spreadsheetml-sheet,
+.xpl-icon-vnd-openxmlformats-officedocument-spreadsheetml-template,
+.xpl-icon-vnd-openxmlformats-officedocument-wordprocessingml-document,
+.xpl-icon-vnd-openxmlformats-officedocument-wordprocessingml-template {
+  background-position: 0 -850px;
+}
+.xpl-icon-html {
+  background-position: 0 -900px;
+}
+.xpl-icon-css {
+  background-position: 0 -950px;
+}
+.xpl-icon-javascript,
+.xpl-icon-x-javascript {
+  background-position: 0 -1000px;
+}
+.xpl-icon-x-perl {
+  background-position: 0 -1050px;
+}
+.xpl-icon-x-python:after,
+.xpl-icon-x-python {
+  background-position: 0 -1100px;
+}
+.xpl-icon-x-ruby {
+  background-position: 0 -1150px;
+}
+.xpl-icon-x-sh,
+.xpl-icon-x-shellscript {
+  background-position: 0 -1200px;
+}
+.xpl-icon-x-c,
+.xpl-icon-x-csrc,
+.xpl-icon-x-chdr,
+.xpl-icon-x-c--,
+.xpl-icon-x-c--src,
+.xpl-icon-x-c--hdr {
+  background-position: 0 -1250px;
+}
+.xpl-icon-x-jar,
+.xpl-icon-x-java,
+.xpl-icon-x-java-source {
+  background-position: 0 -1300px;
+}
+.xpl-icon-x-jar:before,
+.xpl-icon-x-java:before,
+.xpl-icon-x-java-source:before {
+  content: none !important;
+}
+.xpl-icon-x-php {
+  background-position: 0 -1350px;
+}
+.xpl-icon-xml:after,
+.xpl-icon-xml {
+  background-position: 0 -1400px;
+}
+.xpl-icon-zip,
+.xpl-icon-x-zip,
+.xpl-icon-x-xz,
+.xpl-icon-x-7z-compressed,
+.xpl-icon-x-gzip,
+.xpl-icon-x-tar,
+.xpl-icon-x-bzip,
+.xpl-icon-x-bzip2,
+.xpl-icon-x-rar,
+.xpl-icon-x-rar-compressed {
+  background-position: 0 -1450px;
+}
+.xpl-icon-x-shockwave-flash {
+  background-position: 0 -1500px;
+}
+.xpl-icon-group {
+  background-position: 0 -1550px;
+}
+.xpl-icon-json {
+  background-position: 0 -1600px;
+}
+.xpl-icon-json:before {
+  content: none !important;
+}
+.xpl-icon-markdown,
+.xpl-icon-x-markdown {
+  background-position: 0 -1650px;
+}
+.xpl-icon-markdown:before,
+.xpl-icon-x-markdown:before {
+  content: none !important;
+}
+.xpl-icon-sql {
+  background-position: 0 -1700px;
+}
+.xpl-icon-sql:before {
+  content: none !important;
+}
+.xpl-icon-svg,
+.xpl-icon-svg-xml {
+  background-position: 0 -1750px;
+}
+.xpl-icon-svg:before,
+.xpl-icon-svg-xml:before {
+  content: none !important;
+}

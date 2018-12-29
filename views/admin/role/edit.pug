@@ -1,0 +1,49 @@
+extends ./../layout.pug
+
+block pre-include
+  title=data.title
+  - var menu = 'user'
+  - var childMenu = 'role'
+block post-include
+  script(src=staticURI() + '/js/admin/role.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a Quản trị viên
+      li
+        a(href='/admin/role') Phân quyền
+      li
+        a=subStrNumChar(data.title, 60)
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      li
+        a.btn.btn-admin.btn-delete-object(data-id=data.id,data-type='role')
+          i.fa.fa-trash-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Xóa
+      li
+        a.btn.btn-admin.btn-create-update-role(data-id=data.id)
+          i.fa.fa-floppy-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Lưu lại
+  section.content
+    .box
+      .form-horizontal
+        .box-title.clearfix
+          .col-xs-6.title THÔNG TIN
+        .box-body
+          .form-group
+            .col-sm-2.control-label Tên phân quyền
+              strong.required  *
+            .col-sm-10
+              input.title.form-control(name="title", placeholder="Tên phân quyền", value=data.title)
+              input(type="hidden", value=data.id, name="role_id")
+    .box.permission
+      .form-horizontal
+        .box-title.clearfix
+          .col-xs-6.title PHÂN QUYỀN
+        .box-body
+          each item in ['order', 'product', 'collection', 'product_buy_together', 'attribute', 'coupon', 'sale', 'customer', 'article', 'blog', 'page',  'gallery', 'photo', 'comment', 'contact', 'review', 'subscriber', 'menu', 'setting', 'library','testimonial', 'shop', 'client', 'shipping_fee', 'user', 'bank']
+            .col-md-3.col-sm-4.col-xs-12.box-tree(data-item=item)
+              .tree

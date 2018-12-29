@@ -1,0 +1,57 @@
+<div class="col-md-3 slidebar-account">
+  <div class="manager">
+    <div class="manager__welcome">
+      <p>Xin chào , {{customer.name}}</p>
+    </div>
+    <div class="manager--account">
+      <div class="manager--account__title">
+        <h3>
+          <a href="/customer/dashboard">Quản lý chung</a>
+        </h3>
+      </div>
+      <div class="manager--account__title">
+        <h3>Quản lí tài khoản</h3>
+      </div>
+      <ul class="manager--account__list">
+        <li>
+          <a href="/customer">Thông tin cá nhân</a>
+        </li>
+        <li>
+          <a href="/customer/change-password">Đổi mật khẩu</a>
+        </li>
+      </ul>
+    </div>
+    <div class="manager--order">
+      <div class="manager--order__title">
+        <h3>Đơn hàng của tôi</h3>
+      </div>
+      <ul class="manager--order__list">
+        <li>
+          <a href="/customer/orders?status=new&filter=5">Đơn hàng chưa hoàn tất</a>
+        </li>
+        <li>
+          <a href="/customer/orders?status=done&filter=5">Đơn hàng đã hoàn tất</a>
+        </li>
+        <li>
+          <a href="/customer/orders?filter=5">Tất cả</a>
+        </li>
+      </ul>
+    </div>
+    <div class="manager--account hidden">
+      <div class="manager--account__title">
+        <h3>Nhận xét của tôi</h3>
+      </div>
+      <ul class="manager--account__list">
+        <li>
+          <a href="/customer/review">Sản phẩm chưa nhận xét</a>
+        </li>
+        <li>
+          <a href="/customer/reviewed">Sản phẩm đã nhận xét</a>
+        </li>
+        <li>
+          <a href="/customer/review-all">Tất cả</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

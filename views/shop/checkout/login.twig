@@ -1,0 +1,129 @@
+{% extends "layout.twig" %}
+{% block pre_include %}
+  <title>Thanh toán</title>
+{% endblock pre_include %}
+{% block content %}
+{% set urlLogin = session.urlLogin %}
+  <section class="order-step order-step1" id="order-step1">
+    <div class="order-step3__header">
+      <div class="container">
+        <div class="row">
+          <div class="offset-sm-3 col-sm-offset-3 col-sm-6 col-xs-8 order-process">
+            <ul class="list-inline ul-line">
+              <div class="row">
+                <li class="col-sm-6"></li>
+                <li class="col-sm-6"></li>
+              </div>
+            </ul>
+            <ul class="ul-dot">
+              <li class="active">1</li>
+              <li>2</li>
+              <li>3</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="order-step1__content">
+      <div class="container">
+        <div class="order-step1-wrap">
+          <div class="order-step1--title">
+            <div class="row">
+              <div class="col-sm-8 textleft">
+                <h3 class="title-default">Đăng nhập</span></h3>
+              </div>
+              <div class="col-sm-4 text-right">
+                <p>
+                  Thành viên mới?<a href="{{__('CHECKOUT_REGISTER_URL')}}">&nbsp;Đăng ký</a>&nbsp;tại đây</p>
+              </div>
+            </div>
+          </div>
+          <div class="order-step1--content">
+            <div class="order-step1--content__box">
+              <form>
+                <div class="row">
+                  <div class="col-sm-7">
+                    <div class="input">
+                      <label>Địa chỉ Email*</label>
+                      <input type="text" name="email" placeholder="Vui lòng nhập Email...">
+                    </div>
+                    <div class="input">
+                      <label>Mật khẩu*</label>
+                      <input type="password" name="password" placeholder="Vui lòng nhập mật khẩu của bạn...">
+                    </div>
+                    <div class="register">
+                      <button type="submit" class="btn-custom-default login_checkout" href="{{__('CHECKOUT_URL')}}">
+                        <span>Đăng nhập</span></button>
+                    </div>
+                    <div class="input">
+                      <p class="forgetpassword">
+                        <a href="{{__('CUSTOMER_FORGOT_PASSWORD_URL')}}">Quên mật khẩu</a>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-sm-5">
+                    <p>Hoặc đăng nhập bằng tài khoản mạng xã hội</p>
+                    <div class="step1-social">
+                      <a class="facebook" href="{{loginFacebook(urlLogin)}}">
+                        <i class="fa fa-facebook-f"></i>
+                        Facebook</a>
+                        <a class="google" href="{{loginGoogle(urlLogin)}}">
+                          <i class="fa fa-google-plus"></i>
+                          Google
+                        </a>
+                        <a class="btn-custom-default" href="{{__('CHECKOUT_URL')}}"><span>Mua nhanh - chỉ một bước </span></a>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}
+
+{% block post_include %}
+<script type="text/javascript">
+  $('.login_checkout').on('click', function(e) {
+    e.preventDefault();
+    var data = {};
+    data.email = $('input[name="email"]').val();
+    data.password = $('input[name="password"]').val();
+    if (!data.email) {
+      toastr.remove();
+      toastr.error("Vui lòng nhập Email!");
+      return;
+    }
+    if (!data.password) {
+      toastr.remove();
+      toastr.error("Bạn chưa nhập mật khẩu!");
+      return;
+    }
+    $.ajax({
+      type: 'POST',
+      url: '/api/signin',
+      data: data,
+      success: function(json) {
+        if (!json.code) {
+          toastr.success("Đăng nhập thành công!");
+          setTimeout(function() {
+            window.location.href = "{{__('CHECKOUT_URL')}}";
+          }, 2000);
+        } else {
+          toastr.error(json.message);
+        }
+      }
+    });
+  });
+</script>
+
+<style>
+  .order-step3__header {
+    padding: 30px 0px 70px;
+    margin-bottom: 0;
+  }
+</style>
+
+{% endblock %}

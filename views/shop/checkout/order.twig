@@ -1,0 +1,357 @@
+{% extends "layout.twig" %}
+{% block pre_include %}
+<title>Thanh toán</title>
+{% endblock pre_include %}
+
+{% block content %}
+<section class="order-step section-cart">
+  <div class="order-step3__header">
+    <div class="container">
+      <div class="row">
+        <div class="offset-sm-3 col-sm-offset-3 col-sm-6 col-xs-8 order-process">
+          <ul class="list-inline ul-line">
+            <div class="row">
+              <li class="col-sm-6"></li>
+              <li class="col-sm-6"></li>
+            </div>
+          </ul>
+          <ul class="ul-dot">
+            <li class="">1</li>
+            <li class="active">2</li>
+            <li>3</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-12 col-sm-12">
+        <h3 class="title-default">Thông tin giao hàng</h3>
+        <div class="row">
+          <div class="bg-f col-12 d-flex">
+            <div class="col-md-6">
+              <div class="shipment__1">
+                <div class="input-custom" data-subtotal="{{cart.total}}">
+                  <input class="place" id="place-1" type="text" name="name" value="{{customer.name}}" placeholder="Họ tên">
+                </div>
+                <div class="input-custom">
+                  <input class="place" id="place-2" type="text" name="phone" value="{{customer.phone}}" placeholder="Số điện thoại">
+                </div>
+                <div class="input-custom">
+                  <input class="place" id="place-3" type="text" name="email" value="{{customer.email}}" placeholder="Email">
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="shipment__1">
+                {% set temp = customer.address | split(', ') %}
+                {% set tempfn = temp | slice(0, temp | length - 1) %}
+                {% set address = tempfn | join(', ')%}
+                <div class="input-custom">
+                  <input class="place" id="place-4" type="text" name="address" value="{{address}}" placeholder="Địa chỉ nhận hàng">
+                </div>
+                <select name="region">
+                  <option value="-1" selected="selected" disabled="disabled">Tỉnh/Thành phố</option>
+                  {% for item in Region() %}
+                  {% if item.id == customer.region %}
+                  <option value="{{item.id}}" selected="selected">{{item.name}}</option>
+                  {% else %}
+                  <option value="{{item.id}}">{{item.name}}</option>
+                  {% endif %}
+                  {% endfor %}
+                </select>
+                <select name="subregion" data-subregion="{{customer.subregion}}">
+                  <option value="" selected="selected" disabled="disabled">Quận/Huyện</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="btn-save btn-order-s2" data-email="{{customer.email ? customer.email : ''}}">
+              <a class="btn-custom-default btn-save-custom">
+                <span>Lưu</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-12 col-sm-12">
+        <div class="bar-info">
+          <h4>
+            Thông tin đơn hàng</h4>
+          <p class="price-pre">Tạm tính ({{cart.items | length}}
+            sản phẩm)<span>
+              <b class="pre_total">0
+              </b>
+              <u>đ</u></span></p>
+          <p class="price-active">Phí giao hàng:<span>0
+              <u>đ</u></span></p>
+          <p class="price-coupon">Mã giảm giá:<span class="coupon_discount">0
+              <u>
+                đ</u></span></p>
+          <form class="code-down clearfix">
+            <input name="coupon" type="text" placeholder="Nhập mã giảm giá">
+            <button type="button" class="btn-main btn btn-primary" data-subtotal="{{cart.total}}">Áp dụng</button>
+          </form>
+          <p class="price-sum">
+            <b>Tổng cộng<span class="total-sum">{{cart.total | money('.')}}
+                <u>đ</u></span></b>
+          </p>
+          <div class="site-btn">
+            <a class="btn-custom-default btn-order">
+              ĐẶT HÀNG
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
+
+{% block post_include %}
+<script type="text/javascript">
+  var total_pre;
+  var coupon;
+  var coupon_discount = 0;
+  var subtotal = $('.input-custom').data('subtotal');
+  var total_after;
+  var shipping_price = 0;
+
+  function formatMoney(num) {
+    if (num) num = num.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+    return num;
+  };
+
+  calcShipping();
+
+  var region = $('select[name="region"]').val();
+  if (region) {
+    var subregion = $('select[name="subregion"]').data('subregion');
+    StoreAPI.getSubRegion(region, function (json) {
+      var option = '';
+      $.each(json.data, function (i, val) {
+        if (subregion == val.id) {
+          option += '<option value="' + val.id + '" selected>' + val.name + '</option>';
+        } else {
+          option += '<option value="' + val.id + '">' + val.name + '</option>';
+        }
+      })
+      $('select[name="subregion"]').empty();
+      $('select[name="subregion"]').append(option);
+    })
+  }
+
+  $(document).on('change', 'select[name="region"]', function () {
+    var region = $(this).val();
+    if (region == -1) {
+      $('select[name="subregion"]').empty();
+      $('select[name="subregion"]').append('<option value="-1">Quận/Huyện</option>');
+    } else {
+      StoreAPI.getSubRegion(region, function (json) {
+        var option = '';
+        $.each(json.data, function (i, val) {
+          option += '<option value="' + val.id + '">' + val.name + '</option>'
+        })
+        $('select[name="subregion"]').empty();
+        $('select[name="subregion"]').append(option);
+        calcShipping();
+      })
+    }
+  });
+
+  $(document).on('change', 'select[name="subregion"]', calcShipping);
+
+  function calcShipping() {
+    var region_id = $('select[name="region"]').val();
+    var subregion_id = $('select[name="subregion"]').val();
+
+    StoreAPI.getShipping(region_id, subregion_id, subtotal, function (json) {
+      updatePrice();
+      if (!json.code) {
+        if (json.data && json.data.length) {
+          if (json.data[0].price) {
+            shipping_price = json.data[0].price;
+            $('.price-active span').html(formatMoney(shipping_price) + ' <u>đ</u>');
+          }
+        }
+      }
+    });
+  }
+
+  $('.code-down button').click(function (e) {
+    e.preventDefault();
+    var data = {};
+    coupon = $('input[name="coupon"]').val();
+    data.coupon = coupon;
+    data.subtotal = subtotal;
+    StoreAPI.checkCoupon(data, function (json) {
+      if (!json.code) {
+        coupon_discount = json.discount;
+        $('.coupon_discount').html('-' + formatMoney(coupon_discount) + ' <u>đ</u>');
+        toastr.remove();
+        toastr.success('Nhập mã giảm giá thành công!')
+        updatePrice();
+      } else {
+        toastr.error(json.message);
+      }
+    });
+  });
+
+  function updatePrice() {
+    total_pre = 0;
+    subtotal = 0;
+    var len = 0;
+    StoreAPI.getCart(function (result) {
+      var items = result.cart.items;
+      subtotal = result.cart.total;
+      total_after = subtotal - coupon_discount + shipping_price;
+
+      $.each(items, function (i, e) {
+        len++;
+        total_pre += parseInt(e.price) * parseInt(e.quantity);
+      });
+      
+      checkCoupon();
+
+      if (localStorage.getItem('coupon_discount') != null) {
+        $('.total-discount').html('- ' + formatMoney(parseInt(localStorage.getItem('coupon_discount'))) +
+          '<u>đ</u>');
+      }
+      $('.total-sum').html(formatMoney(total_after) + ' <u>đ</u>');
+      $('.pre_total').html(formatMoney(total_pre));
+      $('.coupon_discount').html('-' + formatMoney(coupon_discount) + ' <u>đ</u>');
+    });
+  }
+
+  function checkCoupon() {
+    var data = {};
+    coupon = $('input[name="coupon"]').val();
+    data.coupon = coupon;
+    data.subtotal = subtotal;
+    StoreAPI.checkCoupon(data, function (json) {
+      if (!json.code) {
+        coupon_discount = json.discount;
+        total_after = subtotal - coupon_discount + shipping_price;
+        if (localStorage.getItem('coupon_discount') != null) {
+          $('.total-discount').html('- ' + formatMoney(parseInt(localStorage.getItem('coupon_discount'))) +
+            '<u>đ</u>');
+        }
+        $('.total-sum').html(formatMoney(total_after) + ' <u>đ</u>');
+        $('.coupon_discount').html('-' + formatMoney(coupon_discount) + ' <u>đ</u>');
+      }
+    })
+    localStorage.setItem('total_pre', total_pre);
+  }
+
+  $('.btn-order').click(function (e) {
+    e.preventDefault();
+    var data = {};
+    data.name = $('.shipment__1').find('input[name="name"]').val();
+    data.phone = $('.shipment__1').find('input[name="phone"]').val();
+    var address = $('.shipment__1').find('input[name="address"]').val();
+    data.address = address;
+    data.region = $('.shipment__1').find('select[name="region"]').val();
+    data.subregion = $('.shipment__1').find('select[name="subregion"]').val();
+    data.shipping_price = shipping_price;
+    if (localStorage.getItem('coupon') != null) {
+      data.coupon_discount = parseInt(localStorage.getItem('coupon_discount'));
+      data.coupon = localStorage.getItem('coupon');
+
+    } else {
+      data.coupon_discount = coupon_discount;
+      data.coupon = coupon;
+    }
+    data.notes = '';
+    if (!data.name) {
+      toastr.remove();
+      toastr.error('Vui lòng nhập tên!');
+      return;
+    }
+    if (!data.phone) {
+      toastr.remove();
+      toastr.error('Vui lòng nhập số điện thoại!');
+      return;
+    }
+    if (!data.phone.match(/(09|01[2|6|8|9])+([0-9]{8})\b/g)) {
+      toastr.remove();
+      toastr.error('Số điện thoại bạn nhập chưa đúng!');
+      return;
+    }
+
+    data.email = $('.shipment__1').find('input[name="email"]').val();
+    if (!data.email) {
+      toastr.remove();
+      toastr.error('Vui lòng nhập email!');
+      return;
+    }
+    if (!data.email.match("[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,3}$")) {
+      toastr.remove();
+      toastr.error("Email không đúng định dạng, vui lòng nhập lại email!");
+      return;
+    }
+
+    if (!address) {
+      toastr.remove();
+      toastr.error('Vui lòng nhập địa chỉ!');
+      return;
+    }
+    if (data.region == null) {
+      toastr.remove();
+      toastr.error('Bạn chưa chọn Tỉnh/Thành phố');
+      return;
+    }
+
+    localStorage.setItem('ship', shipping_price);
+    StoreAPI.checkout(data, function (json) {
+      if (!json.code) {
+        toastr.success('Cảm ơn bạn đã mua hàng của chúng tôi!');
+        setTimeout(function () {
+          location.href = '{{__("CHECKOUT_SUCCESS_URL")}}';
+        }, 500);
+      } else {
+        toastr.error(json.message);
+      }
+    });
+  });
+
+  $('.btn-save-custom').on('click', function () {
+    var name = $('.shipment__1').find('input[name="name"]').val();
+    var phone = $('.shipment__1').find('input[name="phone"]').val();
+    var region = ", " + $('.shipment__1 select[name="region"] option:selected').text();
+    var subregion = ", " + $('.shipment__1 select[name="subregion"] option:selected').text();
+    var address = $('.shipment__1').find('input[name="address"]').val();
+    var add_default = address + subregion + region;
+
+    localStorage.setItem('name', name);
+    localStorage.setItem('phone', phone);
+    localStorage.setItem('address', add_default);
+    toastr.remove();
+    toastr.success('Lưu thông tin thành công!')
+  })
+</script>
+
+<style>
+
+.section-cart {
+  padding-top: 0;
+}
+
+.order-step3__header {
+  padding: 30px 0px 70px;
+}
+
+.section-cart .btn-save .btn-custom-default {
+  height: 36px;
+  line-height: 36px;
+  padding: 0;
+}
+
+</style>
+
+{% endblock %}

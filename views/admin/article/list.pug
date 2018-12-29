@@ -1,0 +1,118 @@
+extends ./../layout.pug
+block pre-include
+  - var menu = menu ? menu : 'article'
+  - var childMenu = 'list'
+  title Bài viết
+
+block post-include
+  script(src=staticURI() + '/js/admin/article.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li.hidden-xs
+        a(href='/admin/article') Bài viết
+      li.title-ellipsis
+        a Danh sách
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      span.middle-inline-block
+      li
+        a.btn.btn-admin(href="/admin/article/create") Thêm mới
+  section.content
+    .box.box-table
+      .row.box-header
+        h3.box-title DANH SÁCH
+      .box-body
+        table.table.table-bordered.table-striped.nowrap(cellspacing="0" width="100%")
+          .action-box.hidden
+            .dropdown
+              button.btn.btn-danger.dropdown-toggle(type="button" data-toggle="dropdown")
+                i.fa.fa-share
+                |  Chọn thao tác (đang chọn
+                span.num-select
+                |  bài viết) &ensp;
+                span.caret
+              ul.dropdown-menu
+                li
+                  a.status-active(data-value='active') Ẩn
+                li
+                  a.status-inactive(data-value='inactive') Hiện
+                if (checkRemovePug('article'))
+                  li
+                    a.status-delete(data-value='delete') Xóa
+                li
+                  a.add-colection(data-toggle="modal", data-target="#modal-add-blog") Thêm vào danh mục
+                li
+                  a.delete-colection(data-toggle="modal", data-target="#modal-remove-blog") Xóa khỏi danh mục
+          thead
+            tr
+              th.all.text-center
+                input.select-all(type="checkbox" style="margin-left: 10px")
+              th Mã
+              th.all Tiêu đề
+              th Lượt xem
+              th Nhóm bài viết
+              th Ngày cập nhật
+              th Trạng thái
+              
+          tbody
+            each item in data
+              tr
+                td.all.text-center
+                  input.checkboxes(type="checkbox" value=item.id)
+                  span.hidden=createEnglishName(item.title)
+                td
+                  a(href="/admin/article/" + item.id target="_blank") #
+                    =item.id
+                td.all.tr-title
+                  a(href="/admin/article/" + item.id target="_blank")=item.title
+                td=item.view
+                td.tr-title=item.blog_name
+                td=item.updated_at
+                td
+                  case item.status
+                    when 'active'
+                      label.label.label-info Đang hiện
+                    when 'inactive'
+                      label.label.label-warning Đang ẩn
+                    when 'notPublish'
+                      label.label.label-default Chưa xuất bản
+                
+    #modal-add-blog.modal.fade(role='dialog')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal') ×
+            .modal-title
+              h4.modal-title Thêm mới danh mục cho
+                span.num-select
+                | bài viết
+          .modal-body
+            each item in blogs
+              if item.parent_id == -1
+                .row
+                  input(type='checkbox' value=item.id id='add' + item.id)
+                  label(for='add' + item.id style="padding-left:" + 15 + "px")=item.title
+          .modal-footer
+            button.btn.btn-default(type='button', data-dismiss='modal') Hủy
+            button.btn.btn-primary.btn-add-blog Thêm danh mục
+    #modal-remove-blog.modal.fade(role='dialog')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal') ×
+            .modal-title
+              h4.modal-title Xóa danh mục cho
+                span.num-select
+                | bài viết
+          .modal-body
+            each item in blogs
+              if item.parent_id == -1
+                .row
+                  input(type='checkbox' value=item.id id='remove' + item.id)
+                  label(for='remove' + item.id style="padding-left:" + 15 + "px")=item.title
+              //- - var lv = 15
+              //- +listCollection(item.subcollection, 'remove', lv + 15)
+          .modal-footer
+            button.btn.btn-default(type='button', data-dismiss='modal') Hủy
+            button.btn.btn-danger.btn-remove-blog Xóa danh mục

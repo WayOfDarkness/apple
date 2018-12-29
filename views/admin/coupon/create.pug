@@ -1,0 +1,106 @@
+extends ./../layout.pug
+block pre-include
+  - var menu = 'coupon'
+  - var childMenu = 'coupon'
+  title Tạo mã giảm giá
+
+block post-include
+  script(src=staticURI() + '/js/admin/coupon.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li.hidden-xs
+        a(href='/admin/coupon') Mã giảm giá
+      li.title-ellipsis
+        a Thêm mới
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      li
+        a.btn.btn-admin.btn-create.btn-create-update
+          i.fa.fa-floppy-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Lưu lại
+  section.content
+    .row
+      .col-xs-12.col-sm-12.col-md-8
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .pull-left.title-tab THÔNG TIN
+            .box-body
+              .tab-content
+                #tab-vi.tab-pane.fade.in.active
+                  .form-group
+                    .col-sm-2.control-label Tiêu đề
+                      strong.required  *
+                    .col-sm-10
+                      input.form-control(name="title", placeholder="Tiêu đề")
+                  .form-group
+                    .col-sm-2.control-label Mô tả
+                    .col-sm-10
+                      textarea.form-control(name='description')#description
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title ĐIỀU KIỆN SỬ DỤNG
+            .box-body
+              .tab-content
+                .form-group
+                  .col-sm-2.control-label Đơn hàng tối thiểu
+                    strong.required *
+                  .col-sm-10
+                    input.form-control.formatMoney(name='min_value_order' placeholder="Giá trị đơn hàng tối thiểu" min="0" value="0" onkeypress="inputPositiveNumbers( event )")
+                .form-group
+                  .col-sm-2.control-label Từ ngày
+                    strong.required *
+                  .col-sm-10
+                    .input-group
+                      input.form-control.datepicker.inputmark-date(name='start_date', placeholder="dd-mm-yyyy")
+                      span.input-group-addon.between-datetime đến ngày
+                        strong.required *
+                      input.form-control.datepicker.inputmark-date(name='end_date', placeholder="dd-mm-yyyy")
+      .col-xs-12.col-sm-12.col-md-4
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title MÃ GIẢM GIÁ
+            .box-body
+              .col-xs-12
+                .form-group
+                  .text-title Mã giảm giá
+                    strong.required *
+                  input.form-control(name="code" placeholder="Mã")
+                .form-group
+                  .text-title Số lượng
+                    strong.required *
+                  input.form-control(name="usage_left" placeholder="Số lượng", type="number" min="0" value="0" onkeypress="inputPositiveNumbers(event)")
+
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title THỂ LOẠI & GIÁ TRỊ
+            .box-body
+              .col-xs-12
+                .form-group
+                  .text-title Thể loại
+                    strong.required *
+                  select.form-control(name="type")
+                    option(value="value") Giảm theo đơn giá
+                    option(value="percent") Giảm theo phần trăm
+                    option(value="freeship") Miễn phí giao hàng
+                .form-group.value-coupon
+                  .text-title Giá trị
+                    strong.required *
+                  input.form-control.formatMoney(type="text", name="value" placeholder="Giá trị" min="0" value="0" onkeypress="inputPositiveNumbers(event)")
+                .form-group.max-value-percent.hidden
+                  .text-title Giá trị tối đa
+                    strong.required *
+                  input.form-control.formatMoney(name="max_value_percent" placeholder="Giá trị tối đa", onkeypress="inputPositiveNumbers(event)", value=money(999999999))
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title TRẠNG THÁI
+            .box-body
+              select.form-control(name="status")
+                option(value="active") Hiển thị
+                option(value="inactive") Ẩn

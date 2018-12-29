@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Order new</title>
+    <link rel="stylesheet" href="style.css">
+    <style media="screen">
+        table, th, td {
+          border: 1px solid black;
+
+        }
+        table{
+          border-collapse: collapse;
+        }
+        td,th{
+          padding: 5px;
+        }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="greet">
+        <p>Xin chào {{admin_name}}</p>
+      </div>
+      <div class="notification">
+        <p>BẠN CÓ ĐƠN HÀNG MỚI TẠI {{website}}</p>
+        <p>Mã đơn hàng là: {{order_id}}</p>
+        <p>THÔNG TIN KHÁCH HÀNG:</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <div class="customer-info">
+        <ul>
+          <li>Họ tên: {{customer_name}}</li>
+          <li>Email: {{customer_email}}</li>
+          <li>Số điện thoại: {{customer_phone}}</li>
+          <li>Địa chỉ giao hàng: {{customer_address}}</li>
+        </ul>
+      </div>
+      <div class="order-info">
+        <p>THÔNG TIN ĐƠN HÀNG</p>
+        <!-- each order in orders -->
+        <table>
+          <tr>
+            <th>STT</th>
+            <th>Tên sản phẩm</th>
+            <th>Số lượng</th>
+            <th>đơn giá</th>
+            <th>Tổng</th>
+          </tr>
+          {{order_cart}}
+        </table>
+        <div class="total-price">
+          <p>Tổng cộng: {{order_subtotal}} VND</p>
+          <p >Shipping: {{order_shipping}} VND</p>
+          <p >Giảm giá đơn hàng: {{order_order_discount}} VND</p>
+          <p >Giảm giá coupon: {{order_coupon_discount}} VND</p>
+          <p >Giảm giá chương trình khuyến mãi: {{order_sale_discount}} VND</p>
+          <p style="color:red">Thành tiền: {{order_total}} VND</p>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <p>VUI LÒNG TRUY CẬP <a href={{order_link}}>LINK</a> ĐỂ XEM CHI TIẾT ĐƠN HÀNG</p>
+    </footer>
+  </body>
+</html>

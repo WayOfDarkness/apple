@@ -1,0 +1,136 @@
+extends ./../layout.pug
+block pre-include
+  - var menu = 'order'
+  - var childMenu = 'bank'
+  title   
+    =data.user_name
+
+block post-include
+  script(src=staticURI() + '/js/admin/bank.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-xs-6
+      li.hidden-xs
+        a(href='/admin/bank') Ngân hàng
+      li.hidden-xs
+        a Chỉnh sửa
+      li.title-ellipsis
+        a(title=data.title)=data.user_name
+    ol.button-action-mobile.button-right.col-xs-6.visible-xs.visible-sm
+      .dropdown
+        button.btn.btn-default.btn-dropdown.dropdown-toggle(type='button', data-toggle='dropdown')
+          | Hành động &#09;
+          span.caret
+        ul.dropdown-menu
+          li
+            a.btn-delete-object(data-id=data.id,data-type='bank')
+              i.fa.fa-trash-o
+              | Xóa
+          li
+            a.btn-create-update(data-id=data.id)
+              i.fa.fa-floppy-o
+              | Cập nhật
+    ol.button-right.col-sm-6.hidden-xs.hidden-sm
+      span.middle-inline-block
+      li
+        a.btn.btn-admin.btn-delete-object(data-id=data.id,data-type='bank')
+          i.fa.fa-trash-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Xóa
+      li
+        a.btn.btn-admin.btn-create-update(data-id=data.id)
+          i.fa.fa-floppy-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Cập nhật
+
+  section.content
+    .row
+      .col-xs-12.col-sm-12.col-md-8
+        .box.box-info
+          .form-horizontal
+            .box-title.clearfix
+              .pull-left.title-tab THÔNG TIN
+              //- if multiLang
+              //-   include ../snippet/nav-tabs-lang
+            .box-body
+              .tab-content
+                #tab-vi.tab-pane.fade.in.active
+                  .form-group
+                    .col-sm-2.control-label Tên tài khoản
+                      strong.required  *
+                    .col-sm-10
+                      input.form-control.title(name="user_name", placeholder="Tên tài khoản", value=data.user_name)
+                  .form-group
+                    .col-sm-2.control-label Tên ngân hàng
+                      strong.required  *
+                    .col-sm-10
+                      input.form-control.title(name="bank_name", placeholder="Tên ngân hàng", value=data.bank_name)
+                  .form-group
+                    .col-sm-2.control-label Số tài khoản
+                      strong.required  *
+                    .col-sm-10
+                      input.form-control.title(name="bank_number", placeholder="07640000000039", value=data.bank_number)
+                  .form-group
+                    .col-sm-2.control-label Chi nhánh
+                      strong.required  *
+                    .col-sm-10
+                      input.form-control.title(name="branch", placeholder="Chi nhánh", value=data.branch)
+                  .form-group
+                    .col-sm-2.control-label Ghi chú
+                    .col-sm-10
+                      textarea.form-control(rows="4" data-autoresize name="note" placeholder="ghi chú" )=data.note
+              
+        //- - var post_type = 'page'
+        //- - var post_id = data.id
+        //- - var seo = getSEO('page', data.id)
+        //- include ../snippet/box-custom-field.pug
+        //- include ../snippet/box-seo.pug
+      .col-xs-12.col-sm-12.col-md-4
+        //- .box
+        //-   .form-horizontal
+        //-     .box-title.clearfix
+        //-       .col-xs-12.title THẺ
+        //-     .box-body
+        //-       if count(data.tags)
+        //-         input(type="text" data-role="tagsinput", name="tags", value=data.tags)
+        //-       else
+        //-         input(type="text" data-role="tagsinput", name="tags")
+        //-       include ../snippet/tag-suggest.pug
+        //- 
+        //- .box
+        //-   .form-horizontal
+        //-     .box-title.clearfix
+        //-       .col-xs-12.title HÌNH ĐẠI DIỆN
+        //-         if (getMetaAdmin("image_resolution_page_text"))
+        //-           span.title-size=' (' + getMetaAdmin("image_resolution_page_text") + ')'
+        //-     .box-body
+        //-       if data.image
+        //-         .item-choose-image.active(data-default=staticURI() + "/img/default.jpg")
+        //-           img(src='/uploads/' + resize(data.image, 480))
+        //-           span.remove-image
+        //-             i.fa.fa-times
+        //-           input.value(type="hidden", name="image", value=data.image)
+        //-       else
+        //-         .item-choose-image(data-default=staticURI() + "/img/default.jpg")
+        //-           img(src=staticURI() + "/img/default.jpg")
+        //-           input.value(type="hidden", name="image")
+        //- - var templates = getViewTemplate('page');
+        //- if countArr(templates)
+        //-   .box
+        //-     .form-horizontal
+        //-       .box-title.clearfix
+        //-         .col-xs-6.title GIAO DIỆN
+        //-       .box-body
+        //-         select.form-control(name="template" data-value=data.template)
+        //-           option(value="") Mặc định
+        //-           each item in templates
+        //-             option(value=item)=item
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-6.title TRẠNG THÁI
+            .box-body
+              select.form-control(name="status", data-value=data.status)
+                option(value="active") Hiển thị
+                option(value="inactive") Ẩn

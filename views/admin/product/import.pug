@@ -1,0 +1,44 @@
+extends ./../layout.pug
+
+block pre-include
+  - var menu = 'product'
+  - var childMenu = 'import_product'
+  title Nhập sản phẩm
+
+block post-include
+  script(src= staticURI() + '/js/admin/import_product.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a Sản phẩm
+      li
+        a Nhập sản phẩm
+  section.content.article
+    .box.box-info
+      .form-horizontal
+        .box-body
+          .form-group
+            label.col-sm-2.text-right Chọn file (.xls)
+              br
+              a.btn-render-template File mẫu
+              a.link-download-template.hidden(target="_blank")
+            .col-sm-10
+              form.form-import-product(enctype="multipart/form-data")
+                input#file(type="file" name="file")
+                br
+                button.btn.btn-admin.btn-import
+                  i.fa.fa-floppy-o
+                  i.fa.fa-circle-o-notch.fa-spin
+                  | Nhập sản phẩm
+          .form-group
+            label.col-sm-2.text-right Chọn file (.zip)
+            .col-sm-10
+              form.form-import-image(enctype="multipart/form-data")
+                input#file-zip(type="file" name="file")
+                br
+                button.btn.btn-admin.btn-import
+                  i.fa.fa-floppy-o
+                  i.fa.fa-circle-o-notch.fa-spin
+                  | Nhập hình ảnh sản phẩm

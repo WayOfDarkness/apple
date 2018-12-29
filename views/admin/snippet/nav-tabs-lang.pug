@@ -1,0 +1,12 @@
+ul.nav.nav-tabs.nav-tabs-lang.no-padding.pull-right
+  li.active
+    a.tab-lang(data-toggle='tab', href='#tab-vi') Tiếng Việt
+  each item, index in languages()
+    li
+      if item == 'en'
+        - var title = "Tiếng Anh";
+      if item == 'jp'
+        - var title = "Tiếng Nhật";
+      if item == 'ko'
+        - var title = "Tiếng Hàn";
+      a.tab-lang(data-toggle='tab', href='#tab-' + item)=title

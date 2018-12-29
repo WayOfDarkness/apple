@@ -1,0 +1,149 @@
+extends ./../layout.pug
+block pre-include
+  - var menu = 'article'
+  - var childMenu = 'create'
+  title Viết bài mới
+
+block post-include
+  script(src=staticURI() + '/js/admin/article.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-6.col-sm-6.col-xs-12
+      li
+        a(href='/admin/article') Bài viết
+      li
+        a Viết bài mới
+
+    ol.button-right.col-md-6.col-sm-6.col-xs-12
+      li
+        a.btn.btn-admin.btn-create-update
+          i.fa.fa-floppy-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Lưu lại
+  section.content.article
+    .row
+      .col-xs-12.col-sm-12.col-md-8
+        .box.box-info
+          .form-horizontal
+            .box-title.clearfix
+              .pull-left.title-tab THÔNG TIN
+              if multiLang
+                include ../snippet/nav-tabs-lang
+            .box-body
+              .tab-content
+                #tab-vi.tab-pane.fade.in.active
+                  .form-group
+                    .col-sm-2.control-label Tiêu đề
+                      strong.required  *
+                    .col-sm-10
+                      input.form-control.title.text-overflow-title(name="title", placeholder="Tiêu đề")
+                  .form-group
+                    .col-sm-2.control-label Đường dẫn
+                      strong.required  *
+                    .col-sm-10
+                      .input-group
+                        span.hidden-xs.input-group-addon=generateUrl("", "article", "vi")
+                        input.form-control.handle(name="handle", placeholder="duong-dan")
+                        i.icon-refresh-handle.fa.fa-refresh
+                  .form-group
+                    .col-sm-2.control-label Mô tả
+                    .col-sm-10
+                      textarea.form-control(rows="4" data-autoresize name="description" placeholder="Mô tả")
+                  .form-group
+                    .col-sm-2.control-label Nội dung
+                    .col-sm-10
+                      textarea.form-control.tinymce#content
+                if multiLang
+                  each item, index in languages()
+                    .tab-pane.fade.in(id="tab-" + item data-lang=item)
+                      .form-group
+                        .col-sm-2.control-label Tiêu đề
+                        .col-sm-10
+                          input.form-control.title(name="title_" + item, placeholder="Tiêu đề")
+                      .form-group
+                        .col-sm-2.control-label Đường dẫn
+                        .col-sm-10
+                          .input-group
+                            span.input-group-addon=generateUrl("", "article", item)
+                            input.form-control.handle(name="handle_" + item, placeholder="duong-dan")
+                            i.icon-refresh-handle.fa.fa-refresh
+                      .form-group
+                        .col-sm-2.control-label Mô tả
+                        .col-sm-10
+                          textarea.form-control(rows="4" data-autoresize name="description_" + item placeholder="Mô tả")
+                      .form-group
+                        .col-sm-2.control-label Nội dung
+                        .col-sm-10
+                          textarea.form-control.tinymce(id="content_" + item)
+        - var post_type = 'article'
+        include ../snippet/box-custom-field.pug
+        include ../snippet/box-seo.pug
+      .col-xs-12.col-sm-12.col-md-4
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title NHÓM BÀI VIẾT
+            .box-body
+              select.chosen-select.chosen-blog.form-control(data-placeholder="Chọn nhóm bài viết" multiple)              
+                each item in blogs
+                  label
+                    option(value=item.id)=item.title
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title THẺ
+            .box-body
+              input(type="text" data-role="tagsinput", name="tags")
+              include ../snippet/tag-suggest.pug
+              
+        .box.hidden
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title ĐỘ ƯU TIÊN
+            .box-body
+              input.form-control.value(type="text" name="priority" maxlength="8" value=1000 min=1)
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title HÌNH ĐẠI DIỆN
+                if (getMetaAdmin("image_resolution_article_text"))
+                  span.title-size=' (' + getMetaAdmin("image_resolution_article_text") + ')'
+            .box-body
+              .item-choose-image(data-default=staticURI() + "/img/default.jpg")
+                img(src=staticURI() + "/img/default.jpg")
+                span.remove-image
+                  i.fa.fa-times
+                input.value(type="hidden" name="image")
+        - var templates = getViewTemplate('article');
+        if countArr(templates)
+          .box
+            .form-horizontal
+              .box-title.clearfix
+                .col-xs-6.title GIAO DIỆN
+              .box-body
+                select.form-control(name="template")
+                  option(value="") Mặc định
+                  each item in templates
+                    option(value=item)=item
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title TRẠNG THÁI
+            .box-body
+              select.form-control(name="status")
+                option(value="active") Hiển thị
+                option(value="inactive") Ẩn
+                option(value="notPublish") Chưa xuất bản
+        .box.hidden.publish-date
+          .form-horizontal    
+            .box-body
+              .col-sm-12
+                .form-group
+                  .text-title Giờ xuất bản
+                  .input-group.bootstrap-timepicker.timepicker
+                    input.form-control.timepicker(name='publish_time', placeholder="H:MM:P")
+                    span.input-group-addon
+                      i.glyphicon.glyphicon-time
+                  .text-title Ngày xuất bản
+                  input.form-control.datepicker(name='publish_date', placeholder="dd-mm-yyyy")

@@ -1,0 +1,82 @@
+{% extends "layout.twig" %}
+
+{% block pre_include %}
+  <title>Danh sách yêu thích</title>
+  {% if article.fb_image %}
+    {% set ogImage = article.fb_image %}
+  {% endif %}
+  {% if article.meta_description %}
+    {% set metaDescription = article.meta_description %}
+  {% endif %}
+  {% if article.meta_robots %}
+    {% set meta_robots = article.meta_robots %}
+  {% endif %}
+  {% set metaTitle = article.title %}
+{% endblock pre_include %}
+
+{% block content %}
+  <section>
+    <div class="container">
+      <div class="col-md-12 breadcrumb">
+        <a href="/" class="breadcrumb-link-home">Trang Chủ</a>
+        <span>></span>
+        <a href="/tai-khoan" class="breadcrumb-link-home">Tài khoản</a>
+        <span>></span>
+        <a href="" class="breadcrumb-link-home">Sản phẩm yêu thích</a>
+      </div>
+    </div>
+  </section>
+  <section class="row account-info">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3 tk-link">
+          <h5>quản lý tài khoản</h5>
+          <div >
+            <a href="/tai-khoan">Thông tin tài khoản</a>
+            <a href="/quna-ly-don-hang">Đơn hàng của tôi</a>
+            <a href="/yeu-thich" class="active">Sản phẩm yêu thích</a>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="sp-yeuthich tk-tab" id="sp-yeuthich">
+            <h4>
+              <span class="orange">QUẢN LÝ</span>
+              sản phẩm yêu thích</h4>
+            <table>
+              <thead>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td>Tên sản phẩm</td>
+                  <td>Gía tiền</td>
+                  <td>Tình trạng</td>
+                  <td></td>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in favorite %}
+                  <tr>
+                    <td data-label="">
+                      <a href="javascript:void(0)" class="remove-favor" data-id="{{item.id}}"><i class="fa fa-trash -icon-del-prod" aria-hidden="true"></i></a>
+                    </td>
+                    <td data-label="">
+                      <div class="donhang-img"><img src="uploads/{{ item.featured_image }}"></div>
+                    </td>
+                    <td data-label="Tên sản phẩm">{{ item.title }}</td>
+                    <td data-label="Gía tiền">{{ item.price | money }}</td>
+                    <td data-label="Tình trạng">Còn hàng</td>
+                    <td data-label="">
+                      <a href="#" class="muahang">Mua Hàng</a>
+                      <a href="#" class="xoa">Xóa</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% include "snippet/footer.twig" %}
+{% endblock content %}

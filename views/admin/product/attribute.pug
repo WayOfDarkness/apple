@@ -1,0 +1,91 @@
+extends ./../layout.pug
+
+block pre-include
+  - menu = 'product';
+  - childMenu = 'attribute';
+  title Thuộc tính
+
+block post-include
+  script(src=staticURI() + '/js/admin/attribute.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li.hidden-xs
+        a(href="/admin/product") Sản phẩm
+      li.title-ellipsis
+        a(href="/admin/attribute") Thuộc tính
+  section.content.attribute.clearfix
+    if countArr(attributes)
+      .box
+        .box-body
+          .box-header
+            h3.box-title.border-bottom-0 Thuộc tính của sản phẩm
+          .box-body
+            .row
+              each item in attributes
+                .col-lg-4.col-md-6.col-sm-12.col-xs-12
+                  .attribute-card.clearfix(data-id=item.id)
+                    .title=item.name
+                    .option-list
+                      if countArr(item.child)
+                        .clearfix
+                          .col-sm-6
+                            b Tiêu đề
+                          .col-sm-6.text-right
+                            b Chỉnh sửa
+                        each child in item.child
+                          if child.id
+                            .clearfix
+                              .col-sm-6=child.name
+                              .col-sm-6.text-right
+                                i.fa.fa-edit.edit-option(data-id=child.id)
+                                i.fa.fa-trash.delete-option(data-id=child.id)
+                    .col-xs-12
+                      button.btn.btn-default.add-new-option(data-parent_id=item.id, style="width: 100%;") Thêm mới
+    if countArr(options)
+      .box
+        .box-body
+          .box-header
+            h3.box-title.border-bottom-0 Thuộc tính của phiên bản
+          .box-body
+            .row
+              each item in options
+                .col-lg-4.col-md-6.col-sm-12.col-xs-12
+                  .attribute-card.clearfix(data-id=item.id)
+                    .title=item.name
+                    .option-list
+                      .clearfix
+                        .col-sm-6
+                          b Tiêu đề
+                        .col-sm-6.text-right
+                          b Chỉnh sửa
+                      each child in item.child
+                        if child.id
+                          .clearfix
+                            .col-sm-6=child.name
+                            .col-sm-6.text-right
+                              i.fa.fa-edit.edit-option(data-id=child.id)
+                              i.fa.fa-trash.delete-option(data-id=child.id)
+                    .col-xs-12
+                      button.btn.btn-default.add-new-option(data-parent_id=item.id, style="width: 100%;") Thêm mới
+    #modal-product-attribute.modal.fade(role='dialog')
+      .modal-dialog
+        .modal-content.form-add-attribute
+          .modal-header 
+            button.close(type='button', data-dismiss='modal') ×
+            h4.modal-title Thuộc tính
+          .modal-body.clearfix
+            .form-horizontal
+              .box-body
+                .form-group
+                  label.col-sm-4.control-label Tiêu đề
+                  .col-sm-8
+                    input.form-control(type="text" name="name" placeholder="Tiêu đề")
+                    input(type="hidden" name="parent_id")
+          .modal-footer
+            button.btn.btn-default(type='button', data-dismiss='modal') Đóng
+            button.btn.btn-admin.btn-primary
+              i.fa.fa-floppy-o
+              i.fa.fa-circle-o-notch.fa-spin
+              | Lưu lại

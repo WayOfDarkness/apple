@@ -1,0 +1,157 @@
+script(src=staticURI() + '/js/admin/order-shipping.js')
+.col-xs-12.col-sm-12.col-md-4(style="margin-top: 10px")
+  .box
+    .form-horizontal
+      .box-title.clearfix
+        .col-xs-12.title GIAO HÀNG
+      .box-body
+        .col-xs-12
+          .form-group
+            .text-title Phương thức giao hàng: GIAO HÀNG TIẾT KIỆM
+          .form-group.shipping-status(data-status=shipping_status.status ? shipping_status.status : 0)
+            .text-title Trạng thái đơn hàng:
+            case shipping_status.status ? shipping_status.status : 0
+              when '-1'
+                <span class="label label-status-shipping label-danger">Hủy đơn hàng</span>
+              when '0'
+                <span class="label label-status-shipping label-default">Mới</span>
+              when '1'
+                <span class="label label-status-shipping label-default">Chưa tiếp nhận</span>
+              when '2'
+                <span class="label label-status-shipping label-info">Đã tiếp nhận</span>
+              when '3'
+                <span class="label label-status-shipping label-info">Đã lấy hàng/Đã nhập kho</span>
+              when '4'
+                <span class="label label-status-shipping label-info">Đã điều phối giao hàng/Đang giao hàng</span>
+              when '5'
+                <span class="label label-status-shipping label-info">Đã giao hàng/Chưa đối soát</span>
+              when '6'
+                <span class="label label-status-shipping label-success">Đã đối soát</span>
+              when '7'
+                <span class="label label-status-shipping label-warning">Không lấy được hàng</span>
+              when '8'
+                <span class="label label-status-shipping label-warning">Hoãn lấy hàng</span>
+              when '9'
+                <span class="label label-status-shipping label-warning">Không giao được hàng</span>
+              when '10'
+                <span class="label label-status-shipping label-warning">Delay giao hàng</span>
+              when '11'
+                <span class="label label-status-shipping label-warning">Đã đối soát công nợ trả hàng</span>
+              when '12'
+                <span class="label label-status-shipping label-warning">Đã điều phối lấy hàng/Đang lấy hàng</span>
+              when '13'
+                <span class="label label-status-shipping label-warning">Đơn hàng bồi hoàn</span>
+              when '20'
+                <span class="label label-status-shipping label-warning">Đang trả hàng (COD cầm hàng đi trả)</span>
+              when '21'
+                <span class="label label-status-shipping label-warning">Đã trả hàng (COD đã trả xong hàng)</span>
+              
+          //- - var hide_reason = 'hidden';
+          //- if (order.order_status == 'cancel' || order.order_status == 'return')
+          //-   - var hide_reason = '';
+          if shipping_status.reason_code
+            .form-group.reason_cancel
+              .text-title Lý do trả/hủy/hoãn đơn hàng:
+                case shipping_status.reason_code
+                  when '100'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Nhà cung cấp (NCC) hẹn lấy vào ca tiếp theo
+                  when '101'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) GHTK không liên lạc được với NCC
+                  when '102'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) NCC chưa có hàng
+                  when '103'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) NCC đổi địa chỉ
+                  when '104'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) NCC hẹn ngày lấy hàng
+                  when '105'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) GHTK quá tải, không lấy kịp
+                  when '106'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Do điều kiện thời tiết, khách quan
+                  when '107'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Lý do khác
+                  when '110'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Địa chỉ ngoài vùng phục vụ
+                  when '111'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Hàng không nhận vận chuyển
+                  when '112'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) NCC báo hủy
+                  when '113'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) NCC hoãn/không liên lạc được 3 lần
+                  when '114'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Lý do khác
+                  when '115'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Đối tác hủy đơn qua API
+                  when '200'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) GHTK quá tải, giao không kịp
+                  when '201'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Người nhận hàng hẹn giao ca tiếp theo
+                  when '202'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Không gọi được cho người nhận hàng
+                  when '203'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Người nhận hàng hẹn ngày giao
+                  when '204'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Người nhận hàng chuyển địa chỉ nhận mới
+                  when '205'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Địa chỉ người nhận sai, cần NCC check lại
+                  when '206'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Do điều kiện thời tiết, khách quan
+                  when '207'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Lý do khác
+                  when '208'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Đối tác hẹn thời gian giao hàng
+                  when '209'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Không tìm thấy hàng
+                  when '1200'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) SĐT người nhận sai, cần NCC check lại
+                  when '130'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Người nhận không đồng ý nhận sản phẩm
+                  when '131'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Không liên lạc được với KH 3 lần
+                  when '132'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) KH hẹn giao lại quá 3 lần
+                  when '133'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Shop báo hủy đơn hàng
+                  when '134'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Lý do khác
+                  when '135'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Đối tác hủy đơn qua API
+                  when '140'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) NCC hẹn trả ca sau
+                  when '141'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Không liên lạc được với NCC
+                  when '142'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) NCC không có nhà
+                  when '143'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) NCC hẹn ngày trả
+                  when '144'
+                    textarea.form-control(name="reason_cancel", placeholder="" disabled) Lý do khác
+                
+          .form-group.history
+            .row
+              .col-xs-6 Phí vận chuyển:
+              .col-xs-6
+                strong#shipping-charge=shipping_status.fee
+          if shipping_status.status != 0
+            .form-group.history
+              .row
+                .col-xs-6 Mã đơn hàng:
+                .col-xs-6
+                  strong#shipping-code=shipping_status.label_id
+            .form-group.history.ordered-shipping
+              .row
+                .col-xs-6 Ngày tạo:
+                .col-xs-6=shipping_status.created_at
+            .form-group.history.ordered-shipping
+              .row
+                .col-xs-6 Ngày nhận hàng dự kiến:
+                .col-xs-6=shipping_status.pick_time
+            .form-group.history.ordered-shipping
+              .row
+                .col-xs-6 Ngày giao hàng dự kiến:
+                .col-xs-6=shipping_status.deliver_time
+            if shipping_status.status != -1 && shipping_status.status != 0
+              .form-group
+                button.btn.btn-primary.cancel-order-shipping.ordered-shipping Hủy
+          else
+            .form-group
+              button.btn.btn-primary.set-order-shipping.hidden.new-shipping Gửi hàng

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Import Success</title>
+    <link rel="stylesheet" href="style.css">
+    <style media="screen">
+        table, th, td {
+          border: 1px solid black;
+
+        }
+        table{
+          border-collapse: collapse;
+        }
+        td,th{
+          padding: 5px;
+        }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="greet">
+        <p>Xin chào {{admin_name}}</p>
+      </div>
+      <div class="notification">
+        <p>BẠN ĐÃ NHẬP SẢN PHẨM THÀNH CÔNG TẠI {{website}}</p>
+      </div>
+    </header>
+    <footer>
+      <p>VUI LÒNG TRUY CẬP <a href={{product_link}}>LINK</a> ĐỂ XEM DANH SÁCH SẢN PHẨM</p>
+    </footer>
+  </body>
+</html>

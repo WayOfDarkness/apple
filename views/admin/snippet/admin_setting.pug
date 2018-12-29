@@ -1,0 +1,32 @@
+extends ./../layout.pug
+block pre-include
+  - var menu = 'setting'
+  - var childMenu = 'setting'
+  title Thiết lập chung
+
+block post-include
+  script(src=staticURI() + '/js/admin/setting.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.breadcrumb-settings.col-md-7.col-sm-4
+      li
+        a Cấu hình
+      li
+        a Thiết lập chung
+    ol.button-right.col-md-5.col-sm-8.col-xs-12
+      span.middle-inline-block(style="height:60%")
+      li
+        a.btn.btn-admin.btn-restore-setting
+          i.fa.fa-undo
+          | Phục hồi phiên bản cũ
+      li.item-restore.hidden
+        select(name="change_version_setting")
+          option(value="" disabled selected) Phiên bản cũ hơn
+      li
+        a.btn.btn-admin.btn-update-setting-website.disabled
+          i.fa.fa-floppy-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Lưu lại
+        div.clearfix
+  section.content#content.content-setting(style="padding-bottom:150px")

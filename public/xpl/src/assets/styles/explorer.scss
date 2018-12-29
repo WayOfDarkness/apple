@@ -1,0 +1,128 @@
+.color {
+  &.red {
+    color: red;
+  }
+
+  &.white {
+    color: white
+  }
+}
+#explorer {
+  height: 100vh;
+  .header {
+    height: 50px;
+    border-bottom: black dashed 1px;
+    text-align: right;
+    select.custom-select {
+      width: auto;
+      margin: 5px !important;
+    }
+    .dropdown {
+      text-align: right;
+    }
+  }
+  .body {
+    display: flex;
+    height: calc(100vh - 100px);
+  }
+  .footer {
+    border-top: black dashed 1px;
+    height: 50px;
+    display: flex;
+    .left {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-right: black dashed 1px;
+      height: 100%;
+    }
+    .right {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+      .btn {
+        margin: 0 5px;
+      }
+    }
+  }
+  #folder-tree {
+    padding: 10px;
+    border-right: black dashed 1px;
+    word-break: break-word;
+    overflow-y: scroll;
+    .subfolders {
+      margin-left: 20px;
+    }
+    .xpl-folder {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      padding: 3px 5px;
+      border-radius: 2px;
+      .left {
+        display: flex;
+        align-items: center;
+        .folder-icon {
+          width: 18px;
+          height: 14px;
+        }
+      }
+      .right {
+        display: none;
+        font-size: 1.3rem;
+        font-weight: bold;
+        padding: 0 5px;
+        -webkit-text-stroke: 1px white;
+        height: 25px;
+        line-height: 25px;
+      }
+      &.active {
+        background-color: #3c99d9;
+        color: white;
+      }
+      &:hover {
+        background-color: #1284b5;
+        color: white;
+        .right {
+          display: block;
+        }
+      }
+    }
+  }
+  .empty-folder {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #bbb;
+  }
+  #file-grid {
+    padding: 15px;
+    overflow-y: scroll;
+    display: grid;
+    height: 100%;
+    &.size-s {
+      grid-auto-rows: 120px;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+    &.size-m {
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      grid-auto-rows: 160px;
+    }
+    &.size-l {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-auto-rows: 220px;
+    }
+  }
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .space-around {
+    display: flex;
+    justify-content: space-around;
+  }
+}

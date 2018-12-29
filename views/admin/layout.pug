@@ -1,0 +1,71 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+    link(rel="icon" href=staticURI() + "/img/favicon.png")
+    link(rel="stylesheet", href=staticURI() + '/libs/bootstrap.min.css')
+    link(rel='stylesheet', href=staticURI() + '/libs/dataTables/dataTables.min.css')
+    link(rel='stylesheet', href=staticURI() + '/libs/dataTables/dataTables.bootstrap.min.css')
+    link(rel='stylesheet', href=staticURI() + '/libs/dataTables/rowReorder.dataTables.min.css')
+    link(rel='stylesheet', href=staticURI() + '/libs/dataTables/responsive.dataTables.min.css')
+    link(rel='stylesheet', href=staticURI() + '/libs/dataTables/buttons.dataTables.min.css')
+    link(rel='stylesheet', href=staticURI() + '/libs/dataTables/jquery.dataTables.min.css')
+    link(rel='stylesheet', href=staticURI() + '/libs/timepicker/bootstrap-timepicker.min.css')
+    link(rel="stylesheet", href=staticURI() + '/libs/font-awesome.min.css')
+    link(rel='stylesheet', href=staticURI() + '/libs/toastr.min.css')
+    link(rel='stylesheet', href=staticURI() + '/libs/AdminLTE.min.css')
+    link(rel="stylesheet", href=staticURI() + "/libs/chosen.min.css")
+    link(rel="stylesheet", href=staticURI() + "/libs/bootstrap-tagsinput.min.css")
+    link(rel="stylesheet", href=staticURI() + "/libs/jquery-ui/jquery-ui.min.css")
+    link(rel="stylesheet", href=staticURI() + "/libs/daterangepicker.css")
+    link(rel="stylesheet", href=staticURI() + "/libs/jstree/themes/proton/style.min.css")
+    link(rel="stylesheet", href=staticURI() + "/css/admin.css")
+    script(src=staticURI() + '/libs/jquery.min.js')
+    script(src=staticURI() + '/libs/jquery-ui/jquery-ui.min.js')
+    script(src=staticURI() + '/libs/bootstrap.min.js')
+    script(src=staticURI() + '/libs/toastr.min.js')
+    script(src=staticURI() + '/libs/tmpl.min.js')
+    script(src=staticURI() + '/libs/timepicker/bootstrap-timepicker.min.js')
+    script(src=staticURI() + '/libs/dataTables/jquery.dataTables.min.js')
+    script(src=staticURI() + '/libs/dataTables/dataTables.bootstrap.min.js')
+    script(src=staticURI() + '/libs/dataTables/dataTables.rowReorder.min.js')
+    script(src=staticURI() + '/libs/dataTables/dataTables.responsive.min.js')
+    script(src=staticURI() + '/libs/dataTables/dataTables.buttons.min.js')
+    script(src=staticURI() + '/libs/dataTables/buttons.flash.min.js')
+    script(src=staticURI() + '/libs/dataTables/buttons.html5.min.js')
+    script(src=staticURI() + '/libs/dataTables/buttons.print.min.js')
+    script(src=staticURI() + '/libs/dataTables/buttons.colVis.min.js')
+    script(src=staticURI() + '/libs/bootstrap-select.min.js')
+    script(src=staticURI() + '/libs/chosen.jquery.min.js')
+    script(src=staticURI() + '/libs/chosen.order.jquery.min.js')
+    script(src=staticURI() + '/libs/tinymce/tinymce.min.js')
+    script(src=staticURI() + '/libs/bootbox.min.js')
+    script(src=staticURI() + '/libs/typeahead.bundle.min.js')
+    script(src=staticURI() + '/libs/bootstrap-tagsinput.min.js')
+    script(src=staticURI() + '/libs/jstree/jstree.min.js')
+    script(src=staticURI() + '/libs/moment.min.js')
+    script(src=staticURI() + '/libs/daterangepicker.js')
+    script(src=staticURI() + '/libs/jquery.inputmask.bundle.min.js')
+    script(src=staticURI() + '/libs/inputmask.binding.min.js')
+    - var multiLang = multiLang();
+    - var shippingMethod = shippingMethod();
+    block pre-include
+  body(data-uri=staticURI() data-multiLang=multiLang data-languages=languages())
+    .wrapper
+      include snippet/sidebar
+      include snippet/tmpl
+      .col-xs-12.visible-xs
+        include snippet/header-mobile
+      .content-wrapper(style='min-height: 100vh')
+        include snippet/dropdown-user
+        block content
+      if childMenu != 'library'
+        include snippet/modal-upload
+      include snippet/modal-change-password
+      script(src='/xpl/loader/explorer.js')
+      script(src=staticURI() + '/libs/StoreAPI.jquery.js')
+      script(src=staticURI() + '/js/admin/modal-upload.js')
+      script(src=staticURI() + '/js/admin/script.js')
+      block post-include

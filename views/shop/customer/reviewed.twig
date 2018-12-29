@@ -1,0 +1,186 @@
+{% extends "layout.twig" %}
+
+{% block pre_include %}
+  <title>Nhận xét của tôi</title>
+{% endblock pre_include %}
+
+{% block content %}
+  <!-- Content Sub Page -->
+  <div class="my-review padding-wrap" id="my-review">
+    <div class="container box-1400">
+      <div class="row">
+        {% include 'customer/sidebar.twig' %}
+        <div class="col-md-9 col-sm-12">
+          <div class="account--title">
+            <h3 class="title-default">Sản phẩm đã đánh giá</h3>
+          </div>
+          <div class="page bg-null">
+            <ul class="list-inline paginate">
+              <!-- <li>
+                <a href="#">
+                  <i class="fa fa-angle-left"></i>
+                </a>
+              </li>
+              <li>
+                <a href="#">01</a>
+              </li>
+              <li>
+                <a href="#">
+                  <i class="fa fa-angle-right"></i>
+                </a>
+              </li> -->
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ./Content Sub Page -->
+  <style media="screen">
+      .my-review .page ul.list-inline li a {
+          background-color: #CCCCCC !important;
+      }
+      .my-review .page ul.list-inline li a.active {
+          background-color: #999c50 !important;
+      }
+    </style>
+{% endblock content %}
+{% block post_include %}
+<script type="text/javascript">
+  var count = 0;
+  var perpage;
+  $(document).ready(function() {
+    StoreAPI.customerReview(function(json) {
+      $.each(json.reviews, function(index, val) {
+          count++;
+        var id = val.post_id;
+        $.ajax({
+          type: 'GET',
+          url: '/api/product/' + id,
+          success: function(res) {
+            $('.account--title').after(
+              `<div class="my-review--content">
+              <div class="my-review--content__top">
+                <p class="date" data-id="`+res.product.id+`">Đã mua ngày 22 thg 8 2018</p><a href="javascript:;" data-product="`+res.product.handle+`" data-id="`+val.id+`">Chỉnh sửa nhận xét của sản phẩm này </a>
+              </div>
+              <div class="row my-review--content__product">
+                <div class="product__img col-sm-2 col-xs-4"><img src="/uploads/` + res.product.image +
+              `" alt=""></div>
+                <div class="product__name col-sm-9 col-xs-11">
+                  <p>` + res.product.title +
+              `</p>
+                  <div class="box-rating big-star">
+                          <div class="rating without-caption">
+                              <input type="text" class="kv-fa rating-loading" value="` + val.rating +
+              `" title="" readonly="readonly">
+                          </div>
+                      </div>
+                  <div class="product__name__status">
+                    <p>`+val.content+`</p>
+                  </div>
+                </div>
+                <div class="clear-fix"></div>
+              </div>
+            </div>`
+            );
+            if ($('.kv-fa').length > 0) {
+              $('.kv-fa').rating({theme: 'krajee-fa', filledStar: '<i class="fa fa-star"></i>', emptyStar: '<i class="fa fa-star-o"></i>'});
+            }
+            $('.my-review--content__top a').on('click', function() {
+              var handle = $(this).data('product');
+              var review_id = $(this).data('id');
+              $.ajax({
+                url: '/api/setSession',
+                type: 'post',
+                data: {
+                  key: 'reviewProduct',
+                  value: handle
+                },
+                success: function(data) {
+                  if (!data.code) {
+                    window.location.href = '/customer/review/' + review_id;
+                  }
+                }
+              })
+            });
+          }
+
+        });
+
+      })
+      console.log(count);
+      if (count > 10) {
+        $(".my-review--content").css('display','none');
+        if (count % 10 > 5 || count % 10 == 0) {
+          perpage = Math.round(count / 10);
+        }
+        else {
+          perpage = Math.round(count / 10) + 1;
+        }
+        var html = '';
+        for (var i = 1; i < perpage + 1; i++) {
+          html += `<li  class="pagi">
+            <a href="javascript:;=`+i+`" data-page="`+i+`">`+i+`</a>
+          </li>`;
+        }
+        $('ul.paginate').html(`<li>
+          <a href="javascript:;" class="prev">
+            <i class="fa fa-angle-left"></i>
+          </a>
+        </li>
+        ${html}
+        <li>
+          <a href="javascript:;" class="next">
+            <i class="fa fa-angle-right"></i>
+          </a>
+        </li>`);
+        var page = 1;
+        $(function() {
+          $(".my-review--content").slice(0, 10).show();
+          $('a[data-page="1"]').addClass('active');
+          $(".pagi a").on('click', function(e) {
+            e.preventDefault();
+            $(".pagi a").removeClass('active');
+            $(this).addClass('active');
+            page = $(this).data('page');
+            $(".my-review--content").css('display','none');
+            setTimeout(function() {
+              $(".my-review--content").slice((page - 1) * 10, 10 * page).show();
+            },100);
+          });
+          $("a.prev").on('click', function(e) {
+            e.preventDefault();
+            if (page == 1) {
+              return;
+            }
+            --page;
+            $(".pagi a").removeClass('active');
+
+            $(".my-review--content").css('display','none');
+            setTimeout(function() {
+              $(".my-review--content").slice((page - 1) * 10, 10 * page).show();
+            },100);
+            $('a[data-page="'+page+'"]').addClass('active');
+          });
+
+          $("a.next").on('click', function(e) {
+            e.preventDefault();
+            if (page == perpage) {
+              return;
+            }
+            page++;
+            $(".pagi a").removeClass('active');
+            $(".my-review--content").css('display','none');
+            setTimeout(function() {
+              $(".my-review--content").slice((page - 1) * 10, 10 * page).show();
+            },100);
+            $('a[data-page="'+page+'"]').addClass('active');
+          });
+        })
+      }
+    });
+
+  });
+</script>
+{% endblock %}

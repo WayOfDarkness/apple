@@ -1,0 +1,106 @@
+extends ./../layout.pug
+
+block pre-include
+  - var menu = 'customer';
+  - var childMenu = 'list';
+  title=customer.name
+
+block post-include
+  script(src=staticURI() +'/js/admin/customer.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a Khách hàng
+      li
+        a Chỉnh sửa
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      li
+        a.btn.btn-admin.btn-update(data-id=customer.id)
+          i.fa.fa-floppy-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Lưu lại
+  section.content
+    ul.nav.nav-pills
+      li.active
+        a(data-toggle="pill", href="#tab-info") THÔNG TIN
+      li
+        a(data-toggle="pill", href="#tab-order") DANH SÁCH ĐƠN HÀNG
+    .tab-content
+      #tab-info.tab-pane.fade.in.active
+        .row
+          .col-xs-12.col-sm-12.col-md-12
+            .box
+              .form-horizontal
+                .box-body(style="padding-top: 30px;")
+                  .form-group
+                    .col-sm-2.control-label Họ tên
+                      strong.required  *
+                    .col-sm-10
+                      input.form-control(name="name", placeholder="Họ tên", value=customer.name)
+                  .form-group
+                    .col-sm-2.control-label Email
+                    .col-sm-10
+                      input.form-control(name="email", placeholder="Email", value=customer.email)
+                  .form-group
+                    .col-sm-2.control-label Số điện thoại
+                    .col-sm-10
+                      input.form-control(name="phone", placeholder="Số điện thoại", value=customer.phone)
+                  .form-group
+                    .col-sm-2.control-label Địa chỉ
+                    .col-sm-10
+                      input.form-control(name="address", placeholder="Địa chỉ", value=customer.address)
+                  .form-group
+                    .col-sm-2.control-label Địa chỉ
+                    .col-sm-10
+                      input.form-control(name="company", placeholder="Công ty", value=customer.company)
+                  .form-group
+                    .col-sm-2.control-label Thành viên
+                    .col-sm-10
+                      select.form-control(name="member-type" data-value=customer.member_type)
+                        option(value="" disabled) Chọn loại thành viên
+                        option(value="Thành viên" disabled) Thành viên
+                        option(value="Đối tác" disabled) Đối tác
+                        
+                  .form-group
+                    .col-sm-2.control-label Tỉnh/thành phố
+                    .col-sm-10
+                      select.form-control(name="region" data-value=customer.region)
+                        option(value="" disabled) Chọn tỉnh/thành phố
+                        each region in regions
+                          option(value=region.id)=region.name
+                  .form-group
+                    .col-sm-2.control-label Quận huyện
+                    .col-sm-10
+                      select.form-control(name="subregion" data-value=customer.subregion)
+      #tab-order.tab-pane.fade
+        .box.box-table
+          .box-body
+            table.table.table-condensed.table-bordered.table-striped.table-striped.display.nowrap(cellspacing="0" width="100%")
+              thead
+                thead
+                  th Mã đơn hàng
+                  th Ngày đặt hàng
+                  th Trạng thái
+                  th Tổng tiền
+              tbody
+                each item in data
+                  tr
+                    td
+                      a(href="/admin/order/" + item.id target="_blank") #
+                        =item.id
+                    td=datetime(item.created_at)
+                    td
+                      case item.order_status
+                        when 'new'
+                          label.label.label-info Mới
+                        when 'confirm'
+                          label.label.label-primary Xác nhận
+                        when 'done'
+                          label.label.label-success Hoàn thành
+                        when 'cancel'
+                          label.label.label-danger Hủy
+                        when 'return'
+                          label.label.label-danger Hoàn trả
+                    td=money(item.total)

@@ -1,0 +1,238 @@
+{% extends "layout.twig" %}
+
+{% block pre_include %}
+  <title>Tài khoản</title>
+{% endblock pre_include %}
+
+{% block content %}
+  <div class="account-info padding-wrap" id="account-info">
+    <div class="container box-1400">
+      <div class="row">
+        {% include 'customer/sidebar.twig' %}
+        <div class="col-md-9">
+          <div class="account--title">
+            <h3 class="title-default">Chỉnh sửa thông tin cá nhân</h3>
+          </div>
+          <div class="info">
+            <form class="form-account" data-id="{{customer.id}}">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="">Họ tên</label>
+                    <input type="text" class="form-control" name="name" value="{{customer.name}}" placeholder="Họ tên">
+                  </div>
+                  <div class="form-group">
+                    <label for="">Email</label>
+                    <input type="text" class="form-control" name="email" value="{{customer.email}}" placeholder="Email">
+                  </div>
+                  <div class="form-group">
+                    <label for="">Số điện thoại</label>
+                    <input type="text" class="form-control" name="phone" value="{{customer.phone}}" placeholder="Số điện thoại">
+                  </div>
+                  <div class="form-group">
+                    <label for="">Ngày sinh</label>
+                    <input type="text" id="date" class="form-control" name="birthday" value="{{customer.birthday | date('d/m/Y')}}" placeholder="">
+                  </div>
+                  <div class="form-group">
+                    <label>Giới tính</label>
+                    <div class="radio">
+                      {% if customer.gender == "Nam" %}
+                        <label><input type="radio" name="gender" checked value="Nam">Nam</label>
+                      {% else %}
+                        <label><input type="radio" name="gender" value="Nam">Nam</label>
+                      {% endif %}
+                    </div>
+                    <div class="radio">
+                      {% if customer.gender == "Nữ" %}
+                        <label><input type="radio" name="gender" checked value="Nữ">Nữ</label>
+                      {% else %}
+                        <label><input type="radio" name="gender" value="Nữ">Nữ</label>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="">Địa chỉ</label>
+                    <input type="text" class="form-control" name="address" value="{{customer.address}}" placeholder="Địa chỉ">
+                  </div>
+                  <div class="form-group">
+                    <label>Tỉnh/ Thành phố</label>
+                    <select name="region" class="form-control" data-value="{{customer.region}}">
+                      <option value="" disabled="" selected="selected">Chọn tỉnh/thành phố</option>
+                      {% for item in Region() %}
+                        <option value="{{item.id}}">{{item.name}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Quận/ Huyện</label>
+                    <select name="subregion" class="form-control" data-value="{{customer.subregion}}">
+                      <option value="" disabled selected>Chọn quận/huyện</option>
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+              <div class="row m-t20">
+                <div class="btn--edit-info">
+                  <a href="javascript:;" class="btn-custom-default">
+                    <span>Lưu</span></a>
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
+
+{% block post_include %}
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    var region = $('select[name="region"]').data('value');
+    if (region) {
+      $('select[name="region"]').val(region);
+      var subregion = $('select[name="subregion"]').data('value');
+      StoreAPI.getSubRegion(region, function(json) {
+        var options = '';
+        $.each(json.data, function(i, val) {
+          options += '<option value="' + val.id + '">' + val.name + '</option>';
+        })
+        $('select[name="subregion"]').html(options);
+        if (subregion) {
+          $('select[name="subregion"]').val(subregion);
+        }
+      });
+    }
+  });
+
+  $(document).on('change', 'select[name="region"]', function() {
+    var region = $(this).val();
+    StoreAPI.getSubRegion(region, function(json) {
+      var options = '';
+      $.each(json.data, function(i, val) {
+        options += '<option value="' + val.id + '">' + val.name + '</option>';
+      })
+      $('select[name="subregion"]').html(options);
+    })
+  });
+
+  var date = document.getElementById('date');
+
+  function checkValue(str, max) {
+    if (str.charAt(0) !== '0' || str == '00') {
+      var num = parseInt(str);
+      if (isNaN(num) || num <= 0 || num > max)
+        num = 1;
+      str = num > parseInt(max.toString().charAt(0)) && num.toString().length == 1
+        ? '0' + num
+        : num.toString();
+    };
+    return str;
+  };
+
+  date.addEventListener('input', function(e) {
+    this.type = 'text';
+    var input = this.value;
+    if (/\D\/$/.test(input))
+      input = input.substr(0, input.length - 3);
+    var values = input.split('/').map(function(v) {
+      return v.replace(/\D/g, '')
+    });
+    if (values[0])
+      values[0] = checkValue(values[0], 31);
+    if (values[1])
+      values[1] = checkValue(values[1], 12);
+    var output = values.map(function(v, i) {
+      return v.length == 2 && i < 2
+        ? v + '/'
+        : v;
+    });
+    this.value = output.join('').substr(0, 14);
+  });
+
+  date.addEventListener('blur', function(e) {
+    this.type = 'text';
+    var input = this.value;
+    var values = input.split('/').map(function(v, i) {
+      return v.replace(/\D/g, '')
+    });
+    var output = '';
+
+    if (values.length == 3) {
+      var year = values[2].length !== 4
+        ? parseInt(values[2]) + 2000
+        : parseInt(values[2]);
+      var month = parseInt(values[0]) - 1;
+      var day = parseInt(values[1]);
+      var d = new Date(year, month, day);
+      if (!isNaN(d)) {
+        document.getElementById('result').innerText = d.toString();
+        var dates = [
+          d.getMonth() + 1,
+          d.getDate(),
+          d.getFullYear()
+        ];
+        output = dates.map(function(v) {
+          v = v.toString();
+          return v.length == 1
+            ? '0' + v
+            : v;
+        }).join('/');
+      };
+    };
+    this.value = output;
+  });
+
+  $('.btn--edit-info a').on('click', function(e) {
+    e.preventDefault();
+    var data = {};
+    var form = $(this).closest('form');
+    var customer_id = form.attr('data-id');
+    var data_meta = {};
+    data.name = $('input[name="name"]').val();
+    data.gender = $('input[name=gender]:checked').val();
+    data.phone = $('input[name="phone"]').val();
+    var birthday = $('input[name="birthday"]').val();
+    var res = birthday.split('/');
+    data.birthday = res[2] + '-' + res[1] + '-' + res[0];
+    data.address = $('input[name="address"]').val();
+    data.email = $('input[name="email"]').val();
+    data.region = $('select[name="region"]').val();
+    data.subregion = $('select[name="subregion"]').val();
+
+    data_meta.title = 'ma-so-thue';
+    data_meta.handle = 'ma-so-thue';
+    data_meta.post_id = customer_id;
+    data_meta.post_type = 'customer';
+    data_meta.value = $('input[name="tax"]').val();
+    StoreAPI.updateMetafield(data_meta, function(json) {
+      if (!json.code) {
+        console.log('Update mã số thuế!');
+      }
+    });
+
+    $.ajax({
+      type: 'POST',
+      url: '/api/changeInformation',
+      data: data,
+      success: function(json) {
+        if (!json.code) {
+          toastr.success("Cập nhật thông tin thành công!");
+          setTimeout(function() {
+            location.reload();
+          }, 1000);
+        } else {
+          toastr.error(json.message);
+        }
+      }
+    });
+  });
+</script>
+
+{% endblock post_include %}

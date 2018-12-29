@@ -1,0 +1,87 @@
+extends ./../layout.pug
+
+block pre-include
+  - var menu = 'setting';
+  - var childMenu = 'menu';
+  title Menu
+  
+block post-include
+  script(src=staticURI() + '/js/admin/menu.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a Cấu hình
+      li
+        a Menu
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      li
+        a.btn.btn-admin(data-toggle="modal" data-target="#modal-create-navigation") Tạo menu
+  section.content.clearfix
+    .box.box-table
+      .row.box-header
+        h3.box-title DANH SÁCH
+      .box-body
+        table.tbl-menu.table.table-condensed.table-bordered.table-striped.nowrap(cellspacing="0" width="100%")
+          .action-box.hidden
+            .dropdown
+              button.btn.btn-danger.dropdown-toggle(type="button" data-toggle="dropdown")
+                i.fa.fa-share
+                |  Chọn thao tác (đang chọn
+                span.num-select
+                |  menu) &ensp;
+                span.caret
+              ul.dropdown-menu
+                li
+                  a.status-active(data-value='active') Ẩn
+                li
+                  a.status-inactive(data-value='inactive') Hiện
+                if (checkRemovePug('menu'))
+                  li
+                    a.btn-remove-menu Xóa
+          thead
+            tr
+              th.all.text-center
+                input.select-all(type="checkbox")
+              th Mã
+              th Tiêu đề
+              th Handle
+              th Ngày cập nhật
+              th Trạng thái
+          tbody
+            each item, index in menus
+              tr
+                td.text-center
+                  input.checkboxes(type="checkbox" value=item.id)
+                td
+                  a(data-id=item.id href="/admin/menu/" + item.id target="_blank") #
+                    =item.id
+                td.menu-title(data-value=item.title)
+                  a(data-id=item.id href="/admin/menu/" + item.id target="_blank")=item.title + '  '
+                td
+                  span.label.label-primary=item.handle
+                td=item.updated_at
+                td
+                  case item.status
+                    when 'active'
+                      label.label.label-info Đang hiện
+                    when 'inactive'
+                      label.label.label-warning Đang ẩn
+
+        #modal-create-navigation.modal.fade(role="dialog")
+          .modal-dialog
+            .modal-content
+              .modal-header
+                button.close(type='button', data-dismiss='modal') ×
+                h4.modal-title Tạo menu
+              form.modal-body
+                .form-horizontal.clearfix
+                  .form-group.clearfix
+                    label.col-sm-2.control-label Tiêu đề
+                      strong.required  *
+                    .col-sm-10
+                      input.form-control(name="title" placeholder="Header, footer, sidebar,..." required)
+                .modal-footer.pd-right-0
+                  button.btn.btn-default(type='button', data-dismiss='modal') Hủy
+                  button.btn.btn-primary Tạo menu

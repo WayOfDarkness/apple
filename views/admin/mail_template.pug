@@ -1,0 +1,111 @@
+extends ./layout.pug
+block pre-include
+  - var menu = 'user'
+  - var childMenu = 'setting'
+  title=name
+
+block post-include
+  script(src=staticURI() + '/js/admin/mail_template.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-sm-8
+      li
+        a Quản trị viên
+      li
+        a Thiết lập admin
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      li
+        a.btn.btn-admin.btn-create-update(data-name=name)
+          i.fa.fa-floppy-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Lưu lại
+  section.content
+    .row
+      .col-xs-12.col-sm-7.col-md-7
+        .box.box-info
+          .form-horizontal
+            .box-title.clearfix
+              .pull-left.title-tab NỘI DUNG
+              .pull-right
+                a.btn.btn-preview Preview
+            .box-body
+              input.form-control#email-title(name=name_setting, style="height: 100%;", value=email_title)
+    .row
+      .col-xs-12.col-sm-7.col-md-7
+        .box.box-info
+          .form-horizontal
+            .box-title.clearfix
+              .pull-left.title-tab NỘI DUNG
+              .pull-right
+                a.btn.btn-preview Preview
+            .box-body(style="height: 85vh;")
+              textarea.form-control.tinymce#content(style="height: 100%;")=content
+      .col-xs-12.col-sm-5.col-md-5
+        .box.box-info
+          .form-horizontal
+            .box-title.clearfix
+              .pull-left.title-tab DANH SÁCH BIẾN
+            .box-body(style="height: 85vh;")
+              ol
+                li CHUNG
+                  ul
+                    li Địa chỉ website 
+                      code {{website}}
+                li ĐƠN HÀNG
+                  ul
+                    li ID
+                      code {{order_id}}
+                    li Thông tin sản phẩm trong giỏ hàng
+                      code {{order_cart}}
+                    li Trạng thái
+                      code {{order_status}}
+                    li Chú thích
+                      code {{order_notes}}
+                    li Lý do hủy
+                      code {{order_reason_cancel}}
+                    li Shipping
+                      code {{order_shipping}}
+                    li Giảm mã giảm giá
+                      code {{order_coupon_discount}}
+                    li Giảm chương trình khuyến mãi
+                      code {{order_sale_discount}}
+                    li Giảm giá đơn hàng
+                      code {{order_order_discount}}
+                    li Subtotal
+                      code {{order_subtotal}}
+                    li Total
+                      code {{order_total}}
+                li QUẢN TRỊ VIÊN
+                  ul
+                    li Tên
+                      code {{user_name}}
+                    li Email
+                      code {{user_email}}
+                    li Quyền
+                      code {{user_role}}
+                    li Link tạo mật khẩu
+                      code {{link_create_password}}
+                    li Link liên hệ trong admin
+                      code {{contact_link}}
+                    li Nội dung liên hệ
+                      code {{content}}
+                li KHÁCH HÀNG
+                  ul
+                    li Tên
+                      code {{customer_name}}
+                    li Email
+                      code {{customer_email}}
+                    li Link tạo mật khẩu
+                      code {{link_create_password}}
+    #modal-preview.modal.fade(role="dialog")
+      .modal-dialog(style="width: 60%")
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal') ×
+            h4.modal-title Xem trước #{name}
+          .modal-body
+            .body-email(style="border: 1px solid black")
+              
+              
+    

@@ -1,0 +1,70 @@
+extends ./../layout.pug
+block pre-include
+  - var menu = 'product'
+  - var childMenu = 'product_buy_together'
+  title Sản phẩm mua kèm
+
+block post-include
+  script(src=staticURI() + '/js/admin/product-buy-together.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a(href="/admin/product") Sản phẩm
+      li
+        a Sản phẩm mua kèm
+  section.content.clearfix
+    .box.box-table
+      .row.box-header
+        h3.box-title DANH SÁCH
+      .box-body
+        table.table.table-condensed.table-bordered.table-striped.display.nowrap(cellspacing="0" width="100%")
+          .action-box.hidden
+            .dropdown
+              button.btn.btn-danger.dropdown-toggle(type="button" data-toggle="dropdown")
+                i.fa.fa-share
+                |  Chọn thao tác (đang chọn
+                span.num-select
+                |  sản phẩm) &ensp;
+                span.caret
+              ul.dropdown-menu
+                li
+                  a.status-active(data-value='active') Ẩn
+                li
+                  a.status-inactive(data-value='inactive') Hiện
+                if (checkRemovePug('product-buy-together'))
+                  li
+                    a.status-delete(data-value='delete') Xóa
+          thead
+            tr
+              th.all.text-center
+                input.select-all(type="checkbox")
+              th Mã
+              th Sản phẩm mua kèm
+              th Sản phẩm chính
+              th Giá bán
+              th Ngày cập nhật
+              th Trạng thái
+              
+          tbody
+            each item in data
+              tr
+                td.all.text-center
+                  input.checkboxes(type="checkbox" value=item.id)
+                td
+                  a(href="/admin/product_buy_together/" + item.id, target="_blank") #
+                    =item.id
+                td
+                  a(href="/admin/product_buy_together/" + item.id, target="_blank")=item.product_buy_together_title
+                td
+                  a(href="/admin/product/" + item.product_id, target="_blank")=item.product_title
+                td=money(item.price_sale)
+                td=item.updated_at
+                td
+                  case item.status
+                    when 'active'
+                      label.label.label-info Đang hiện
+                    when 'inactive'
+                      label.label.label-warning Đang ẩn
+                

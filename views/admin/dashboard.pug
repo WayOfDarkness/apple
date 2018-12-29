@@ -1,0 +1,347 @@
+extends ./layout.pug
+
+block pre-include
+  title Laziweb Admin System
+  - var menu = 'dashboard'
+block post-include
+  script(src=staticURI() + '/libs/chart.min.js')
+  script(src=staticURI() + '/js/admin/dashboard.js')
+  script(src=staticURI() + '/libs/numeral.min.js')
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a Bảng điều khiển
+  section.content.dashboard-content
+    h3.page-title Trang bảng điều khiển &nbsp;
+      small Bảng điều khiển & thống kê
+    .row.dashboard-statistic
+      .col-xs-6.col-sm-4.col-md-2.box-statistic
+        .small-box(style="background-color:#1074b5;").no-margin
+          .inner
+            h3.count(data-value=data.orderPriceTotal) 0
+            p Tổng giá trị đơn hàng
+          .icon
+            i.fa.fa-money
+          a.small-box-footer(href="/admin/order") Xem chi tiết &nbsp;
+            i.fa.fa-arrow-circle-right
+      .col-xs-6.col-sm-4.col-md-2.box-statistic
+        .small-box(style="background-color:#3cc5d1;").no-margin
+          .inner
+            h3.count(data-value=data.orderCount) 0
+            p Tổng đơn hàng
+          .icon
+            i.fa.fa-shopping-cart
+          a.small-box-footer(href="/admin/order") Xem chi tiết &nbsp;
+            i.fa.fa-arrow-circle-right
+      .col-xs-6.col-sm-4.col-md-2.box-statistic
+        .small-box(style="background-color:#5DE082;").no-margin
+          .inner
+            - var average = data.orderPriceTotal/data.orderCount;
+            h3.count(data-value=average) 0
+            p Giá trị trung bình/đơn
+          .icon
+            i.fa.fa-usd
+          a.small-box-footer(href="/admin/order") Xem chi tiết &nbsp;
+            i.fa.fa-arrow-circle-right
+      .col-xs-6.col-sm-4.col-md-2.box-statistic
+        .small-box(style="background-color:#e5515d;").no-margin
+          .inner
+            h3.count(data-value=data.productCount) 0
+            p Tổng sản phẩm
+          .icon
+            i.fa.fa-product-hunt
+          a.small-box-footer(href="/admin/product") Xem chi tiết &nbsp;
+            i.fa.fa-arrow-circle-right
+      .col-xs-6.col-sm-4.col-md-2.box-statistic
+        .small-box(style="background-color:#8d48ab;").no-margin
+          .inner
+            h3.count(data-value=data.articleCount) 0
+            p Tổng bài viết
+          .icon
+            i.fa.fa-newspaper-o
+          a.small-box-footer(href="/admin/article") Xem chi tiết &nbsp;
+            i.fa.fa-arrow-circle-right
+      .col-xs-6.col-sm-4.col-md-2.box-statistic
+        .small-box(style="background-color:#3b99da;").no-margin
+          .inner
+            h3.count(data-value=data.contactCount) 0
+            p Tổng liên hệ
+          .icon
+            i.fa.fa-address-card
+          a.small-box-footer(href="/admin/contact") Xem chi tiết &nbsp;
+            i.fa.fa-arrow-circle-right
+    .row.chart-row
+      .col-xs-12.col-sm-6.box-parent
+        .row(style="border:solid #d9d9d9 1px; margin:1px").box
+          .box-body
+            .col-xs-12.box-visit
+              .row.chart-block.child-box-visit.first
+                .row.first-block.portlet-title(style="margin-bottom: 15px")
+                  h3.title-chart
+                    i.fa.fa-bar-chart 
+                    | &nbsp; LƯỢT TRUY CẬP
+                  .optionchart.text-center
+                    #reportrange.pull-right
+                      i.glyphicon.glyphicon-calendar.fa.fa-calendar &nbsp;
+                      span &nbsp;
+                      b.caret
+                    .btn-chartzoom.pull-right
+                      button.btn.btn-default.btn-fullscreen-visit(style="border-radius:50%; margin-left:5px")
+                        i.fa.fa-expand
+                canvas(style="max-height: 80%;")#visitchart
+      .col-xs-12.col-sm-6.box-parent(style="padding: 5px 6px 5px 4px;")
+        .row(style="border:solid #d9d9d9 1px; margin:1px").box
+          .box-body
+            .col-xs-12.second.box-revenue
+              .row.chart-block
+                .row.first-block.portlet-title(style="margin-bottom: 15px")
+                  h3.title-chart.text-red 
+                    i.fa.fa-money 
+                    | &nbsp DOANH THU
+                  .optionchart.text-center
+                    #revenue-action.pull-right
+                      i.glyphicon.glyphicon-calendar.fa.fa-calendar &nbsp;
+                      span &nbsp;
+                      b.caret
+                    .btn-chartzoom.pull-right
+                      button.btn.btn-default.btn-fullscreen-revenue(style="border-radius:50%; margin-left:5px")
+                        i.fa.fa-expand
+                canvas(style="max-height: 80%;")#revenuechart
+                .row.revenue-info
+                  .col-xs-6.revenue-block
+                    p.pd5.bg-primary Tổng doanh thu:
+                    p.revenue-total
+                  .col-xs-6.order-block
+                    p.pd5.bg-info Số đơn hàng:
+                    p.revenue-count
+    .row.log-contact
+      .col-xs-12.col-sm-6.box-parent
+        .nav-tabs-custom
+          ul.nav.nav-tabs.pull-right
+            li.dropdown
+              a.dropdown-toggle.dropdown-filter(data-toggle='dropdown')
+                | Bộ lọc &ensp;
+                span.caret
+              ul.dropdown-menu
+                li.li-checklog
+                  | &ensp;
+                  input(name='checklog' id='checklog-admin' type='checkbox' checked value='admin')
+                  label(for='checklog-admin')
+                    | &ensp;
+                    .label.label-sm.label-warning
+                      i.fa.fa-bell-o
+                    | &ensp;
+                    | Quản trị viên
+                li.li-checklog
+                  | &ensp;
+                  input(name='checklog' id='checklog-user' type='checkbox' checked value='user')
+                  label(for='checklog-user')
+                    | &ensp;
+                    .label.label-sm.label-info
+                      i.fa.fa-bell-o
+                    | &ensp;
+                    | Người dùng
+            li.pull-left.header.text-red.title-chart
+              i.fa.fa-cogs
+              |  NHẬT KÝ HOẠT ĐỘNG
+          .tab-content
+            .tab-pane.active
+              .contentlog
+                each item in data.history
+                  -var hiddenUser = ''
+                  if item.user_type == 'user'
+                    -var hiddenUser = 'hidden'
+                  .mt-log.clearfix(data-type=item.user_type class=hiddenUser)
+                    .row
+                      .mt-log-left.col-xs-8
+                        if item.user_type == 'admin'
+                          .label.label-sm.label-warning
+                            i.fa.fa-bell-o
+                        else
+                          .label.label-sm.label-info
+                            i.fa.fa-bell-o
+                        p.inline &ensp; #{item.user_name}
+                          case item.action
+                            when 'create'
+                              |  tạo
+                            when 'restore'
+                              |  Khôi phục
+                            when 'update'
+                              |  cập nhật
+                            when 'delete'
+                              |  xóa
+                            when 'inactive'
+                              |  ẩn
+                            when 'active'
+                              |  hiện
+                            when 'logout'
+                              |  đã đăng xuất
+                            when 'login'
+                              |  đã đăng nhập
+                          if item.action != 'delete'
+                            case item.type
+                              when 'menu'
+                                |  menu &#09;
+                                a(href='/admin/menu' target='_blank')=subStrNumChar(item.type_title, 60)
+                              when 'attribute'
+                                |  thuộc tính &#09;
+                                a(href='/admin/attribute' target='_blank')=subStrNumChar(item.type_title, 60)
+                              when 'setting'
+                                |  thiết lập chung
+                              when 'product'
+                                |  sản phẩm &#09;
+                                a(href='/admin/product/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 60)
+                              when 'sale'
+                                |  chương trình giảm giá &#09;
+                                a(href='/admin/sale/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 60)
+                              when 'collection'
+                                |  nhóm sản phẩm &#09;
+                                a(href='/admin/collection/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 60)
+                              when 'blog'
+                                |  nhóm bài viết &#09;
+                                a(href='/admin/blog/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 60)
+                              when 'article'
+                                |  bài viết &#09;
+                                a(href='/admin/article/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 60)
+                              when 'page'
+                                |  trang nội dung &#09;
+                                a(href='/admin/page/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 60)
+                              when 'coupon'
+                                |  mã giảm giá &#09;
+                                a(href='/admin/coupon/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 60)
+                              when 'role'
+                                |  quyền &#09;
+                                a(href='/admin/role/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 60)
+                              when 'client'
+                                |  đối tác tiêu biểu &#09;
+                                a(href='/admin/client/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 60)
+                              when 'testimonial'
+                                |  đối tác nói về chúng tôi &#09;
+                                a(href='/admin/testimonial/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 60)
+                              when 'order'
+                                |  đơn hàng &#09;
+                                a(href='/admin/order/' + item.type_id target='_blank')=item.type_id
+                              when 'contact'
+                                |  liên hệ &#09; của khách hàng&#09;
+                                a(href='/admin/contact/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 60)
+                              when 'gallery'
+                                |  thư viện ảnh &#09;
+                                a(href='/admin/gallery/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 60)
+                              when 'bank'
+                                |  ngân hàng &#09;
+                                a(href='/admin/bank/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 60)
+                          else
+                            case item.type
+                              when 'menu'
+                                |  menu &#09;
+                                p.delete-type=subStrNumChar(item.type_title, 60)
+                              when 'attribute'
+                                |  thuộc tính &#09;
+                                p.delete-type=subStrNumChar(item.type_title, 60)
+                              when 'setting'
+                                |  thiết lập chung
+                              when 'product'
+                                |  sản phẩm &#09;
+                                p.delete-type=subStrNumChar(item.type_title, 60)
+                              when 'sale'
+                                |  chương trình giảm giá &#09;
+                                p.delete-type=subStrNumChar(item.type_title, 60)
+                              when 'collection'
+                                |  nhóm sản phẩm &#09;
+                                p.delete-type=subStrNumChar(item.type_title, 60)
+                              when 'blog'
+                                |  nhóm bài viết &#09;
+                                p.delete-type=subStrNumChar(item.type_title, 60)
+                              when 'article'
+                                |  bài viết &#09;
+                                p.delete-type=subStrNumChar(item.type_title, 60)
+                              when 'page'
+                                |  trang nội dung &#09;
+                                p.delete-type=subStrNumChar(item.type_title, 60)
+                              when 'coupon'
+                                |  mã giảm giá &#09;
+                                p.delete-type=subStrNumChar(item.type_title, 60)
+                              when 'role'
+                                |  quyền &#09;
+                                p.delete-type=subStrNumChar(item.type_title, 60)
+                              when 'client'
+                                |  đối tác tiêu biểu &#09;
+                                p.delete-type=subStrNumChar(item.type_title, 60)
+                              when 'testimonial'
+                                |  đối tác nói về chúng tôi &#09;
+                                p.delete-type=subStrNumChar(item.type_title, 60)
+                              when 'order'
+                                |  đơn hàng &#09;
+                                p.delete-type=item.type_id
+                              when 'contact'
+                                |  liên hệ &#09; của khách hàng&#09;
+                                p.delete-type=subStrNumChar(item.type_title, 60)
+                                p.delete-type=item.type_id
+                              when 'gallery'
+                                |  thư viện ảnh&#09;
+                                p.delete-type=subStrNumChar(item.type_title, 60)
+                              when 'tag'
+                                |  Thẻ&#09;
+                                p.delete-type=subStrNumChar(item.type_title, 60)
+                              when 'bank'
+                                |  ngân hàng&#09;
+                                p.delete-type=subStrNumChar(item.type_title, 60)
+                      .mt-log-right.col-xs-4.text-right
+                        p=item.created_at
+          .box-footer.clearfix
+            a(href="/admin/user/history") Xem tất cả &nbsp;
+              i.fa.fa-arrow-circle-o-right
+
+      .col-xs-12.col-sm-6.box-parent
+        .nav-tabs-custom(style='cursor: move;')
+          ul.nav.nav-tabs.pull-right.ui-sortable-handle
+            li
+              a(href='#revenue-chart', data-toggle='tab', aria-expanded='false') Chưa xem
+            li.active
+              a(href='#sales-chart', data-toggle='tab', aria-expanded='true') Chưa trả lời
+            li.pull-left.header.text-red.title-chart
+              i.fa.fa-address-book-o
+              |  LIÊN HỆ
+          .tab-content.no-padding
+            #revenue-chart.chart.tab-pane
+              .contact-content
+                if count(data.contact.read)
+                  each item in data.contact.read
+                    .mt-comment.clearfix
+                      .mt-comment-body
+                        .mt-comment-info
+                          span.mt-comment-author= item.name
+                          span.mt-comment-date=item.created_at
+                      .mt-comment-text.max-line-2!= item.content ? item.content : ''
+                      .mt-comment-details
+                        ul.mt-comment-actions.list-inline.list-unstyled
+                          li
+                            a.view-detail(href="/admin/contact/" + item.id target="_blank") Xem chi tiết
+                          li
+                            a.btn-remove-contact(data-value=item.id) Xóa
+                else
+                  h5
+                    | Chưa có liên hệ mới nào !
+            #sales-chart.chart.tab-pane.active
+              .contact-content
+                if count(data.contact.reply)
+                  each item in data.contact.reply
+                    .mt-comment.clearfix
+                      .mt-comment-body
+                        .mt-comment-info
+                          span.mt-comment-author=item.name
+                          span.mt-comment-date=item.created_at
+                      .mt-comment-text.max-line-2!=item.content ? item.content : ''
+                      .mt-comment-details
+                        ul.mt-comment-actions.list-inline.list-unstyled
+                          li
+                            a(href="/admin/contact/" + item.id target="_blank") Xem chi tiết
+                          li
+                            a.btn-remove-contact(data-value=item.id) Xóa
+                else
+                  h5
+                    | Chưa có liên hệ mới nào !
+          .box-footer.clearfix
+            a(href="/admin/contact") Xem tất cả &nbsp;
+              i.fa.fa-arrow-circle-o-right

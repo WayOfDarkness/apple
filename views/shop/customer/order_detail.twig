@@ -1,0 +1,233 @@
+{% extends "layout.twig" %}
+
+{% block pre_include %}
+  <title>Chi tiết đơn hàng</title>
+{% endblock pre_include %}
+
+{% block content %}
+  {% if customer.logged_in %}
+  <!-- Content Sub Page -->
+  <div class="result-order padding-wrap" id="account-info">
+    <div class="container box-1400">
+      <div class="row">
+        {% include 'customer/sidebar.twig' %}
+        <div class="col-md-9">
+          <div class="row">
+            <div class="col-sm-12">
+              <h3 class="title-default">Chi tiết đơn hàng </h3>
+            </div>
+          </div>
+          <div class="box--top">
+            <div class="row">
+              <div class="col-sm-6">
+                <p>Đơn hàng: #{{order.created_at | date('Ymd')}}{{order.id}}</p>
+                <p>Đặt ngày:
+                  {{order.created_at | date('d')}}
+                  thg
+                  {{order.created_at | date('m Y')}}</p>
+              </div>
+              <div class="col-sm-6 text-right">
+                <p>Tổng cộng:<span>{{order.total | money('.')}}
+                    <u>đ</u></span></p>
+              </div>
+            </div>
+          </div>
+          {% set status = order.shipping_status %}
+          <div class="order-info">
+            <div class="">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="acc-order-detail">
+                    <ul class="process__line list-inline">
+                      <li class="dot-active1 {{status == 0 ? 'current' : ''}} dot">
+                        <p class="active"></p>
+                        <p class="text">Đang xử lí</p>
+                      </li>
+                      <li class="line-1 line active"></li>
+                      <li class="dot-2 {{status == 1 ? 'current' : ''}} dot">
+                        <p class="active"></p>
+                        <p class="text">Đang giao hàng</p>
+                      </li>
+                      <li class="line-2 line active"></li>
+
+                      <li class="dot-active3 dot-3 {{status == 2 ? 'current' : ''}} dot">
+                        <p class="active"></p>
+                        <p class="text">Đã giao hàng</p>
+                      </li>
+                    </ul>
+                    <div class="process__info">
+                      <div class="process__info--show">
+                        <p><strong>{{order.created_at | date('d/m/Y H:i')}}
+                        </strong>&nbsp;&nbsp;Đơn hàng đã được tạo thành công.</p>
+                        <section class="process-editor">
+                          {% if status == 0 %}
+                          <p><strong>{{order.updated_at | date('d/m/Y H:i')}}
+                          </strong>&nbsp;&nbsp;Đơn hàng đang được xử lý.</p>
+                          {% elseif status == 1 %}
+                          <p><strong>{{order.updated_at | date('d/m/Y H:i')}}
+                          </strong>&nbsp;&nbsp;Đơn hàng đang được giao.
+                        </p>
+                          {% elseif status == 2 %}
+                          <p><strong>{{order.updated_at | date('d/m/Y H:i')}}
+                          </strong>&nbsp;&nbsp;Đơn hàng đã được giao thành công. Cám ơn bạn đã mua sắm tại Les Amies và hy vọng bạn sẽ tiếp tục ủng hộ chúng tôi những lần mua tới</p>
+                          {% endif %}
+                        </section>
+                        <div class="clear-fix"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% for item in cart %}
+              <div class="row product--info">
+                  <div class="product--info__info">
+                    <div class="col-md-2 col-sm-4 col-xs-3 product--info__info--img">
+                    	<a href="{{Product(item.handle).url}}">
+                    		<img src="{{item.image | upload_url}}" alt="">
+                    	</a>
+                    </div>
+                      <div class="col-md-10 col-sm-8 col-xs-9 product--info__info--content">
+                      	<div class="row">
+                          <div class="col-lg-6 col-md-12 block-991 info-title">
+                          	<a href="{{Product(item.handle).url}}">{{item.title}}</a>
+                          </div>
+                          <div class="col-lg-3 col-md-6 col-xs-7 block-991">
+                            <p class="price">{{item.price | money('.')}}
+                              <u>đ</u>
+                            </p>
+                          </div>
+                          <div class="col-lg-3 col-md-6 col-xs-5 block-991">
+                          	<p class="quanti">SL: <span>{{item.quantity}}</span></p>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ./Content Sub Page -->
+  {% else %}
+  <div class="result-order padding-wrap">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12">
+          <h3 class="title-default">Kết quả tìm kiếm</h3>
+        </div>
+      </div>
+      <div class="row box--top">
+        <div class="col-sm-6">
+          <p>Đơn hàng: #{{order.created_at | date('Ymd')}}{{order.id}}</p>
+          <p>Đặt ngày:
+            {{order.created_at | date('d')}}
+            thg
+            {{order.created_at | date('m Y')}}</p>
+        </div>
+        <div class="col-sm-6 text-right">
+          <p>Tổng cộng:<span>{{order.total | money('.')}}
+              <u>đ</u></span></p>
+        </div>
+      </div>
+      {% set status = order.order_status %}
+      <div class="row order-info">
+        <div class="container-small">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="process">
+                <ul class="process__line list-inline">
+                  <li class="dot-1 dot {{status == 'new' ? 'current' : ''}}">
+                    <p class="active"></p>
+                    <p class="text">Đang xử lí</p>
+                  </li>
+                  <li class="line-1 line active"></li>
+                  <li class="dot-2 dot {{status == 'confirm' ? 'current' : ''}} ">
+                    <p class="active"></p>
+                    <p class="text">Đang giao hàng</p>
+                  </li>
+                  <li class="line-2 line active"><span></span></li>
+                  <li class="dot-3 dot {{status == 'done' ? 'current' : ''}}">
+                    <p class="active"></p>
+                    <p class="text">Đã giao hàng</p>
+                  </li>
+                </ul>
+
+                <div class="process__info">
+                  <div class="process__info--show">
+                    {% if status == 'new' %}
+                    <p><strong>{{order.updated_at | date('d/m/Y H:m')}}
+                    </strong>&nbsp;&nbsp;Kiện hàng đã được tạo thành công.</p>
+                    {% elseif status == 'confirm' %}
+                    <p><strong>{{order.updated_at | date('d/m/Y H:m')}}
+                    </strong>&nbsp;&nbsp;Kiện hàng đã được xác nhận. </p>
+                    {% elseif status == 'done' %}
+                    <p><strong>{{order.updated_at | date('d/m/Y H:m')}}
+                    </strong>&nbsp;&nbsp;Kiện hàng đã được giao thành công. Cám ơn bạn đã mua sắm tại Les Amies và hy vọng bạn sẽ tiếp tục ủng hộ chúng tôi những lần mua tới</p>
+                    {% endif %}
+
+
+                    <div class="clear-fix"></div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          {% for item in cart %}
+          <div class="row product--info">
+            <div class="col-sm-6">
+              <div class="row product--info__info">
+                <div class="col-md-3 col-sm-4 col-xs-3 product--info__info--img"><img src="{{item.image | upload_url}}" alt=""></div>
+                <div class="col-md-9 col-sm-8 col-xs-9 product--info__info--content">
+                  <p>{{item.title}}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <div class="row product--info__data">
+                <div class="col-sm-4 col-xs-5">
+                  <p>{{item.price | money('.')}}
+                    <u>đ</u>
+                  </p>
+                </div>
+                <div class="col-sm-4 text-center col-xs-2">
+                  <p>SL:<span>{{item.quantity}}</span></p>
+                </div>
+                <div class="col-sm-4 text-right col-xs-5">
+                  <a href="javascript:;" class="write_review" data-product="{{item.handle}}">Viết đánh giá</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+  {% endif %}
+{% endblock content %}
+{% block post_include %}
+<script type="text/javascript">
+$('.write_review').on('click', function() {
+  var handle = $(this).data('product');
+  $.ajax({
+    url: '/api/setSession',
+    type: 'post',
+    data: {
+      key: 'reviewProduct',
+      value: handle
+    },
+    success: function(data) {
+      if (!data.code) {
+        window.location.href = '/product/review'
+      }
+    }
+  })
+});
+</script>
+{% endblock %}

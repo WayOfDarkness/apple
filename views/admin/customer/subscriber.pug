@@ -1,0 +1,54 @@
+extends ./../layout.pug
+
+block pre-include
+  - var menu = 'subscriber';
+  title Subscriber
+
+block post-include
+  script.
+    var modelName = 'subscriber';
+    initDataTable('table');
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a Subscriber
+      li
+        a Danh sách
+  section.content.clearfix
+    .box.box-table
+      .row.box-header
+        h3.box-title DANH SÁCH
+      .box-body
+        table.table.table-condensed.table-bordered.table-striped.display.nowrap(cellspacing="0" width="100%")
+          .action-box.hidden
+            .dropdown
+              button.btn.btn-danger.dropdown-toggle(type="button" data-toggle="dropdown")
+                i.fa.fa-share
+                |  Chọn thao tác (đang chọn
+                span.num-select
+                |  subscriber) &ensp;
+                span.caret
+              ul.dropdown-menu
+                if (checkRemovePug('subscriber'))
+                  li
+                    a.status-delete(data-value='delete') Xóa
+          thead
+            tr
+              th.all.text-center
+                input.select-all(type="checkbox")
+              th Mã
+              th Thông tin đăng ký
+              th Loại
+              th Ngày tạo
+          tbody
+            each item in data
+              tr
+                td.text-center
+                  input.checkboxes(type="checkbox" value=item.id)
+                td #
+                  =item.id
+                td=item.email
+                td=item.type
+                td=item.updated_at

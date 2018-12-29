@@ -1,0 +1,15 @@
+each item in shippingfee
+  .box
+    .form-horizontal
+      .box-title.clearfix
+        .col-xs-12.title=item.title
+          .group-btn
+            i.fa.fa-edit.edit-attribute.edit-shipping.btn-edit-shipping-fee(data-id=item.id data-id=item.id data-toggle="modal" data-target="#modal-subregion")
+            i.fa.fa-trash.btn-remove-shipping(data-id=item.id)
+      .box-body
+        if item.type == 'price'
+          p Tính theo: Khoảng giá (VNĐ)
+          p Áp dụng cho đơn hàng có tổng giá trị từ #{money(item.from)} đến #{money(item.to)}
+        else
+          p Áp dụng cho mọi đơn hàng
+        p Chi phí: #{money(item.price)}

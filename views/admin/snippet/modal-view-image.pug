@@ -1,0 +1,18 @@
+#modal-view-image-order.modal
+  .modal-dialog
+    .modal-content
+      span.close ×
+      img#img01.modal-content
+      #caption
+
+script.
+  $(document).on('click','td img',function(){
+    var src =$(this).attr('src');
+    var title = $(this).closest('.tr-list-product').find('td:eq(1) a').text();
+    $('#modal-view-image-order').modal('show');
+    $('#modal-view-image-order img').attr('src',src);
+    $('#modal-view-image-order #caption').text(title);
+  })
+  $('#modal-view-image-order .close').click(function(){
+    $('#modal-view-image-order').modal('hide');
+  })

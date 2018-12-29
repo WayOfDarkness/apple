@@ -1,0 +1,107 @@
+{% extends "layout.twig" %}
+
+{% block pre_include %}
+  <title>
+    Đăng nhập
+  </title>
+{% endblock pre_include %}
+{% block content %}
+  {% set urlLogin = session.urlLogin %}
+  <section class="register-page order-step order-step1 p-t70" id="order-step1">
+    <div class="order-step1__content">
+      <div class="container">
+        <div class="order-step1-wrap">
+          <div class="order-step1--title">
+            <div class="row">
+              <div class="col-sm-8 textleft">
+                <h3 class="title-default">Đăng nhập </span></h3>
+              </div>
+              <div class="col-sm-4 text-right">
+                <p>
+                  Thành viên mới?<a href="{{__('REGISTER_URL')}}">&nbsp;Đăng ký</a>&nbsp;tại đây</p>
+              </div>
+            </div>
+          </div>
+          <div class="order-step1--content">
+            <div class="order-step1--content__box">
+              <form action="">
+                <div class="row">
+                  <div class="col-sm-7">
+                    <div class="input">
+                      <label>Địa chỉ Email*</label>
+                      <input type="text" name="email" placeholder="Vui lòng nhập Email...">
+                    </div>
+                    <div class="input">
+                      <label>Mật khẩu*</label>
+                      <input type="password" name="password" placeholder="Vui lòng nhập mật khẩu của bạn...">
+                    </div>
+                    <div class="register">
+                      <button type="submit" class="btn-custom-default login_button">
+                        <span>Đăng nhập</span></button>
+                    </div>
+                    <div class="input">
+                      <p class="forgetpassword">
+                        <a href="{{__('CUSTOMER_FORGOT_PASSWORD_URL')}}">Quên mật khẩu</a>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-sm-5">
+                    <p>Hoặc đăng nhập bằng tài khoản mạng xã hội</p>
+                    <div class="step1-social">
+                      <a class="facebook" href="{{loginFacebook(urlLogin)}}">
+                        <i class="fa fa-facebook-f"></i>
+                        Facebook</a>
+                        <a class="google" href="{{loginGoogle(urlLogin)}}">
+                          <i class="fa fa-google-plus"></i>
+                          Google
+                        </a>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}
+{% block post_include %}
+<script type="text/javascript">
+
+  $('.login_button').on('click', function(e) {
+    e.preventDefault();
+    var data = {};
+    data.email = $('input[name="email"]').val();
+    data.password = $('input[name="password"]').val();
+    if (!data.email) {
+      toastr.remove();
+      toastr.error("Vui lòng nhập Email!");
+      return;
+    }
+    if (!data.password) {
+      toastr.remove();
+      toastr.error("Bạn chưa nhập mật khẩu!");
+      return;
+    }
+    $.ajax({
+      type: 'POST',
+      url: '/api/signin',
+      data: data,
+      success: function(json) {
+        if (!json.code) {
+          toastr.success("Đăng nhập thành công!");
+          setTimeout(function() {
+            location.href = "/customer/dashboard";
+          }, 1500);
+        } else {
+          toastr.remove();
+          toastr.error(json.message);
+
+        }
+      }
+    });
+
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,108 @@
+extends ./../layout.pug
+
+block pre-include
+  - var menu = 'gallery';
+  - var childMenu = 'list';
+  title Gallery
+
+block post-include
+  script(src=staticURI() + '/js/admin/gallery.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a Gallery
+      li
+        a Danh sách
+
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      li
+        a.btn.btn-admin(href="/admin/gallery/create") Thêm mới
+
+  section.content
+    .box.box-table
+      .row.box-header
+        h3.box-title DANH SÁCH
+      .box-body
+        table.table.table-condensed.table-bordered.table-striped.nowrap(cellspacing="0" width="100%")
+          .action-box.hidden
+            .dropdown
+              button.btn.btn-danger.dropdown-toggle(type="button" data-toggle="dropdown")
+                i.fa.fa-share
+                |  Chọn thao tác (đang chọn
+                span.num-select
+                |  gallery) &ensp;
+                span.caret
+              ul.dropdown-menu
+                li
+                  a.status-active(data-value='active') Ẩn
+                li
+                  a.status-inactive(data-value='inactive') Hiện
+                li
+                  a.status-delete(data-value='delete') Xóa
+                li
+                  a.status-double(data-value='double') Nhân đôi
+          thead
+            tr
+              th.all.text-center
+                input.select-all(type="checkbox")
+              th.all Tiêu đề
+              th Handle
+              th Ngày cập nhật
+              th Trạng thái
+          tbody      
+            each item in gallery
+              if item.parent_id == -1
+                tr
+                  td.text-center
+                    input.checkboxes(type="checkbox" value=item.id)
+                  td.title
+                    a(href="/admin/gallery/" + item.id target="_blank")=item.title
+                  td
+                    label.label.label-primary=item.handle
+                  td=item.updated_at
+                  td
+                    case item.status
+                      when 'active'
+                        label.label.label-info Đang hiện
+                      when 'inactive'
+                        label.label.label-warning Đang ẩn
+              -var lv = 15;
+              +listChild(item.subGallery, lv)
+
+mixin listChild(childs, lv)
+  each child in childs
+    if (child.subGallery != 0)
+      tr.subcollection(data-parent_id=child.id, data-id=child.id, data-priority=child.priority)
+        td.text-center
+          input.checkboxes(type="checkbox" value=child.id)
+        td.title(style="padding-left:" + lv + 'px')
+          i.fa.fa-level-down(style="margin-right: 5px;")
+          a(href="/admin/gallery/" + child.id target="_blank")=child.title
+        td
+          label.label.label-primary=child.handle
+        td=child.updated_at
+        td
+          case item.status
+            when 'active'
+              label.label.label-info Đang hiện
+            when 'inactive'
+              label.label.label-warning Đang ẩn
+      +listChild(child.subGallery, lv + 15)
+    else
+      tr.subcollection(data-parent_id=child.id, data-id=child.id, data-priority=child.priority)
+        td.text-center
+          input.checkboxes(type="checkbox" value=child.id)
+        td.title(style="padding-left:" + lv + 'px')
+          i.fa.fa-level-down(style="margin-right: 5px;")
+          a(href="/admin/gallery/" + child.id target="_blank")=child.title
+        td
+          label.label.label-primary=child.handle
+        td=child.updated_at
+        td
+          case item.status
+            when 'active'
+              label.label.label-info Đang hiện
+            when 'inactive'
+              label.label.label-warning Đang ẩn

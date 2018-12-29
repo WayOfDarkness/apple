@@ -1,0 +1,89 @@
+.row.search-link-autocomplete
+  .col-sm-6.key
+    select.form-control(name="link_type")
+      option(value="custom") Địa chỉ web
+      option(value="collection") Nhóm sản phẩm
+      option(value="product") Sản phẩm
+      option(value="blog") Nhóm bài viết
+      option(value="article") Bài viết
+      option(value="page") Trang nội dung
+      option(value="gallery") Gallery
+      option(value="contact") Liên hệ
+  .col-sm-6.value
+    .dropdown.dropdown-search
+      .dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true')
+        input.form-control(name="link" placeholder="Nhập giá trị..." autocomplete="off")
+      ul.dropdown-menu.dropdown-menu-search.hidden
+
+script.
+  $(document).ready(function() {
+    function getLinkType(type, group) {
+      $.get('/admin/api/link/' + type, function(res) {
+        if (!res.code) {
+          var ul = '';
+          $.each(res.data, function(index, element) {
+            ul += '<li data-id="'+element.id+'">'+element.value+'</li>';
+          });
+          group.find('.search-link-autocomplete ul.dropdown-menu').html(ul);
+          group.find('.search-link-autocomplete ul.dropdown-menu').removeClass('hidden');
+        }
+      });
+    }
+
+    $('.dropdown-menu-search').on('click', 'li', function() {
+      var group = $(this).closest('.search-link-autocomplete').parent();
+      var id = $(this).attr('data-id');
+      var text = $(this).text();
+      if (id) {
+        group.find('.search-link-autocomplete input[name="link"]').attr('data-id', id);
+        group.find('.search-link-autocomplete input[name="link"]').val(text);
+      }
+    });
+
+    var searchRequest = null;
+    $('.search-link-autocomplete').on('keyup', 'input[name="link"]', function() {
+      var group = $(this).closest('.search-link-autocomplete').parent();
+      var type = group.find('.search-link-autocomplete select[name="link_type"]').val();
+      var search = $(this).val();
+
+      if (type != 'custom') {
+        if (searchRequest != null) searchRequest.abort();
+        searchRequest = $.get('/admin/api/link/' + type + '?search=' + search, function(res) {
+          if (!res.code) {
+            if (res.data && res.data.length) {
+              var ul = '';
+              $.each(res.data, function(index, element) {
+                ul += '<li data-id="'+element.id+'">'+element.value+'</li>';
+              });
+              group.find('.search-link-autocomplete ul.dropdown-menu').html(ul);
+              group.find('.search-link-autocomplete ul.dropdown-menu').removeClass('hidden');
+            } else {
+              group.find('.search-link-autocomplete ul.dropdown-menu').html('<li>Không có kết quả phù hợp</li>');
+              group.find('.search-link-autocomplete ul.dropdown-menu').removeClass('hidden');
+            }
+          }
+        });
+      }
+    });
+
+    $('.search-link-autocomplete select[name="link_type"]').change(function() {
+      var group = $(this).closest('.search-link-autocomplete').parent();
+      if ($(this).val() == 'contact') {
+        group.find('.search-link-autocomplete .value').addClass('hidden');
+      }
+      else if ($(this).val() == 'custom') {
+        group.find('.search-link-autocomplete .value').removeClass('hidden');
+        group.find('.search-link-autocomplete ul.dropdown-menu').addClass('hidden');
+        group.find('.search-link-autocomplete input[name="link"]').val('');
+        group.find('.search-link-autocomplete input[name="link"]').attr('data-id', '');
+        $('input[name^="link_"]').removeClass('hidden');
+      } else {
+        group.find('.search-link-autocomplete .value').removeClass('hidden');
+        getLinkType($(this).val(), group);
+        $('input[name^="link_"]').addClass('hidden');
+      }
+    });
+    $(document).on('change','select[name="link_type"]',function(){
+      $('input[name|="link_"]').val('');
+    });
+  });

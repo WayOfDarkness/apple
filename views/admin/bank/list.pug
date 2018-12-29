@@ -1,0 +1,69 @@
+extends ./../layout.pug
+block pre-include
+  - var menu = 'order'
+  - var childMenu = 'bank'
+  title Ngân hàng
+
+block post-include
+  script(src=staticURI() + '/js/admin/bank.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li.title-ellipsis
+        a(href='/admin/bank') Ngân hàng
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      span.middle-inline-block
+      li
+        a.btn.btn-admin(href="/admin/bank/create") Thêm mới
+
+  section.content
+    .box.box-table
+      .row.box-header
+        h3.box-title DANH SÁCH
+      .box-body
+        table.table.table-condensed.table-bordered.table-striped.nowrap(cellspacing="0" width="100%")
+          .action-box.hidden
+            .dropdown
+              button.btn.btn-danger.dropdown-toggle(type="button" data-toggle="dropdown")
+                i.fa.fa-share
+                |  Chọn thao tác (đang chọn
+                span.num-select
+                |  ngân hàng) &ensp;
+                span.caret
+              ul.dropdown-menu
+                li
+                  a.status-active(data-value='active') Ẩn
+                li
+                  a.status-inactive(data-value='inactive') Hiện
+                li
+                  a.status-delete(data-value='delete') Xóa
+          thead
+            tr
+              th.all.text-center
+                input.select-all(type="checkbox")
+              th Mã
+              th.all Tên tài khoản
+              th Tên Ngân hàng
+              th Trạng thái
+              th Ngày cập nhật
+          tbody
+            each item in data
+              tr
+                td.text-center
+                  input.checkboxes(type="checkbox" value=item.id)
+                td
+                  a(href="/admin/bank/" + item.id target="_blank") #
+                    =item.id
+                td.tr-title
+                  a(href="/admin/bank/" + item.id target="_blank")=item.user_name
+                td.tr-title
+                  a(href="/admin/bank/" + item.id target="_blank")=item.bank_name
+                td=item.updated_at
+                td
+                  case item.status
+                    when 'active'
+                      label.label.label-info Đang hiện
+                    when 'inactive'
+                      label.label.label-warning Đang ẩn
+                

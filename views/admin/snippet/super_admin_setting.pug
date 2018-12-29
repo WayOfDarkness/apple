@@ -1,0 +1,933 @@
+extends ./../layout.pug
+
+block pre-include
+  - var menu = 'user';
+  - var childMenu = 'setting';
+  title Thiết lập admin
+
+block post-include
+  script(src=staticURI() +'/js/admin/super_admin_setting.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a Quản trị viên
+      li
+        a Thiết lập admin
+        
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      span.middle-inline-block
+      li
+        a.btn.btn-admin.btn-restore-setting
+          i.fa.fa-undo
+          | Phục hồi phiên bản cũ
+      li.item-restore.hidden
+        select(name="change_version_setting")
+          option(value="" disabled selected) Phiên bản cũ hơn
+      li
+        a.btn.btn-admin.btn-update-setting-website
+          i.fa.fa-floppy-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Lưu lại
+  section.content#content(style="padding-bottom:150px")
+    ul.nav.nav-pills
+      li.active
+        a(data-toggle="pill", href="#website-setting") Website
+      li
+        a(data-toggle="pill", href="#product") Sản phẩm
+      li
+        a(data-toggle="pill", href="#note-picture") Note kích thước ảnh
+      li
+        a(data-toggle="pill", href="#url-setting") Url Setting
+      li
+        a(data-toggle="pill", href="#api-setting") API Key
+      li
+        a(data-toggle="pill" href="#template-mail") Template Mail
+      li
+        a(data-toggle="pill" href="#pick-address") Địa chỉ gửi hàng
+    .tab-content
+      #website-setting.tab-pane.fade.in.active
+        .box
+          .box-header
+            h3.box-title
+              .col-xs-12 Phân trang
+          .box-body
+            .form-horizontal
+              .col-xs-12
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Số sản phẩm ở trang nhóm sản phẩm
+                  .col-md-10.col-sm-7
+                    input.form-control(type="number" name='setting_collection_perpage' placeholder="20")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Số bài viết ở trang nhóm bài viết
+                  .col-md-10.col-sm-7
+                    input.form-control(type="number" name='setting_blog_perpage' placeholder="20")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Số sản phẩm ở trang tìm kiếm
+                  .col-md-10.col-sm-7
+                    input.form-control(type="number" name='setting_search_product_perpage' placeholder="20")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Số bài viết ở trang tìm kiếm
+                  .col-md-10.col-sm-7
+                    input.form-control(type="number" name='setting_search_article_perpage' placeholder="20")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Số Photo ở trang Gallery
+                  .col-md-10.col-sm-7
+                    input.form-control(type="number" name='setting_photo_perpage' placeholder="20")
+        .box
+          .box-header
+            h3.box-title
+              .col-xs-12 Bảo trì website
+          .box-body
+            .form-horizontal
+              .col-xs-12
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5 Bảo trì
+                  .col-md-10.col-sm-7
+                    input(type="checkbox" name='maintain_website')
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Nội dung
+                  .col-md-10.col-sm-7
+                    textarea.form-control.tinymce#maintain_website_content(rows="5" name="maintain_website_content" placeholder="Thông báo khi bảo trì website")
+      #product.tab-pane.fade
+        .box
+          .box-body
+            .box-header
+              h3.box-title.border-bottom-0 Thuộc tính của sản phẩm
+                div(style="font-size: 16px; margin-top: 5px;") (Sử dụng cho bộ lọc)
+            .box-body
+              if countArr(attributes)
+                table.table.table-condensed.table-bordered.table-striped(cellspacing="0" width="100%"  style="margin-bottom: 20px;")
+                  thead
+                    tr
+                      th STT
+                      th Tên thuộc tính
+                      th Trạng thái
+                      th Ngày cập nhật
+                      th Chỉnh sửa
+                  tbody
+                    each item, index in attributes
+                      tr
+                        td.text-center=(index + 1)
+                        td=item.name
+                        td
+                          if item.status
+                            label.label.label-success Có
+                          else
+                            label.label.label-danger Không
+                        td=item.updated_at
+                        td
+                          a.btn-edit.btn-edit-attribute(data-id=item.id, title="Chỉnh sửa")
+                            i.fa.fa-pencil-square-o
+                          //- a.btn-remove.btn-delete-attribute(data-id=item.id, title="Xóa")
+                          //-   i.fa.fa-trash
+              //- button.btn.btn-primary.btn-add-attribute(data-type="attribute") Thêm thuộc tính
+        .box
+          .box-body
+            .box-header
+              h3.box-title.border-bottom-0 Thuộc tính của phiên bản
+                div(style="font-size: 16px; margin-top: 5px;") (Sử dụng để tạo phiên bản)
+            .box-body
+              if countArr(options)
+                table.table.table-condensed.table-bordered.table-striped(cellspacing="0" width="100%" style="margin-bottom: 20px;")
+                  thead
+                    tr
+                      th STT
+                      th Tên thuộc tính
+                      th Hiển thị
+                      th Ngày cập nhật
+                      th Chỉnh sửa
+                      
+                  tbody
+                    each item, index in options
+                      tr
+                        td.text-center=(index + 1)
+                        td=item.name
+                        td
+                          if item.status
+                            label.label.label-success Có
+                          else
+                            label.label.label-danger Không
+                        td=item.updated_at
+                        td
+                          a.btn-edit.btn-edit-attribute(data-id=item.id, title="Chỉnh sửa")
+                            i.fa.fa-pencil-square-o
+        #modal-product-attribute.modal.fade(role='dialog')
+          .modal-dialog
+            .modal-content.form-add-attribute
+              .modal-header 
+                button.close(type='button', data-dismiss='modal') ×
+                h4.modal-title Thuộc tính sản phẩm
+              .modal-body.clearfix
+                .form-horizontal
+                  .box-body
+                    .form-group
+                      label.col-sm-4.control-label Tên thuộc tính
+                      .col-sm-8
+                        input.form-control(type="text" name="name" placeholder="Màu sắc, kích thước, ...")
+                    .form-group
+                      label.col-sm-4.control-label Hiển thị
+                      .col-sm-8
+                        select.form-control(name="status")
+                          option(value="1") Có
+                          option(value="0") Không
+              .modal-footer
+                button.btn.btn-default(type='button', data-dismiss='modal') Đóng
+                button.btn.btn-admin.btn-primary
+                  i.fa.fa-floppy-o
+                  i.fa.fa-circle-o-notch.fa-spin
+                  | Lưu lại
+      #note-picture.tab-pane.fade
+        .box(data-name='resolution')
+          .box-body
+            .form-horizontal
+              .col-xs-12
+                p TUỲ CHỈNH KÍCH THƯỚC NOTE HÌNH ẢNH
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label 
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Kích thước sản phẩm
+                  .col-md-10.col-sm-7
+                    input.form-control(name='image_resolution_product_text' placeholder="1208x640")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Kích thước phiên bản
+                  .col-md-10.col-sm-7
+                    input.form-control(name='image_resolution_variant_text' placeholder="1208x640")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Kích thước nhóm sản phẩm
+                  .col-md-10.col-sm-7
+                    input.form-control(name='image_resolution_collection_text' placeholder="1208x640")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Kích thước bài viết
+                  .col-md-10.col-sm-7
+                    input.form-control(name='image_resolution_article_text' placeholder="1208x640")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Kích thước nhóm bài viết
+                  .col-md-10.col-sm-7
+                    input.form-control(name='image_resolution_blog_text' placeholder="1208x640")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Kích thước menu
+                  .col-md-10.col-sm-7
+                    input.form-control(name='image_resolution_menu_text' placeholder="1208x640")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Kích thước trang nội dung
+                  .col-md-10.col-sm-7
+                    input.form-control(name='image_resolution_page_text' placeholder="1208x640")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Kích thước đối tác nói về chúng tôi
+                  .col-md-10.col-sm-7
+                    input.form-control(name='image_resolution_testimonial_text' placeholder="1208x640")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Kích thước đối tác tiêu biểu
+                  .col-md-10.col-sm-7
+                    input.form-control(name='image_resolution_client_text' placeholder="1208x640")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Kích thước photo
+                  .col-md-10.col-sm-7
+                    input.form-control(name='image_resolution_photo_text' placeholder="1208x640")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Kích thước favicon
+                  .col-md-10.col-sm-7
+                    input.form-control(name='image_resolution_favicon_text' placeholder="1208x640")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Kích thước logo header
+                  .col-md-10.col-sm-7
+                    input.form-control(name='image_resolution_logo_header_text' placeholder="1208x640")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Kích thước logo footer
+                  .col-md-10.col-sm-7
+                    input.form-control(name='image_resolution_logo_footer_text' placeholder="1208x640")
+      #url-setting.tab-pane.fade
+        if multiLang
+          .box(data-name='slug')
+            .box-body
+              .form-horizontal
+                .col-xs-12
+                  p TUỲ CHỈNH DẠNG ĐƯỜNG DẪN
+                  .form-group.clearfix
+                    .radio.col-sm-12
+                      label
+                        input(type="radio" value="1" name="slug_type")
+                        | Dạng 1 (www.domain.com/vi/duong-dan-bai-viet)
+                    .radio.col-sm-12
+                      label
+                        input(type="radio" value="2" name="slug_type")
+                        | Dạng 2 (www.domain.com/vi/
+                        b bai-viet
+                        | /duong-dan-bai-viet)
+                    .radio.col-sm-12
+                      label
+                        input(type="radio" value="3" name="slug_type")
+                        | Dạng 3 (www.domain.com/vi/
+                        b danh-muc-con
+                        | /duong-dan-bai-viet)
+                    .radio.col-sm-12
+                      label
+                        input(type="radio" value="4" name="slug_type")
+                        | Dạng 4 (www.domain.com/vi/
+                        b danh-muc-cha/danh-muc-con
+                        | /duong-dan-bai-viet)
+            .box.box-setting-url.hidden(data-type="1")
+              .box-body
+                .form-horizontal
+                  .col-xs-12
+                    hr
+                    p Đường dẫn dạng https://www.domainname/{language}/{handle}
+                    p Ví dụ: https://www.laziweb.com/vi/san-pham-so-1
+                    p Note: Nếu có 2 đối tượng cùng handle thì sẽ lấy đối tượng đầu tiên
+            .box.box-setting-url.hidden(data-type="2")
+              .box-body
+                .form-horizontal
+                  .col-xs-12
+                    hr
+                    p
+                      b Danh mục bài viết mặc định
+                    ul.nav.nav-tabs
+                      li.active
+                        a.tab-lang(data-toggle='tab', href='#tab-type-2-vi') Tiếng Việt
+                      each item, index in languages()
+                        li
+                          if item == 'en'
+                            - var title = "Tiếng Anh";
+                          if item == 'jp'
+                            - var title = "Tiếng Nhật";
+                          if item == 'ko'
+                            - var title = "Tiếng Hàn";
+                          a.tab-lang(data-toggle='tab', href='#tab-type-2-' + item)=title
+                    .tab-content
+                      br
+                      br
+                      .tab-pane.fade.in.active(id="tab-type-2-vi")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Sản phẩm
+                          .col-sm-8
+                            input.form-control(name='slug_type_2_product_vi' placeholder="san-pham")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Nhóm sản phẩm
+                          .col-sm-8
+                            input.form-control(name='slug_type_2_collection_vi' placeholder="nhom-san-pham")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Bài viết
+                          .col-sm-8
+                            input.form-control(name='slug_type_2_article_vi' placeholder="bai-viet")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Nhóm bài viết
+                          .col-sm-8
+                            input.form-control(name='slug_type_2_blog_vi' placeholder="nhom-bai-viet")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Trang nội dung
+                          .col-sm-8
+                            input.form-control(name='slug_type_2_page_vi' placeholder="trang-noi-dung")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Gallery
+                          .col-sm-8
+                            input.form-control(name='slug_type_2_gallery_vi' placeholder="bo-suu-tap")
+                      each item, index in languages()
+                        .tab-pane.fade.in(id="tab-type-2-" + item)
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Sản phẩm
+                            .col-sm-8
+                              input.form-control(name='slug_type_2_product_' + item placeholder="san-pham")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Nhóm sản phẩm
+                            .col-sm-8
+                              input.form-control(name='slug_type_2_collection_' + item placeholder="nhom-san-pham")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Bài viết
+                            .col-sm-8
+                              input.form-control(name='slug_type_2_article_' + item placeholder="bai-viet")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Nhóm bài viết
+                            .col-sm-8
+                              input.form-control(name='slug_type_2_blog_' + item placeholder="nhom-bai-viet")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Trang nội dung
+                            .col-sm-8
+                              input.form-control(name='slug_type_2_page_' + item placeholder="trang-noi-dung")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Gallery
+                            .col-sm-8
+                              input.form-control(name='slug_type_2_gallery_' + item placeholder="bo-suu-tap")
+            .box.box-setting-url.hidden(data-type="3")
+              .box-body
+                .form-horizontal
+                  .col-xs-12
+                    hr
+                    p
+                      b Danh mục con mặc định
+                    ul.nav.nav-tabs
+                      li.active
+                        a.tab-lang(data-toggle='tab', href='#tab-type-3-vi') Tiếng Việt
+                      each item, index in languages()
+                        li
+                          if item == 'en'
+                            - var title = "Tiếng Anh";
+                          if item == 'jp'
+                            - var title = "Tiếng Nhật";
+                          if item == 'ko'
+                            - var title = "Tiếng Hàn";
+                          a.tab-lang(data-toggle='tab', href='#tab-type-3-' + item)=title
+                    .tab-content
+                      br
+                      br
+                      .tab-pane.fade.in.active(id="tab-type-3-vi")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Sản phẩm
+                          .col-sm-8
+                            input.form-control(name='slug_lv_1_product_vi' placeholder="san-pham")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Nhóm sản phẩm
+                          .col-sm-8
+                            input.form-control(name='slug_lv_1_collection_vi' placeholder="nhom-san-pham")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Bài viết
+                          .col-sm-8
+                            input.form-control(name='slug_lv_1_article_vi' placeholder="bai-viet")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Nhóm bài viết
+                          .col-sm-8
+                            input.form-control(name='slug_lv_1_blog_vi' placeholder="nhom-bai-viet")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Trang nội dung
+                          .col-sm-8
+                            input.form-control(name='slug_lv_1_page_vi' placeholder="trang-noi-dung")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Gallery
+                          .col-sm-8
+                            input.form-control(name='slug_lv_1_gallery_vi' placeholder="bo-suu-tap")
+                      each item, index in languages()
+                        .tab-pane.fade.in(id="tab-type-3-" + item)
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Sản phẩm
+                            .col-sm-8
+                              input.form-control(name='slug_lv_1_product_' + item placeholder="san-pham")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Nhóm sản phẩm
+                            .col-sm-8
+                              input.form-control(name='slug_lv_1_collection_' + item placeholder="nhom-san-pham")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Bài viết
+                            .col-sm-8
+                              input.form-control(name='slug_lv_1_article_' + item placeholder="bai-viet")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Nhóm bài viết
+                            .col-sm-8
+                              input.form-control(name='slug_lv_1_blog_' + item placeholder="nhom-bai-viet")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Trang nội dung
+                            .col-sm-8
+                              input.form-control(name='slug_lv_1_page_' + item placeholder="trang-noi-dung")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Gallery
+                            .col-sm-8
+                              input.form-control(name='slug_lv_1_gallery_' + item placeholder="bo-suu-tap")
+            .box.box-setting-url.hidden(data-type="4")
+              .box-body
+                .form-horizontal
+                  .col-xs-12
+                    hr
+                    p
+                    ul.nav.nav-tabs
+                      li.active
+                        a.tab-lang(data-toggle='tab', href='#tab-type-4-vi') Tiếng Việt
+                      each item, index in languages()
+                        li
+                          if item == 'en'
+                            - var title = "Tiếng Anh";
+                          if item == 'jp'
+                            - var title = "Tiếng Nhật";
+                          if item == 'ko'
+                            - var title = "Tiếng Hàn";
+                          a.tab-lang(data-toggle='tab', href='#tab-type-4-' + item)=title
+                    .tab-content
+                      br
+                      br
+                      .tab-pane.fade.in.active(id="tab-type-4-vi")
+                        p
+                          b Danh mục cha mặc định
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Sản phẩm
+                          .col-sm-8
+                            input.form-control(name='slug_lv_2_product_vi' placeholder="san-pham")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Nhóm sản phẩm
+                          .col-sm-8
+                            input.form-control(name='slug_lv_2_collection_vi' placeholder="nhom-san-pham")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Bài viết
+                          .col-sm-8
+                            input.form-control(name='slug_lv_2_article_vi' placeholder="bai-viet")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Nhóm bài viết
+                          .col-sm-8
+                            input.form-control(name='slug_lv_2_blog_vi' placeholder="nhom-bai-viet")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Trang nội dung
+                          .col-sm-8
+                            input.form-control(name='slug_lv_2_page_vi' placeholder="trang-noi-dung")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Gallery
+                          .col-sm-8
+                            input.form-control(name='slug_lv_2_gallery_vi' placeholder="bo-suu-tap")
+                        hr
+                        p
+                          b Danh mục con mặc định
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Sản phẩm
+                          .col-sm-8
+                            input.form-control(name='slug_lv_1_product_vi' placeholder="san-pham")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Nhóm sản phẩm
+                          .col-sm-8
+                            input.form-control(name='slug_lv_1_collection_vi' placeholder="nhom-san-pham")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Bài viết
+                          .col-sm-8
+                            input.form-control(name='slug_lv_1_article_vi' placeholder="bai-viet")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Nhóm bài viết
+                          .col-sm-8
+                            input.form-control(name='slug_lv_1_blog_vi' placeholder="nhom-bai-viet")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Trang nội dung
+                          .col-sm-8
+                            input.form-control(name='slug_lv_1_page_vi' placeholder="trang-noi-dung")
+                        .form-group.clearfix
+                          span.col-sm-2.control-label Gallery
+                          .col-sm-8
+                            input.form-control(name='slug_lv_1_gallery_vi' placeholder="bo-suu-tap")
+                      each item, index in languages()
+                        .tab-pane.fade.in(id="tab-type-4-" + item)
+                          p
+                            b Danh mục cha mặc định
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Sản phẩm
+                            .col-sm-8
+                              input.form-control(name='slug_lv_2_product_' + item placeholder="san-pham")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Nhóm sản phẩm
+                            .col-sm-8
+                              input.form-control(name='slug_lv_2_collection_' + item placeholder="nhom-san-pham")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Bài viết
+                            .col-sm-8
+                              input.form-control(name='slug_lv_2_article_' + item placeholder="bai-viet")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Nhóm bài viết
+                            .col-sm-8
+                              input.form-control(name='slug_lv_2_blog_' + item placeholder="nhom-bai-viet")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Trang nội dung
+                            .col-sm-8
+                              input.form-control(name='slug_lv_2_page_' + item placeholder="trang-noi-dung")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Gallery
+                            .col-sm-8
+                              input.form-control(name='slug_lv_2_gallery_' + item placeholder="bo-suu-tap")
+                          hr
+                          p
+                            b Danh mục con mặc định
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Sản phẩm
+                            .col-sm-8
+                              input.form-control(name='slug_lv_1_product_' + item placeholder="san-pham")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Nhóm sản phẩm
+                            .col-sm-8
+                              input.form-control(name='slug_lv_1_collection_' + item placeholder="nhom-san-pham")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Bài viết
+                            .col-sm-8
+                              input.form-control(name='slug_lv_1_article_' + item placeholder="bai-viet")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Nhóm bài viết
+                            .col-sm-8
+                              input.form-control(name='slug_lv_1_blog_' + item placeholder="nhom-bai-viet")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Trang nội dung
+                            .col-sm-8
+                              input.form-control(name='slug_lv_1_page_' + item placeholder="trang-noi-dung")
+                          .form-group.clearfix
+                            span.col-sm-2.control-label Gallery
+                            .col-sm-8
+                              input.form-control(name='slug_lv_1_gallery_' + item placeholder="bo-suu-tap")
+        else
+          .box(data-name='slug')
+            .box-body
+              .form-horizontal
+                .col-xs-12
+                  p TUỲ CHỈNH DẠNG ĐƯỜNG DẪN
+                  .form-group.clearfix
+                    .radio.col-sm-12
+                      label
+                        input(type="radio" value="1" name="slug_type")
+                        | Dạng 1 (www.domain.com/duong-dan-bai-viet)
+                    .radio.col-sm-12
+                      label
+                        input(type="radio" value="2" name="slug_type")
+                        | Dạng 2 (www.domain.com/
+                        b bai-viet
+                        | /duong-dan-bai-viet)
+                    .radio.col-sm-12
+                      label
+                        input(type="radio" value="3" name="slug_type")
+                        | Dạng 3 (www.domain.com/
+                        b danh-muc-con
+                        | /duong-dan-bai-viet)
+                    .radio.col-sm-12
+                      label
+                        input(type="radio" value="4" name="slug_type")
+                        | Dạng 4 (www.domain.com/
+                        b danh-muc-cha/danh-muc-con
+                        | /duong-dan-bai-viet)
+            .box.box-setting-url.hidden(data-type="1")
+              .box-body
+                .form-horizontal
+                  .col-xs-12
+                    hr
+                    p Đường dẫn dạng https://www.domainname/{handle}
+                    p Ví dụ: https://www.laziweb.com/san-pham-so-1
+                    p Note: Nếu có 2 đối tượng cùng handle thì sẽ lấy đối tượng đầu tiên
+            .box.box-setting-url.hidden(data-type="2")
+              .box-body
+                .form-horizontal
+                  .col-xs-12
+                    hr
+                    p
+                      b Danh mục bài viết mặc định
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Sản phẩm
+                      .col-sm-8
+                        input.form-control(name='slug_type_2_product_vi' placeholder="san-pham")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Nhóm sản phẩm
+                      .col-sm-8
+                        input.form-control(name='slug_type_2_collection_vi' placeholder="nhom-san-pham")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Bài viết
+                      .col-sm-8
+                        input.form-control(name='slug_type_2_article_vi' placeholder="bai-viet")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Nhóm bài viết
+                      .col-sm-8
+                        input.form-control(name='slug_type_2_blog_vi' placeholder="nhom-bai-viet")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Trang nội dung
+                      .col-sm-8
+                        input.form-control(name='slug_type_2_page_vi' placeholder="trang-noi-dung")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Gallery
+                      .col-sm-8
+                        input.form-control(name='slug_type_2_gallery_vi' placeholder="bo-suu-tap")
+            .box.box-setting-url.hidden(data-type="3")
+              .box-body
+                .form-horizontal
+                  .col-xs-12
+                    hr
+                    p
+                      b Danh mục con mặc định
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Sản phẩm
+                      .col-sm-8
+                        input.form-control(name='slug_lv_1_product_vi' placeholder="san-pham")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Nhóm sản phẩm
+                      .col-sm-8
+                        input.form-control(name='slug_lv_1_collection_vi' placeholder="nhom-san-pham")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Bài viết
+                      .col-sm-8
+                        input.form-control(name='slug_lv_1_article_vi' placeholder="bai-viet")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Nhóm bài viết
+                      .col-sm-8
+                        input.form-control(name='slug_lv_1_blog_vi' placeholder="nhom-bai-viet")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Trang nội dung
+                      .col-sm-8
+                        input.form-control(name='slug_lv_1_page_vi' placeholder="trang-noi-dung")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Gallery
+                      .col-sm-8
+                        input.form-control(name='slug_lv_1_gallery_vi' placeholder="bo-suu-tap")
+            .box.box-setting-url.hidden(data-type="4")
+              .box-body
+                .form-horizontal
+                  .col-xs-12
+                    hr
+                    p
+                      b Danh mục cha mặc định
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Sản phẩm
+                      .col-sm-8
+                        input.form-control(name='slug_lv_2_product_vi' placeholder="san-pham")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Nhóm sản phẩm
+                      .col-sm-8
+                        input.form-control(name='slug_lv_2_collection_vi' placeholder="nhom-san-pham")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Bài viết
+                      .col-sm-8
+                        input.form-control(name='slug_lv_2_article_vi' placeholder="bai-viet")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Nhóm bài viết
+                      .col-sm-8
+                        input.form-control(name='slug_lv_2_blog_vi' placeholder="nhom-bai-viet")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Trang nội dung
+                      .col-sm-8
+                        input.form-control(name='slug_lv_2_page_vi' placeholder="trang-noi-dung")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Gallery
+                      .col-sm-8
+                        input.form-control(name='slug_lv_2_gallery_vi' placeholder="bo-suu-tap")
+                    hr
+                    p
+                      b Danh mục con mặc định
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Sản phẩm
+                      .col-sm-8
+                        input.form-control(name='slug_lv_1_product_vi' placeholder="san-pham")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Nhóm sản phẩm
+                      .col-sm-8
+                        input.form-control(name='slug_lv_1_collection_vi' placeholder="nhom-san-pham")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Bài viết
+                      .col-sm-8
+                        input.form-control(name='slug_lv_1_article_vi' placeholder="bai-viet")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Nhóm bài viết
+                      .col-sm-8
+                        input.form-control(name='slug_lv_1_blog_vi' placeholder="nhom-bai-viet")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Trang nội dung
+                      .col-sm-8
+                        input.form-control(name='slug_lv_1_page_vi' placeholder="trang-noi-dung")
+                    .form-group.clearfix
+                      span.col-sm-2.control-label Gallery
+                      .col-sm-8
+                        input.form-control(name='slug_lv_1_gallery_vi' placeholder="bo-suu-tap")
+      #api-setting.tab-pane.fade
+        .box
+          .box-header
+            h3.box-title
+              .col-xs-12 MailGun
+          .box-body
+            .form-horizontal
+              .col-xs-12
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Api key
+                  .col-md-10.col-sm-7
+                    input.form-control(name='mailgun_api_key' placeholder="key-881fb1a475f49bd2aecb0270130b1")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Domain
+                  .col-md-10.col-sm-7
+                    input.form-control(name='mailgun_domain' placeholder="domain.com")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label User
+                  .col-md-10.col-sm-7
+                    input.form-control(name='mailgun_user' placeholder="mail@domain.com")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Email address
+                  .col-md-10.col-sm-7
+                    input.form-control(name='mailgun_email_address' placeholder="congtyA@domain.com")
+        .box
+          .box-header
+            h3.box-title
+              .col-xs-12 Facebook
+          .box-body
+            .form-horizontal
+              .col-xs-12
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label App ID
+                  .col-md-10.col-sm-7
+                    input.form-control(name='fb_app_id' placeholder="123456789012345")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label App Secret
+                  .col-md-10.col-sm-7
+                    input.form-control(name='fb_app_secret' placeholder="8a4dacaabncdefaaaa9fef941dc29e43")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Login url
+                  .col-md-10.col-sm-7
+                    input.form-control(name='fb_login_url' placeholder="https://0e989e09.ngrok.io/")
+        .box
+          .box-header
+            h3.box-title
+              .col-xs-12 Google
+          .box-body
+            .form-horizontal
+              .col-xs-12
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Client ID
+                  .col-md-10.col-sm-7
+                    input.form-control(name='gg_client_id' placeholder="123456789012-vron8rk39eso12345678qamsshv8koog.apps.googleusercontent.com")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Client Secret
+                  .col-md-10.col-sm-7
+                    input.form-control(name='gg_client_secret' placeholder="ABCdefghjckAcdea1hEPodStl")
+        .box
+          .box-header
+            h3.box-title
+              .col-xs-12 Telegram
+          .box-body
+            .form-horizontal
+              .col-xs-12
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Key
+                  .col-md-10.col-sm-7
+                    input.form-control(name='telegram_key' placeholder="123456789:AAGUkHpuAY-RihvCVHA7g_E1vHfEnb45pF4")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Group ID
+                  .col-md-10.col-sm-7
+                    input.form-control(name='telegram_group_id' placeholder="-123456789")
+        .box
+          .box-header
+            h3.box-title
+              .col-xs-12 Kiotviet
+          .box-body
+            .form-horizontal
+              .col-xs-12
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Client ID
+                  .col-md-10.col-sm-7
+                    input.form-control(name='kiotviet_client_id' placeholder="83a5bcbe-3c39-458c-bdd9-128112cef3f7")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Client secret
+                  .col-md-10.col-sm-7
+                    input.form-control(name='kiotviet_client_secret' placeholder="3B52F3A9DDE194966DAE2CE0A478B2DEC15254D6")
+        .box
+          .box-header
+            h3.box-title
+              .col-xs-12 Giao hàng tiết kiệm
+          .box-body
+            .form-horizontal
+              .col-xs-12
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Client Token
+                  .col-md-10.col-sm-7
+                    input.form-control(name='ghtk_client_token' placeholder="83a5bcbe-3c39-458c-bdd9-128112cef3f7")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Môi trường
+                  .col-md-10.col-sm-7
+                    input.form-control(name='ghtk_client_environment' placeholder="https://dev.ghtk.vn")
+        .box
+          .box-header
+            h3.box-title
+              .col-xs-12 Freshdesk
+          .box-body
+            .form-horizontal
+              .col-xs-12
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Domain
+                  .col-md-10.col-sm-7
+                    input.form-control(name='freshdesk_domain' placeholder="yourwesite.domain.com")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label API Key
+                  .col-md-10.col-sm-7
+                    input.form-control(name='freshdesk_api_ley' placeholder="83a5bcbe-3c39-458c-bdd9-128112cef3f7")
+      #template-mail.tab-pane.fade
+        .box(data-name="resolution")
+          .box-header
+            h3.box-title
+              .col-xs-12 ĐƠN HÀNG
+          .box-body
+            table.table
+              thead
+                th STT
+                th.col-xs-4 Tên
+                th Mô tả
+              tbody
+                tr
+                  td 1
+                  td
+                    a(href="/admin/email-templates/Order-confirm" target="_blank") Order confirm
+                  td Gửi cho khách hàng sau khi họ đặt hàng
+                tr
+                  td 2
+                  td
+                    a(href="/admin/email-templates/Order-update-status" target="_blank") Order update status
+                  td Gửi cho khách hàng sau đơn hàng được thay đổi trạng thái
+                tr
+                  td 3
+                  td
+                    a(href="/admin/email-templates/Order-admin" target="_blank") Order admin
+                  td
+                    | Gửi cho quản trị viên khi có đơn hàng mới (Áp dụng cho quản trị viên có quyền nhận email)
+        .box(data-name="resolution")
+          .box-header
+            h3.box-title
+              .col-xs-12 QUẢN TRỊ VIÊN
+          .box-body
+            table.table
+              thead
+                th STT
+                th.col-xs-4 Tên
+                th Mô tả
+              tbody
+                tr
+                  td 1
+                  td
+                    a(href="/admin/email-templates/Register-admin" target="_blank") Register admin
+                  td Gửi cho quản trị viên vừa được thêm vào hệ thống
+                tr
+                  td 2
+                  td
+                    a(href="/admin/email-templates/Forget-password-admin" target="_blank") Forget password admin
+                  td Gửi cho quản trị viên khi dùng chức năng quên mật khẩu
+                tr
+                  td 3
+                  td
+                    a(href="/admin/email-templates/Contact-admin" target="_blank") Contact admin
+                  td Gửi cho quản trị viên khi có liên hệ mới
+        .box(data-name="resolution")
+          .box-header
+            h3.box-title
+              .col-xs-12 KHÁCH HÀNG
+          .box-body
+            table.table
+              thead
+                th STT
+                th.col-xs-4 Tên
+                th Mô tả
+              tbody
+                tr
+                  td 1
+                  td
+                    a(href="/admin/email-templates/Register-customer" target="_blank") Register customer
+                  td Gửi cho khách hàng vừa đăng ký
+                tr
+                  td 2
+                  td
+                    a(href="/admin/email-templates/Forget-password-customer" target="_blank") Forget password customer
+                  td Gửi cho khách hàng khi dùng chức năng quên mật khẩu
+      #pick-address.tab-pane.fade
+        .box(data-name="resolution")
+          .box-header
+            h3.box-title
+              .col-xs-12 ĐỊA CHỈ GỬI HÀNG
+          .box-body
+            .form-horizontal
+              .col-xs-12
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Tên người gửi hàng
+                  .col-md-10.col-sm-7
+                    input.form-control(name='pick_name' placeholder=" Nguyễn văn A ")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Số điện thoại
+                  .col-md-10.col-sm-7
+                    input.form-control(name='pick_phone' placeholder="0987654321")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Địa chỉ
+                  .col-md-10.col-sm-7
+                    input.form-control(name='pick_address' placeholder="123 - Tô Hiến Thành - Phường 10")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Quận(Huyện)
+                  .col-md-10.col-sm-7
+                    input.form-control(name='pick_district' placeholder="Quận 10")
+                .form-group.clearfix
+                  label.col-md-2.col-sm-5.control-label Tỉnh(Thành phố)
+                  .col-md-10.col-sm-7
+                    input.form-control(name='pick_province' placeholder="Hồ Chí Minh")
+          

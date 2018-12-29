@@ -1,0 +1,55 @@
+extends ./layout.pug
+
+block pre-include
+  - var menu = 'setting';
+  - var childMenu = 'tag';
+  title Thẻ
+  //link(rel="stylesheet" href=staticURI() + "/libs/jquery-ui.min.css")
+  
+block post-include
+  script(src=staticURI() + '/js/admin/tags.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a Cấu hình
+      li
+        a Thẻ
+  section.content.clearfix
+    .box.box-table
+      .box-header
+        h3.box-title DANH SÁCH
+      .box-body
+        table.table.table-condensed.table-bordered.table-striped.display.nowrap(cellspacing="0" width="100%")
+          .action-box.hidden
+            .dropdown
+              button.btn.btn-danger.dropdown-toggle(type="button" data-toggle="dropdown")
+                i.fa.fa-share
+                |  Chọn thao tác (đang chọn
+                span.num-select
+                |  thẻ) &ensp;
+                span.caret
+              ul.dropdown-menu
+                li
+                  a.status-delete(data-value='delete') Xóa
+          thead
+            tr
+              th.all.text-center
+                input.select-all(type="checkbox")
+              th Mã
+              th.all Tên
+              th Thời gian
+          tbody
+            each item in data
+              tr
+                td.text-center
+                  input.checkboxes(type="checkbox" value=item.id)
+                  span.hidden=createEnglishName(item.title)
+                td=item.id
+                td.menu-name(data-value=item.name)=item.name
+                td.menu-created(data-value=item.created_at)=item.created_at
+        script.
+              $('tbody').sortable({
+                cancel: '.parentMenu'
+              });

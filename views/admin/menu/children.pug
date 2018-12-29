@@ -1,0 +1,210 @@
+extends ./../layout.pug
+block pre-include
+  - var menu = 'setting'
+  - var childMenu = 'menu'
+  title=parent.title
+
+block post-include
+  script(src=staticURI() + '/js/admin/menu.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a Cấu hình
+      li
+        a(href="/admin/menu") Menu
+      li
+        a=parent.title
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      li
+        a.btn.btn-admin.btn-delete-object(data-id=parent.id,data-type='menu')
+          i.fa.fa-trash-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Xóa
+      li
+        a.btn.btn-admin.btn-create.btn-update-parent(data-id=parent.id)
+          i.fa.fa-floppy-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Lưu lại
+  section.content
+    .row
+      .col-xs-12.col-sm-12.col-md-8
+        .box.parent-info
+          .form-horizontal
+            .box-title.clearfix
+              .pull-left.title-tab THÔNG TIN
+            .box-body
+              .tab-content
+                .form-group
+                  .col-sm-2.control-label Tiêu đề
+                    strong.required  *
+                  .col-sm-10
+                    input.form-control(name="title", placeholder="Tiêu đề" value=parent.title)
+                .form-group
+                  .col-sm-2.control-label Handle
+                    strong.required  *
+                  .col-sm-10
+                    input.form-control(value=parent.handle disabled)
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .pull-left.title-tab MENU CON
+            .box-body
+              .tab-content
+                ul.space.list-menu-child(data-id=parent.id)
+                  each item, index in parent.children
+                    li.clearfix.route(data-id=item.id)
+                      span.icon-drag-drop
+                        span.icon
+                          i.fa.fa-bars
+                      span.title
+                        span=item.title
+                        .group-edit-button
+                          span.status(data-id=item.id)
+                            -var checkStatus = item.status == 'active' ? 'checked' : undefined;
+                            input(type="checkbox" value='active' name="check-menu", checked=checkStatus)
+                          span.edit(data-id=item.id)
+                            i.fa.fa-pencil-square-o
+                          span.delete(data-id=item.id)
+                            i.fa.fa-trash
+                      ul.space
+                        +showChildMenu(item.children)
+                .add-menu-item(data-toggle="modal" data-target="#modal-add-menu-child")
+                  i.fa.fa-plus-circle
+                  span Thêm menu con
+      .col-xs-12.col-sm-12.col-md-4
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title HÌNH ẢNH
+            .box-body.parent-image
+              if parent.image
+                .item-choose-image.active(data-default=staticURI() + "/img/default.jpg")
+                  img(src='/uploads/' + resize(parent.image, 480))
+                  span.remove-image
+                    i.fa.fa-times
+                  input.value(type="hidden", name="image", value=parent.image)
+              else
+                .item-choose-image(data-default=staticURI() + "/img/default.jpg")
+                  img(src=staticURI() + "/img/default.jpg")
+                    i.fa.fa-times
+                  input.value(type="hidden", name="image")
+      #modal-add-menu-child.modal.fade(role="dialog")
+        .modal-dialog(style="width: 610px;")
+          .modal-content
+            .modal-header
+              button.close(type='button', data-dismiss='modal') ×
+              h4.modal-title Tạo menu
+            .modal-body
+              .form-horizontal.clearfix
+                .form-group.clearfix
+                  .col-sm-2.control-label Menu cha
+                    strong.required  *
+                  .col-sm-10
+                    select.form-control(name="parent_id")
+                      option(value=parent.id)=parent.title
+                      each item in arr_menu_item
+                        option(value=item.id)=item.title
+                .form-group.clearfix
+                  .col-sm-2.control-label Tiêu đề
+                    strong.required  *
+                  .col-sm-10
+                    input.form-control(name="title" placeholder="Tiêu đề")
+                if multiLang
+                  each item, index in languages()
+                    .form-group.clearfix
+                      .col-sm-2.control-label Tiêu đề (
+                        =item
+                        |)
+                      .col-sm-10
+                        input.form-control(name="title_" + item placeholder="Tiêu đề")
+                .form-group.clearfix
+                  .col-sm-2.control-label Link
+                  .col-sm-10
+                    include ../snippet/search-link
+                .form-group.clearfix
+                  .col-sm-2.control-label Hình ảnh
+                    if (getMetaAdmin("image_resolution_menu_text"))
+                      span.title-size=' (' + getMetaAdmin("image_resolution_menu_text") + ')'
+                  .col-sm-10
+                    .item-choose-image(data-default=staticURI() + "/img/default.jpg")
+                      img(src=staticURI() + "/img/default.jpg" style="max-height: 200px;")
+                      span.remove-image
+                        i.fa.fa-times
+                      input.value(type="hidden" name="image")
+              .modal-footer.pd-right-0
+                button.btn.btn-default(type='button', data-dismiss='modal') Hủy
+                button.btn.btn-primary.btn-create-update-menu-child Tạo menu
+      #modal-edit-menu-child.modal.fade(role="dialog")
+        .modal-dialog(style="width: 610px;")
+          .modal-content
+            .modal-header
+              button.close(type='button', data-dismiss='modal') ×
+              h4.modal-title Chỉnh sửa
+            .modal-body
+              .form-horizontal.clearfix
+                .form-group.clearfix
+                  .col-sm-2.control-label Menu cha
+                    strong.required  *
+                  .col-sm-10
+                    select.form-control(name="parent_id")
+                      option(value=parent.id)=parent.title
+                      each item in arr_menu_item
+                        option(value=item.id)=item.title
+                .form-group.clearfix
+                  .col-sm-2.control-label Tiêu đề
+                    strong.required  *
+                  .col-sm-10
+                    input.form-control(name="title" placeholder="Tiêu đề")
+                if multiLang
+                  each item, index in languages()
+                    input(type="hidden" name="translattion_" + item)
+                    .form-group.clearfix
+                      .col-sm-2.control-label Tiêu đề (
+                        =item
+                        |)
+                      .col-sm-10
+                        input.form-control(name="title_" + item placeholder="Tiêu đề")
+                .form-group.clearfix
+                  .col-sm-2.control-label Link
+                  .col-sm-10
+                    include ../snippet/search-link
+                .form-group.clearfix
+                  .col-sm-2.control-label Trạng thái
+                  .col-sm-10
+                    select.form-control(name="status")
+                      option(value="active") Hiển thị
+                      option(value="inactive") Ẩn
+                .form-group.clearfix
+                  .col-sm-2.control-label Hình ảnh
+                    if (getMetaAdmin("image_resolution_menu_text"))
+                      span.title-size=' (' + getMetaAdmin("image_resolution_menu_text") + ')'
+                  .col-sm-10
+                    .item-choose-image(data-default=staticURI() + "/img/default.jpg")
+                      img(src=staticURI() + "/img/default.jpg" style="max-height: 200px;")
+                      span.remove-image
+                        i.fa.fa-times
+                      input.value(type="hidden" name="image")
+              .modal-footer.pd-right-0
+                button.btn.btn-default(type='button', data-dismiss='modal') Hủy
+                button.btn.btn-primary.btn-create-update-menu-child Cập nhật
+    mixin showChildMenu(children)
+      if countArr(children)
+        each item in children
+          li.clearfix.route(data-id=item.id)
+            span.icon-drag-drop
+              span.icon
+                i.fa.fa-bars
+            span.title
+              span=item.title
+              .group-edit-button
+                span.status(data-id=item.id)
+                  -var checkStatus = item.status == 'active' ? 'checked' : undefined;
+                  input(type="checkbox" value='active' name="check-menu", checked=checkStatus)
+                span.edit(data-id=item.id)
+                  i.fa.fa-pencil-square-o
+                span.delete(data-id=item.id)
+                  i.fa.fa-trash
+            ul.space
+              +showChildMenu(item.children)

@@ -1,0 +1,150 @@
+{% extends "layout.twig" %}
+{% block pre_include %}
+  <title>Thanh toán</title>
+{% endblock pre_include %}
+
+{% block content %}
+<section class="order-step order-step1" id="order-step1">
+  <div class="order-step3__header">
+    <div class="container-large">
+      <div class="row">
+          <div class="offset-sm-3 col-sm-offset-3 col-sm-6 col-xs-8 order-process">
+            <ul class="list-inline ul-line">
+              <div class="row">
+                <li class="col-sm-6"></li>
+                <li class="col-sm-6"></li>
+              </div>
+            </ul>
+            <ul class="ul-dot">
+              <li class="active">1</li>
+              <li>2</li>
+              <li>3</li>
+            </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="order-step1__content">
+    <div class="container">
+      <div class="order-step1-wrap">
+        <div class="order-step1--title">
+          <div class="row">
+            <div class="col-sm-6 textleft">
+              <h3 class="title-default">Đăng ký</h3>
+            </div>
+            <div class="col-sm-6 text-right">
+              <p>
+                 Bạn đã là thành viên?<a href="{{__('CHECKOUT_LOGIN_URL')}}">&nbsp;Đăng nhập</a>&nbsp;tại đây</p>
+            </div>
+          </div>
+        </div>
+        <div class="order-step1--content">
+          <div class="order-step1--content__box">
+            <div class="row">
+              <div class="col-sm-7">
+                <div class="input">
+                  <label>Tên</label>
+                  <input type="text" name="name" placeholder="Họ tên">
+                </div>
+                <div class="input">
+                  <label>Số điện thoại</label>
+                  <input type="text" name="phone" placeholder="0123 456 7891">
+                </div>
+                <div class="input">
+                  <label>Địa chỉ Email*</label>
+                  <input type="text" name="email" placeholder="Vui lòng nhập Email của bạn">
+                </div>
+                <div class="input">
+                  <label>Mật khẩu*</label>
+                  <input type="password" name="password" placeholder="Vui lòng nhập mật khẩu">
+                </div>
+                <div class="input">
+                  <label>Nhập lại mật khẩu*</label>
+                  <input type="password" name="passwordconfirm" placeholder="Vui lòng nhập lại mật khẩu">
+                </div>
+                <div class="register">
+                  <a class="btn-custom-default btn_register" href="#"><span>Đăng ký</span></a>
+                </div>
+                <p>Tôi đồng ý với <a href="{{settings['link_policy']}}">&nbsp;Chính sách bảo mật của website</a></p>
+              </div>
+              <div class="col-sm-5">
+                <p>Hoặc kết nối với tài khoản mạng xã hội</p>
+                <div class="step1-social">
+                  <a class="facebook" href="{{loginFacebook()}}">
+                    <i class="fa fa-facebook-f"></i>
+                    Facebook</a>
+                    <a class="google" href="{{loginGoogle()}}">
+                      <i class="fa fa-google-plus"></i>
+                      Google
+                    </a>
+                  <a class="btn-custom-default" href="{{__('CHECKOUT_URL')}}"><span>Mua nhanh - chỉ một bước </span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="text/javascript">
+  $('.btn_register').on('click', function(e) {
+    e.preventDefault();
+    var data = {};
+    data.name = $('input[name="name"]').val();
+    data.email = $('input[name="email"]').val();
+    data.phone = $('input[name="phone"]').val();
+    data.password = $('input[name="password"]').val();
+    data.passwordconfirm = $('input[name="passwordconfirm"]').val();
+    if (!data.name) {
+      toastr.error("Vui lòng nhập họ tên!");
+      return;
+    }
+    if (!data.email) {
+      toastr.error("Vui lòng nhập email!");
+      return;
+    }
+    if (!data.email.match("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$")) {
+        toastr.error("Eamil không đúng định dạng, vui lòng nhập lại email!");
+        return;
+      }
+
+    if (!data.password) {
+      toastr.error("Bạn chưa nhập mật khẩu!");
+      return;
+    }
+    if (!data.password.match(/^.*(?=.{6,})(?=.*[a-zA-Z])[a-zA-Z0-9]+$/)) {
+      toastr.error("Mật khẩu bao gồm chữ số và kí tự!");
+      return;
+    }
+    if (data.password !== data.passwordconfirm) {
+      toastr.error("Nhập lại mật khẩu không chính xác!");
+      return;
+    }
+    $.ajax({
+      type: 'POST',
+      url: '/api/signup',
+      data: data,
+      success: function(json) {
+        if (!json.code) {
+          toastr.success("Tạo tài khoản thành công!");
+          // set_time_limit(2000);
+          setTimeout(function() {
+            window.location.href = "{{__('CHECKOUT_URL')}}";
+          }, 2000);
+        } else {
+          toastr.error("Email đã được đăng ký!");
+        }
+      }
+    });
+  });
+</script>
+
+<style>
+  .order-step3__header {
+    padding: 30px 0px 70px;
+    margin-bottom: 0;
+  }
+</style>
+
+{% endblock content %}

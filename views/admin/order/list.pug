@@ -1,0 +1,119 @@
+extends ./../layout.pug
+
+block pre-include
+  title Danh sách đơn hàng
+  - var menu = 'order';
+  - var childMenu = menu_child;
+block post-include
+  script(src=staticURI() + '/libs/numeral.min.js')
+  script(src=staticURI() + '/js/admin/order.js')
+  script.
+    initDataTable('table');
+    var modelName = 'order';
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li.hidden-xs
+        a(href='/admin/order') Đơn hàng
+      li.title-ellipsis
+        a Danh sách đơn hàng
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      li
+        a.btn.btn-admin(href="/admin/order/create") Tạo đơn hàng
+  section.content
+    .box-header.hidden
+      h3.box-title Thống kê
+      .box-tools.pull-right
+    .box-body.box-order-chart
+      .row.hidden
+        .col-xs-12.col-sm-4.box-order-item
+          .small-box.bg-aqua
+            .inner.custom-lte
+              h3.count(data-value=statistic.totalSum) 0
+              p Tổng giá trị đơn hàng
+            .icon
+              i.fa.fa-money
+        .col-xs-12.col-sm-4.box-order-item
+          .small-box.bg-red
+            .inner.custom-lte
+              h3.count(data-value=statistic.orderCount) 0
+              p Tổng số đơn hàng
+            .icon
+              i.fa.fa-shopping-cart
+        .col-xs-12.col-sm-4.box-order-item.last-item
+          .small-box.bg-green
+            .inner.custom-lte
+              - var average = statistic.totalSum/statistic.orderCount;
+              if (!statistic.orderCount || !statistic.totalSum)
+                h3=0
+              else
+                h3.count(data-value = average) 0
+              p Giá trị trung bình / đơn hàng
+            .icon
+              i.fa.fa-usd
+    .box.box-table
+      .box-header
+        h3.box-title Danh sách
+      .box-body
+        table.table.table-condensed.table-bordered.table-striped.display(cellspacing="0" width="100%")
+          .action-box.hidden
+            .dropdown
+              button.btn.btn-danger.dropdown-toggle(type="button" data-toggle="dropdown")
+                i.fa.fa-share
+                |  Chọn thao tác (đang chọn
+                span.num-select
+                |  đơn hàng) &ensp;
+                span.caret
+              ul.dropdown-menu
+                li
+                  a.status-order(data-value='new') Mới
+                li
+                  a.status-order(data-value='confirm') Đã xác nhận
+                li
+                  a.status-payment(data-value=0, data-shipping=0) Chưa thanh toán
+                li
+                  a.status-payment(data-value=0, data-shipping=2) Chưa thanh toán đã gửi hàng
+                li
+                  a.status-payment(data-value=1, data-shipping=0) Đã thanh toán chưa gửi hàng
+                li
+                  a.status-payment(data-value=1, data-shipping=2) Đã thanh toán đã gửi hàng
+                li
+                  a.status-order(data-value='done') Hoàn tất
+                li
+                  a.status-order(data-value='return') Bị hoàn trả
+                li
+                  a.status-order(data-value='cancel') Bị hủy
+          thead
+            tr
+              th.text-center
+                input.select-all(type="checkbox")
+              th Mã
+              th.all Khách hàng
+              th Trạng thái đơn hàng
+              th Tổng tiền
+              th Ngày đặt hàng
+          tbody
+            each item in data
+              tr
+                td.text-center
+                  input.checkboxes(type="checkbox" value=item.id)
+                td
+                  a(href="/admin/order/" + item.id target="_blank") #
+                    =item.id
+                td
+                  a(href="/admin/order/" + item.id target="_blank")=item.name
+                td
+                  case item.order_status
+                    when 'new'
+                      label.label.label-info Mới
+                    when 'confirm'
+                      label.label.label-primary Xác nhận
+                    when 'done'
+                      label.label.label-success Hoàn thành
+                    when 'cancel'
+                      label.label.label-danger Hủy
+                    when 'return'
+                      label.label.label-danger Hoàn trả
+                td.text-right.right=money(item.total) + ' đ'
+                td
+                  a(href="/admin/order/" + item.id target="_blank").link=datetime(item.created_at)

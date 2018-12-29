@@ -1,0 +1,206 @@
+extends ./../layout.pug
+
+block pre-include
+  title=data.title
+  - var menu = 'product'
+  - var childMenu = 'collection'
+block post-include
+  script(src=staticURI() + '/js/admin/collection.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li.hidden-xs
+        a(href='/admin/collection') Nhóm sản phẩm
+      li.title-ellipsis
+        a(title=data.title)=data.title
+    ol.button-action-mobile.button-right.col-sm-6.visible-xs.visible-sm
+      .dropdown
+        button.btn.btn-default.btn-dropdown.dropdown-toggle(type='button', data-toggle='dropdown')
+          | Hành động &#09;
+          span.caret
+        ul.dropdown-menu
+          li
+            a(href=data.url, target="_blank")
+              i.fa.fa-eye
+              | Xem trên web
+          li
+            a.btn-delete-object(data-id=data.id,data-type='collection')
+              i.fa.fa-trash-o
+              | Xóa
+          li
+            a.btn-create-update(data-id=data.id)
+              i.fa.fa-floppy-o
+              | Cập nhật
+    ol.button-right.col-sm-6.hidden-xs.hidden-sm
+      li
+        a.btn.btn-review(href=data.url, target="_blank")
+          i.fa.fa-eye
+          | Xem trên web
+      li
+        a.btn.btn-admin.btn-delete-object(data-id=data.id,data-type='collection')
+          i.fa.fa-trash-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Xóa
+      li
+        a.btn.btn-admin.btn-create-update(data-id=data.id)
+          i.fa.fa-floppy-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Cập nhật
+  section.content
+    .row
+      .col-xs-12.col-sm-12.col-md-8
+        .box.box-info
+          .form-horizontal
+            .box-title.clearfix
+              .pull-left.title-tab THÔNG TIN
+              if multiLang
+                include ../snippet/nav-tabs-lang
+            .box-body
+              .tab-content
+                #tab-vi.tab-pane.fade.in.active
+                  .form-group
+                    .col-sm-2.control-label Tên nhóm
+                      strong.required  *
+                    .col-sm-10
+                      input.form-control(name="title", value=data.title, placeholder="Tên nhóm sản phẩm")
+                  .form-group
+                    .col-sm-2.control-label Đường dẫn
+                      strong.required  *
+                    .col-sm-10
+                      .input-group
+                        span.hidden-xs.input-group-addon=generateUrl("", "collection", "vi")
+                        input.form-control.handle(name="handle", placeholder="duong-dan", value=data.handle)
+                        i.icon-refresh-handle.fa.fa-refresh
+                  .form-group
+                    .col-sm-2.control-label Mô tả
+                    .col-sm-10
+                      textarea.form-control(rows="4" data-autoresize name="description" placeholder="Mô tả")=data.description
+                  .form-group
+                    .col-sm-2.control-label Nội dung
+                    .col-sm-10
+                      textarea.form-control.tinymce#content=data.content
+                if multiLang
+                  each item, index in languages()
+                    - var data_lang = getObjectLanguage(data.id, "collection", item)
+                    input(type="hidden" name="translattion_" + item value=data_lang.id)
+                    .tab-pane.fade.in(id="tab-" + item data-lang=item)
+                      .form-group
+                        .col-sm-2.control-label Tiêu đề
+                        .col-sm-10
+                          input.form-control(name="title_" + item, placeholder="Tiêu đề" value=data_lang.title)
+                      .form-group
+                        .col-sm-2.control-label Đường dẫn
+                        .col-sm-10
+                          .input-group
+                            span.input-group-addon=generateUrl("", "collection", item)
+                            input.form-control.handle(name="handle_" + item, placeholder="duong-dan"  value=data_lang.handle)
+                            i.icon-refresh-handle.fa.fa-refresh
+                      .form-group
+                        .col-sm-2.control-label Mô tả
+                        .col-sm-10
+                          textarea.form-control(rows="4" data-autoresize name="description_" + item placeholder="Mô tả")=data_lang.description
+                      .form-group
+                        .col-sm-2.control-label Nội dung
+                        .col-sm-10
+                          textarea.form-control.tinymce(id="content_" + item)=data_lang.content
+        - var post_type = 'collection'
+        - var post_id = data.id
+        - var seo = getSEO('collection', data.id)
+        include ../snippet/box-custom-field.pug
+        include ../snippet/box-seo.pug
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title DANH SÁCH SẢN PHẨM
+            .box-body.product_collection
+              ul.list-unstyled.listDragProduct.space(data-id=data.id)
+                if (countArr(products))
+                  each product in products
+                    li.clearfix(data-id=product.id)
+                      span.icon-drag-drop.pull-left
+                        span.icon
+                          i.fa.fa-bars
+                      a.pull-left(href="/admin/product/" + product.product_id)=product.title
+                      i.pull-right.btn-remove-product-icon.fa.fa-trash(title="Xóa sản phẩm khỏi collection" data-id=product.product_id)
+                else
+                  p Chưa có sản phẩm nào
+      .col-xs-12.col-sm-12.col-md-4
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title NHÓM SẢN PHẨM CHA
+            .box-body
+              select.form-control(name="parent_id", data-value=data.parent_id)
+                option(value="-1" selected) Chọn nhóm sản phẩm cha...
+                each item in collections
+                  option(value=item.id)=item.title
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title THẺ
+            .box-body
+              if count(data.tags)
+                input(type="text" data-role="tagsinput", name="tags", value=data.tags)
+              else
+                input(type="text" data-role="tagsinput", name="tags")
+              include ../snippet/tag-suggest.pug
+            
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title HÌNH ĐẠI DIỆN
+                if (getMetaAdmin("image_resolution_collection_text"))
+                  span.title-size=' (' + getMetaAdmin("image_resolution_collection_text") + ')'
+            .box-body
+              if data.image
+                .item-choose-image.active(data-default=staticURI() + "/img/default.jpg")
+                  img(src='/uploads/' + resize(data.image, 480))
+                  span.remove-image
+                    i.fa.fa-times
+                  input.value(type="hidden", name="image", value=data.image)
+              else
+                .item-choose-image(data-default=staticURI() + "/img/default.jpg")
+                  img(src=staticURI() + "/img/default.jpg")
+                  input.value(type="hidden", name="image")
+        - var templates = getViewTemplate('collection');
+        if countArr(templates)
+          .box
+            .form-horizontal
+              .box-title.clearfix
+                .col-xs-6.title GIAO DIỆN
+              .box-body
+                select.form-control(name="template" data-value=data.template)
+                  option(value="") Mặc định
+                  each item in templates
+                    option(value=item)=item
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title TRẠNG THÁI
+            .box-body
+              .col-xs-12
+                .form-group
+                  .text-title Hiển thị
+                  select.form-control(name="status", data-value=data.status)
+                    option(value="active") Hiển thị
+                    option(value="inactive") Ẩn
+                - var firstHistory = getFirstHistory('collection', data.id);
+                - var lastHistory = getLastHistory('collection', data.id);
+                .form-group.history
+                  .row
+                    .col-xs-6 Ngày tạo:
+                    .col-xs-6
+                      b=datetime(data.created_at)
+                  .row
+                    .col-xs-6 Người tạo:
+                    .col-xs-6
+                      b=firstHistory.user_name
+                  .row
+                    .col-xs-6 Cập nhật sau cùng:
+                    .col-xs-6
+                      b=datetime(lastHistory.created_at)
+                  .row
+                    .col-xs-6 Người cập nhật sau cùng:
+                    .col-xs-6
+                      b=lastHistory.user_name

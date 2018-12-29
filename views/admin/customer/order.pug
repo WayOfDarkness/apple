@@ -1,0 +1,50 @@
+extends ./layout.pug
+
+block pre-include
+  title Khách hàng 
+    =customer_name
+  - var menu = 'customer';
+  - var childMenu = 'customer';
+block post-include
+  script.
+    initDataTable('table');
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li.hidden-xs
+        a Khách hàng
+      li.title-ellipsis
+        a=customer_name
+  section.content
+    .box.box-table
+      .row.box-header
+        h3.box-title DANH SÁCH
+      .box-body
+        table.table.table-condensed.table-bordered.table-striped.table-striped.display.nowrap(cellspacing="0" width="100%")
+          thead
+            tr
+              th.text-center
+              th Mã đơn hàng
+              th Ngày đặt hàng
+              th Trạng thái
+              th Tổng tiền
+          tbody
+            each item in data
+              tr
+                td
+                  a(href="/admin/order/" + item.id target="_blank")=item.id
+                td=datetime(item.created_at)
+                td
+                  case item.order_status
+                    when 'new'
+                      label.label.label-info Mới
+                    when 'confirm'
+                      label.label.label-primary Xác nhận
+                    when 'done'
+                      label.label.label-success Hoàn thành
+                    when 'cancel'
+                      label.label.label-danger Hủy
+                    when 'return'
+                      label.label.label-danger Hoàn trả
+                td=money(item.total)

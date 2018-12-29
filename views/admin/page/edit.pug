@@ -1,0 +1,164 @@
+extends ./../layout.pug
+block pre-include
+  - var menu = 'article'
+  - var childMenu = 'page'
+  title   
+    =data.title
+
+block post-include
+  script(src=staticURI() + '/js/admin/page.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-xs-6
+      li.hidden-xs
+        a(href='/admin/page') Trang nội dung
+      li.hidden-xs
+        a Chỉnh sửa
+      li.title-ellipsis
+        a(title=data.title)=data.title
+    ol.button-action-mobile.button-right.col-xs-6.visible-xs.visible-sm
+      .dropdown
+        button.btn.btn-default.btn-dropdown.dropdown-toggle(type='button', data-toggle='dropdown')
+          | Hành động &#09;
+          span.caret
+        ul.dropdown-menu
+          li
+            a(href=data.url, target="_blank")
+              i.fa.fa-eye
+              | Xem trên web
+          li
+            a.btn-delete-object(data-id=data.id,data-type='page')
+              i.fa.fa-trash-o
+              | Xóa
+          li
+            a.btn-create-update(data-id=data.id)
+              i.fa.fa-floppy-o
+              | Cập nhật
+    ol.button-right.col-sm-6.hidden-xs.hidden-sm
+      span.middle-inline-block
+      li
+        a.btn.btn-review(href=data.url, target="_blank")
+          i.fa.fa-eye
+          | Xem trên web
+      li
+        a.btn.btn-admin.btn-delete-object(data-id=data.id,data-type='page')
+          i.fa.fa-trash-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Xóa
+      li
+        a.btn.btn-admin.btn-create-update(data-id=data.id)
+          i.fa.fa-floppy-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Lưu lại
+
+  section.content
+    .row
+      .col-xs-12.col-sm-12.col-md-8
+        .box.box-info
+          .form-horizontal
+            .box-title.clearfix
+              .pull-left.title-tab THÔNG TIN
+              if multiLang
+                include ../snippet/nav-tabs-lang
+            .box-body
+              .tab-content
+                #tab-vi.tab-pane.fade.in.active
+                  .form-group
+                    .col-sm-2.control-label Tiêu đề
+                      strong.required  *
+                    .col-sm-10
+                      input.form-control(name="title", placeholder="Tiêu đề", value=data.title)
+                  .form-group
+                    .col-sm-2.control-label Đường dẫn
+                      strong.required  *
+                    .col-sm-10
+                      .input-group
+                        span.hidden-xs.input-group-addon=generateUrl("", "page", "vi")
+                        input.form-control.handle(name="handle", placeholder="duong-dan", value=data.handle, data-handle=data.handle)
+                        i.icon-refresh-handle.fa.fa-refresh
+                  .form-group
+                    .col-sm-2.control-label Mô tả
+                    .col-sm-10
+                      textarea.form-control(rows="4" data-autoresize name="description" placeholder="Mô tả")=data.description
+                  .form-group
+                    .col-sm-2.control-label Nội dung
+                    .col-sm-10
+                      textarea.form-control.tinymce#content=data.content
+                if multiLang
+                  each item, index in languages()
+                    - var data_lang = getObjectLanguage(data.id, "page", item)
+                    input(type="hidden" name="translattion_" + item value=data_lang.id)
+                    .tab-pane.fade.in(id="tab-" + item data-lang=item)
+                      .form-group
+                        .col-sm-2.control-label Tiêu đề
+                        .col-sm-10
+                          input.form-control(name="title_" + item, placeholder="Tiêu đề" value=data_lang.title)
+                      .form-group
+                        .col-sm-2.control-label Đường dẫn
+                        .col-sm-10
+                          .input-group
+                            span.input-group-addon=generateUrl("", "page", item)
+                            input.form-control.handle(name="handle_" + item, placeholder="duong-dan" value=data_lang.handle)
+                            i.icon-refresh-handle.fa.fa-refresh
+                      .form-group
+                        .col-sm-2.control-label Mô tả
+                        .col-sm-10
+                          textarea.form-control(rows="4" data-autoresize name="description_" + item placeholder="Mô tả")=data_lang.description
+                      .form-group
+                        .col-sm-2.control-label Nội dung
+                        .col-sm-10
+                          textarea.form-control.tinymce(id="content_" + item)=data_lang.content
+        - var post_type = 'page'
+        - var post_id = data.id
+        - var seo = getSEO('page', data.id)
+        include ../snippet/box-custom-field.pug
+        include ../snippet/box-seo.pug
+      .col-xs-12.col-sm-12.col-md-4
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title THẺ
+            .box-body
+              if count(data.tags)
+                input(type="text" data-role="tagsinput", name="tags", value=data.tags)
+              else
+                input(type="text" data-role="tagsinput", name="tags")
+              include ../snippet/tag-suggest.pug
+              
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title HÌNH ĐẠI DIỆN
+                if (getMetaAdmin("image_resolution_page_text"))
+                  span.title-size=' (' + getMetaAdmin("image_resolution_page_text") + ')'
+            .box-body
+              if data.image
+                .item-choose-image.active(data-default=staticURI() + "/img/default.jpg")
+                  img(src='/uploads/' + resize(data.image, 480))
+                  span.remove-image
+                    i.fa.fa-times
+                  input.value(type="hidden", name="image", value=data.image)
+              else
+                .item-choose-image(data-default=staticURI() + "/img/default.jpg")
+                  img(src=staticURI() + "/img/default.jpg")
+                  input.value(type="hidden", name="image")
+        - var templates = getViewTemplate('page');
+        if countArr(templates)
+          .box
+            .form-horizontal
+              .box-title.clearfix
+                .col-xs-6.title GIAO DIỆN
+              .box-body
+                select.form-control(name="template" data-value=data.template)
+                  option(value="") Mặc định
+                  each item in templates
+                    option(value=item)=item
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-6.title TRẠNG THÁI
+            .box-body
+              select.form-control(name="status", data-value=data.status)
+                option(value="active") Hiển thị
+                option(value="inactive") Ẩn

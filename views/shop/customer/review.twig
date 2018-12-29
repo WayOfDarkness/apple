@@ -1,0 +1,196 @@
+{% extends "layout.twig" %}
+
+{% block pre_include %}
+  <title>Nhận xét của tôi</title>
+{% endblock pre_include %}
+
+{% block content %}
+  <!-- Content Sub Page -->
+  <div class="my-review padding-wrap" id="my-review">
+    <div class="container box-1400">
+      <div class="row">
+        {% include 'customer/sidebar.twig' %}
+        <div class="col-md-9 col-sm-12">
+          <div class="account--title">
+            <h3 class="title-default">Sản phẩm chưa nhận xét</h3>
+          </div>
+          {% for item in customer.orders %}
+            {% for prod in item.cart %}
+              <div class="my-review--content" data-id="{{prod.product_id}}">
+                <div class="my-review--content__top">
+                  <p class="date">Đã mua ngày
+                    {{prod.created_at | date('d')}}
+                    thg
+                    {{prod.created_at | date('m Y')}}</p>
+                  <a href="javascript:;" data-id="{{prod.product_id}}" data-handle="{{prod.handle}}">Viết nhận xét của sản phẩm này
+                  </a>
+                </div>
+                <div class="row my-review--content__product">
+                  <div class="product__img col-sm-2 col-xs-4"><img src="{{prod.image | upload_url | resize(100)}}" alt=""></div>
+                  <div class="product__name col-sm-9 col-xs-11">
+                    <p>{{prod.product_title}}</p>
+                    <div class="box-rating big-star disable-star">
+                      <div class="rating without-caption">
+                        <input type="text" class="kv-fa rating-loading" value="4" title="" readonly="readonly">
+                      </div>
+                    </div>
+                    <div class="product__name__status">
+                      <p></p>
+                    </div>
+                  </div>
+                  <div class="clear-fix"></div>
+                </div>
+              </div>
+            {% endfor %}
+          {% endfor %}
+          <div class="page bg-null">
+            <ul class="list-inline paginate">
+              <!-- <li>
+                <a href="#">
+                  <i class="fa fa-angle-left"></i>
+                </a>
+              </li>
+              <li>
+                <a href="#">01</a>
+              </li>
+              <li>
+                <a href="#">
+                  <i class="fa fa-angle-right"></i>
+                </a>
+              </li> -->
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <!-- ./Content Sub Page -->
+  <style media="screen">
+      .my-review .page ul.list-inline li a {
+          background-color: #CCCCCC !important;
+      }
+      .my-review .page ul.list-inline li a.active {
+          background-color: #999c50 !important;
+      }
+    </style>
+{% endblock content %}
+{% block post_include %}
+<script type="text/javascript">
+var count = 0;
+var perpage;
+var count_review = 0;
+  $(document).ready(function() {
+    $('.my-review--content').each(function() {
+      count++;
+      var id = $(this).data('id');
+      var ref = this;
+      StoreAPI.getReview('product', id, 'rating-desc', function(json) {
+        if (json.avg) {
+          $(this).remove();
+          count_review++;
+        }
+        else {
+          count = count - count_review;
+        }
+      })
+    })
+    if (count > 10) {
+      $(".my-review--content").css('display','none');
+      if (count % 10 > 5 || count % 10 == 0) {
+        perpage = Math.round(count / 10);
+      }
+      else {
+        perpage = Math.round(count / 10) + 1;
+      }
+      var html = '';
+      for (var i = 1; i < perpage + 1; i++) {
+        html += `<li  class="pagi">
+          <a href="javascript:;=`+i+`" data-page="`+i+`">`+i+`</a>
+        </li>`;
+      }
+      $('ul.paginate').html(`<li>
+        <a href="javascript:;" class="prev">
+          <i class="fa fa-angle-left"></i>
+        </a>
+      </li>
+      ${html}
+      <li>
+        <a href="javascript:;" class="next">
+          <i class="fa fa-angle-right"></i>
+        </a>
+      </li>`);
+      var page = 1;
+      $(function() {
+        $(".my-review--content").slice(0, 10).show();
+        $('a[data-page="1"]').addClass('active');
+        $(".pagi a").on('click', function(e) {
+          e.preventDefault();
+          $(".pagi a").removeClass('active');
+          $(this).addClass('active');
+          page = $(this).data('page');
+          $(".my-review--content").css('display','none');
+          setTimeout(function() {
+            $(".my-review--content").slice((page - 1) * 10, 10 * page).show();
+          },100);
+        });
+        $("a.prev").on('click', function(e) {
+          e.preventDefault();
+          if (page == 1) {
+            return;
+          }
+          --page;
+          $(".pagi a").removeClass('active');
+
+          $(".my-review--content").css('display','none');
+          setTimeout(function() {
+            $(".my-review--content").slice((page - 1) * 10, 10 * page).show();
+          },100);
+          $('a[data-page="'+page+'"]').addClass('active');
+        });
+
+        $("a.next").on('click', function(e) {
+          e.preventDefault();
+          if (page == perpage) {
+            return;
+          }
+          page++;
+          $(".pagi a").removeClass('active');
+          $(".my-review--content").css('display','none');
+          setTimeout(function() {
+            $(".my-review--content").slice((page - 1) * 10, 10 * page).show();
+          },100);
+          $('a[data-page="'+page+'"]').addClass('active');
+        });
+      })
+    }
+  })
+  $('.my-review--content__top a').on('click', function() {
+    var product_id = $(this).data('id');
+    $.ajax({
+      type: 'GET',
+      url: '/api/product/' + product_id,
+      success: function(res) {
+        var handle = res.product.handle;
+        initSession(handle);
+      }
+    })
+  });
+
+  function initSession(handle) {
+    $.ajax({
+      url: '/api/setSession',
+      type: 'post',
+      data: {
+        key: 'reviewProduct',
+        value: handle
+      },
+      success: function(data) {
+        if (!data.code) {
+          window.location.href = '/product/review';
+        }
+      }
+    })
+  }
+</script>
+{% endblock %}

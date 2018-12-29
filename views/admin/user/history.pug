@@ -1,0 +1,110 @@
+extends ./../layout.pug
+
+block pre-include
+  - var menu = 'user'
+  - var childMenu = 'history'
+  title Nhật ký hoạt động
+  
+block post-include
+  script(src=staticURI() + '/js/admin/history.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a Quản trị viên
+      li
+        a Nhật ký hoạt động
+  section.content.clearfix
+    .box.box-table
+      .row.box-header
+        h3.box-title DANH SÁCH
+      .box-body
+        table.table.table-striped.display.nowrap(cellspacing="0" width="100%")
+          thead
+            tr
+              th.all Mã
+              th Tên
+              th Thao tác
+              th Thời gian
+              th Loại
+          tbody
+            - var stt = 1
+            each item in data
+              tr
+                td #
+                  =item.id
+                td=item.user_name
+                td
+                  case item.action
+                    when 'create'
+                      |  Tạo
+                    when 'restore'
+                      |  Khôi phục
+                    when 'update'
+                      |  Cập nhật
+                    when 'delete'
+                      |  Xóa
+                    when 'inactive'
+                      |  Ẩn
+                    when 'active'
+                      |  Hiện
+                    when 'login'
+                      |  Đăng nhập
+                    when 'logout'
+                      |  Đăng xuất
+                  case item.type
+                    when 'menu'
+                      |  menu &#09;
+                      a(href='/admin/menu' target='_blank')=subStrNumChar(item.type_title, 50)
+                    when 'attribute'
+                      |  thuộc tính &#09;
+                      a(href='/admin/attribute' target='_blank')=subStrNumChar(item.type_title, 50)
+                    when 'setting'
+                      |  thiết lập chung 
+                    when 'settingrestore'
+                      |  thiết lập chung #{item.type_title}
+                    when 'product'
+                      |  sản phẩm &#09;
+                      a(href='/admin/product/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 50)
+                    when 'sale'
+                      |  chương trình giảm giá &#09;
+                      a(href='/admin/sale/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 50)
+                    when 'collection'
+                      |  nhóm sản phẩm &#09;
+                      a(href='/admin/collection/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 50)
+                    when 'blog'
+                      |  nhóm bài viết &#09;
+                      a(href='/admin/blog/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 50)
+                    when 'article'
+                      |  bài viết &#09;
+                      a(href='/admin/article/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 50)
+                    when 'page'
+                      |  trang nội dung &#09;
+                      a(href='/admin/page/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 50)
+                    when 'coupon'
+                      |  mã giảm giá &#09;
+                      a(href='/admin/coupon/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 50)
+                    when 'role'
+                      |  quyền &#09;
+                      a(href='/admin/role/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 50)
+                    when 'client'
+                      |  đối tác tiêu biểu &#09;
+                      a(href='/admin/client/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 50)
+                    when 'testimonial'
+                      |  đối tác nói về chúng tôi &#09;
+                      a(href='/admin/testimonial/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 50)
+                    when 'order'
+                      |  đơn hàng &#09;
+                      a(href='/admin/order/' + item.type_id target='_blank')=item.type_id
+                    when 'gallery'
+                      |  thư viện ảnh &#09;
+                      a(href='/admin/gallery/' + item.type_id target='_blank')=subStrNumChar(item.type_title, 50)
+                td=item.created_at
+                td
+                  if item.user_type == 'admin'
+                    | Quản trị viên
+                  else if item.user_type == 'superadmin'
+                    | Quản trị viên cấp cao
+                  else
+                    =item.user_type

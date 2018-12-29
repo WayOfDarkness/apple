@@ -1,0 +1,188 @@
+- var custom_field = getListCustomField(post_type)
+- var saveIndex = 0
+if custom_field
+  .box.box-custom-field
+    .form-horizontal
+      .box-title.clearfix
+        .pull-left.title-tab THUỘC TÍNH MỞ RỘNG
+        - if multiLang
+          include nav-tabs-metafield-lang
+      .box-body
+        .tab-content
+          #tab-metafield-vi.tab-pane.fade.in.active
+            each item, index in custom_field
+              .form-group(data-title=item.title data-handle=item.handle data-input_type=item.input_type)
+                .col-sm-2.control-label=item.title
+                  if item.input_type == 'image' || item.input_type == 'images'
+                    p=item.default_value
+                .col-sm-10
+                  case item.input_type
+                    when 'input'
+                      input.value.form-control(name=item.handle placeholder=item.title value=getCustomField(post_id, post_type, item.handle))
+                    when 'checkbox'
+                      label.custom-checkbox-meta
+                        if getCustomField(post_id, post_type, item.handle) == 'true'
+                          input.checkbox.value(type="checkbox" name=item.handle checked)
+                        else
+                          input.checkbox.value(type="checkbox" name=item.handle)
+                        span.checkmark
+                    when 'textarea'
+                      textarea.value.form-control(name=item.handle placeholder=item.title)=getCustomField(post_id, post_type, item.handle)
+                    when 'editor'
+                      textarea.value.form-control.editor(id=item.handle + '-' + saveIndex rows="4" name=item.handle placeholder=item.title)=getCustomField(post_id, post_type, item.handle)
+                      - saveIndex++
+                    when 'gallery'
+                      select.value.form-control(name=item.handle data-value=getCustomField(post_id, post_type, item.handle))
+                        each i in Gallery()
+                          option(value=i.handle)=i.title
+                    when 'map'
+                      .box-object-setting(data-name='name', data-type='map', data-handle=item.handle data-value=getCustomField(post_id, post_type, item.handle))
+                        input#google-address.form-control.value(type='text', name=item.handle, placeholder='Nhập địa chỉ để tìm kiếm')
+                      #myMap
+                    when 'file'
+                      .upload-file
+                        input(type="file")
+                        input.value.file(type="hidden" name=item.handle data-value=getCustomField(post_id, post_type, item.handle) value=getCustomField(post_id, post_type, item.handle))
+                        button.btn-upload-file
+                          i.fa.fa-circle-o-notch.fa-spin
+                          span Upload
+                    when 'select'
+                      - var classData = 'value form-control';
+                      if item.default_value == 'regions'
+                        - var classData = 'value form-control regions';
+                      if item.default_value == 'subregion'
+                        - var classData = 'value form-control subregion';
+                      select(class=classData, name=item.handle data-value=getCustomField(post_id, post_type, item.handle))
+                        if item.default_value
+                          case item.default_value
+                            when 'products'
+                              each i in Product(1, 100)
+                                option(value=i.handle)=i.title
+                            when 'collections'
+                              each i in Collection(1, 100)
+                                option(value=i.handle)=i.title
+                            when 'articles'
+                              each i in Article(1, 100)
+                                option(value=i.handle)=i.title
+                            when 'blogs'
+                              each i in Blog(1, 100)
+                                option(value=i.handle)=i.title
+                            when 'pages'
+                              each i in Page()
+                                option(value=i.handle)=i.title
+                            when 'client'
+                              each i in Client()
+                                option(value=i.id)=i.name
+                            when 'testimonial'
+                              each i in Testimonial()
+                                option(value=i.id)=i.name
+                            when 'regions'
+                              option(value="" disabled selected) Chọn tỉnh/thành phố
+                              each i in Region()
+                                option(value=i.name, data-id=i.id)=i.name
+                            when 'subregion'
+                                option(value="" disabled selected) Chọn quận/huyện
+                            default
+                              each i in item.default_value
+                                option(value=i)=i
+                    when 'select-multiple'
+                      select.value.form-control.chosen-select(multiple name=item.handle data-value=getCustomField(post_id, post_type, item.handle))
+                        if item.default_value
+                          case item.default_value
+                            when 'products'
+                              each i in Product(1, 100)
+                                option(value=i.handle)=i.title
+                            when 'collections'
+                              each i in Collection(1, 100)
+                                option(value=i.handle)=i.title
+                            when 'articles'
+                              each i in Article(1, 100)
+                                option(value=i.handle)=i.title
+                            when 'blogs'
+                              each i in Blog(1, 100)
+                                option(value=i.handle)=i.title
+                            when 'pages'
+                              each i in Page()
+                                option(value=i.handle)=i.title
+                            when 'client'
+                              each i in Client()
+                                option(value=i.id)=i.name
+                            when 'testimonial'
+                              each i in Testimonial()
+                                option(value=i.id)=i.name
+                            when 'regions'
+                              each i in Region()
+                                option(value=i.name)=i.name
+                            default
+                              each i in item.default_value
+                                option(value=i)=i
+                    when 'image'
+                      - var image = getCustomField(post_id, post_type, item.handle);
+                      if image
+                        .item-choose-image.active(data-default=staticURI() + "/img/default.jpg")
+                          img(src="/uploads/" + image)
+                          span.remove-image
+                            i.fa.fa-times
+                          input.value(type="hidden" name=item.handle value=image)
+                      else
+                        .item-choose-image(data-default=staticURI() + "/img/default.jpg")
+                          img(src=staticURI() + "/img/default.jpg")
+                          span.remove-image
+                            i.fa.fa-times
+                          input.value(type="hidden" name=item.handle)
+                    when 'images'
+                      - var images = getCustomField(post_id, post_type, item.handle);
+                      if images
+                        .form-horizontal.form-product
+                          .box-body
+                            .tab-content
+                              .row
+                                .col-xs-12
+                                  .col-xs-12.list-image.choose-image-variant
+                                    each itemImage in images
+                                      .image.col-xs-3.col-sm-2(data-name=itemImage, style="background-image:url('/uploads/" + itemImage + "')")
+                                        span.remove
+                                          i.fa.fa-times
+                                    .col-xs-3.col-sm-2.add-image
+                                  input.value.featured-image(type="hidden", name="image-" + item.handle , value=data.image)
+                      else
+                        .form-horizontal.form-product
+                          .box-body
+                            .tab-content
+                              .row
+                                .col-xs-12
+                                  .col-xs-12.list-image.choose-image-variant
+                                    .col-xs-3.col-sm-2.add-image
+                                  input.value.featured-image(type="hidden", name="image-" + item.handle)
+          if multiLang
+            each item, index in languages()
+              - saveIndex = 0
+              .tab-pane.fade.in(id="tab-metafield-" + item data-lang=item)
+                each e, i in custom_field
+                  if (e.input_type == 'input' || e.input_type == 'textarea' || e.input_type == 'editor' | e.input_type == 'image')
+                    .form-group.excluded(data-title=e.title data-handle=e.handle data-input_type=e.input_type)
+                      .col-sm-2.control-label=e.title
+                      .col-sm-10
+                        case e.input_type
+                          when 'input'
+                            input.value.form-control(name=e.handle + '-' + item placeholder=e.title value=getCustomField(post_id, post_type, e.handle, item))
+                          when 'textarea'
+                            textarea.value.form-control(name=e.handle + '-' + item  placeholder=e.title)=getCustomField(post_id, post_type, e.handle, item)
+                          when 'editor'
+                            textarea.value.form-control.editor(id=e.handle + '-' + saveIndex + '-' + item rows="4" name=e.handle placeholder=e.title)=getCustomField(post_id, post_type, e.handle, item)
+                            - saveIndex++
+                          when 'image'
+                            - var imageEn = getCustomField(post_id, post_type, e.handle, item);
+                            if imageEn
+                              .item-choose-image.active(data-default=staticURI() + "/img/default.jpg")
+                                img(src="/uploads/" + imageEn)
+                                span.remove-image
+                                  i.fa.fa-times
+                                input.value(type="hidden" name=e.handle + '-' + item value=image)
+                            else
+                              .item-choose-image(data-default=staticURI() + "/img/default.jpg")
+                                img(src=staticURI() + "/img/default.jpg")
+                                span.remove-image
+                                  i.fa.fa-times
+                                input.value(type="hidden" name=e.handle + '-' + item)
+script(src= staticURI() + '/js/admin/customfield.js')

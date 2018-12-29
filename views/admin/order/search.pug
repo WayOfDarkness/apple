@@ -1,0 +1,145 @@
+extends ./../layout.pug
+
+block pre-include
+  title Tìm kiếm
+  - var menu = 'order';
+  - var childMenu = 'search';
+block post-include
+  script(src=staticURI() + '/js/admin/order.js')
+  script.
+    initDataTable('table');
+    var modelName = 'order';
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a(href="/admin/order") Đơn hàng
+      li
+        a Tìm kiếm
+  section.content
+    .box
+      .box-header
+        h3.box-title Tìm kiếm
+      .box-body
+        form
+          .row
+            .col-xs-12.col-sm-4
+              .form-group
+                label Khách hàng
+                input.form-control(type='text', name='name' placeholder='Khách hàng' value=params.name)
+            .col-xs-12.col-sm-4
+              .form-group
+                label Số điện thoại
+                input.form-control.inputmark-phone(name='phone' type='number' placeholder='Số điện thoại' value=params.phone)
+            .col-xs-12.col-sm-4
+              .form-group
+                label Địa chỉ
+                input.form-control(type='text', name='address' placeholder='Địa chỉ' value=params.address)
+          .row
+            .col-xs-12.col-sm-4
+              .form-group
+                label Email
+                input.form-control.inputmark-email(name='email' type='email' placeholder='Email' value=params.email)
+            .col-xs-12.col-sm-4
+              .form-group
+                label Thời gian
+                .input-group
+                  input.form-control.datepicker-order.inputmark-date(name='start_date', placeholder='dd-mm-yyyy' value=params.start_date)
+                  span.input-group-addon.between-datetime
+                    | đến
+                  input.form-control.datepicker-order.endDatePicker.inputmark-date(name='end_date', placeholder='dd-mm-yyyy' value=params.end_date)
+            .col-xs-12.col-sm-4
+              .form-group
+                label Giá
+                .input-group
+                  input#dp1523241527197.form-control.datepicker.hasDatepicker(name='min_price', type='number', placeholder='Giá từ', value=params.min_price)
+                  span.input-group-addon.between-datetime
+                    | đến
+                  input#dp1523241527198.form-control.datepicker.hasDatepicker(name='max_price', type='number', placeholder='Giá đến', value=params.max_price)
+          .row
+            .col-xs-12.col-sm-4
+              .form-group
+                label Trạng thái đơn hàng
+                select.form-control(name='status' data-value=params.status)
+                  option(value='' selected disabled) Trạng thái đơn hàng
+                  option(value='new') Mới
+                  option(value='confirm') Đã xác nhận
+                  option(value='payment') Chưa thanh toán
+                  option(value='done') Hoàn tất
+                  option(value='return') Bị hoàn trả
+                  option(value='cancel') Bị hủy
+            .col-xs-12.col-sm-4
+              .form-group
+                label Mã giảm giá
+                select.form-control(name='coupon' data-value=params.coupon)
+                  option(value='' selected disabled) Mã giảm giá
+                  each coupon in coupons
+                    option(value=coupon.code)=coupon.title
+          .row
+            .col-xs-12
+              button.btn.btn-primary(type='submit')
+                i.fa.fa-search
+                |  Tìm kiếm
+    if params
+      .box.box-table
+        .box-header
+          h3.box-title Kết quả
+        .box-body
+          table.table.table-condensed.table-bordered.table-striped.display(cellspacing="0" width="100%")
+            .action-box.hidden
+              .dropdown
+                button.btn.btn-danger.dropdown-toggle(type="button" data-toggle="dropdown")
+                  i.fa.fa-share
+                  |  Chọn thao tác (đang chọn
+                  span.num-select
+                  |  đơn hàng) &ensp;
+                  span.caret
+                ul.dropdown-menu
+                  li
+                    a.status-order(data-value='new') Mới
+                  li
+                    a.status-order(data-value='confirm') Đã xác nhận
+                  li
+                    a.status-payment(data-value=0) Chưa thanh toán
+                  li
+                    a.status-payment(data-value=1) Đã thanh toán chưa gửi hàng
+                  li
+                    a.status-order(data-value='done') Hoàn tất
+                  li
+                    a.status-order(data-value='return') Bị hoàn trả
+                  li
+                    a.status-order(data-value='cancel') Bị hủy
+            thead
+              tr
+                th.text-center
+                  input.select-all(type="checkbox")
+                th Mã
+                th.all Khách hàng
+                th Trạng thái đơn hàng
+                th Tổng tiền
+                th Ngày đặt hàng
+            tbody
+              each item in data
+                tr
+                  td.text-center
+                    input.checkboxes(type="checkbox" value=item.id)
+                  td
+                    a(href="/admin/order/" + item.id target="_blank") #
+                      =item.id
+                  td
+                    a(href="/admin/order/" + item.id target="_blank")=item.name
+                  td
+                    case item.order_status
+                      when 'new'
+                        label.label.label-info Mới
+                      when 'confirm'
+                        label.label.label-primary Xác nhận
+                      when 'done'
+                        label.label.label-success Hoàn thành
+                      when 'cancel'
+                        label.label.label-danger Hủy
+                      when 'return'
+                        label.label.label-danger Hoàn trả
+                  td.text-right.right=money(item.total)
+                  td
+                    a(href="/admin/order/" + item.id target="_blank").link=datetime(item.created_at)

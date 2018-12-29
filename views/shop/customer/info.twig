@@ -1,0 +1,79 @@
+{% extends "layout.twig" %}
+
+{% block pre_include %}
+  <title>Tài khoản</title>
+{% endblock pre_include %}
+
+{% block content %}
+  <!-- Content Sub Page -->
+  <div class="account-info padding-wrap" id="account-info">
+    <div class="container box-1400">
+      <div class="row">
+        {% include 'customer/sidebar.twig' %}
+        <div class="col-md-9">
+          <div class="account--title">
+            <h3 class="title-default">Thông tin cá nhân</h3>
+          </div>
+          <div class="info">
+            <div class="row account--info">
+              <div class="col-sm-3">
+                <div class="account--info-title">
+                  <p>Họ tên</p>
+                  <h4>{{customer.name ?: 'Không có'}}</h4>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="account--info-title">
+                  <p>Email</p>
+                  <h4>{{customer.email ?: 'Không có'}}</h4>
+                </div>
+              </div>
+              <div class="col-sm-5">
+                <div class="account--info-title">
+                  <p>Số điện thoại</p>
+                  <h4>{{customer.phone ?: 'Không có'}}</h4>
+                </div>
+              </div>
+            </div>
+            <div class="row account--info">
+              <div class="col-sm-12">
+                <div class="account--info-title">
+                  <p>Địa chỉ</p>
+                  {% set address = customer.address ? customer.address : ''%}
+                  {% set subregion = customer.subregion ? ', ' ~  customer.subregion | subRegionName : ''%}
+                  {% set region = customer.region ? ', ' ~ customer.region | regionName : ''%}
+                  <h4>{{customer.address ? address ~ subregion ~ region : 'Không có'}}</h4>
+                </div>
+              </div>
+            </div>
+            <div class="row account--info">
+              <div class="col-sm-3">
+                <div class="account--info-title">
+                  <p>Ngày sinh</p>
+                  <h4>{{customer.birthday |  date('d/m/Y')}}</h4>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="account--info-title">
+                  <p>Giới tính</p>
+                  <h4>{{customer.gender ? customer.gender : 'Bạn chưa cập nhật giới tính'}}</h4>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="btn--edit-info">
+                <a href="{{__('EDIT_ACCOUNT_URL')}}" class="btn-custom-default">
+                  <span>Sửa thông tin</span></a>
+              </div>
+              <div class="btn--edit-info">
+                <a href="{{__('CHANGE_PASSWORD_URL')}}" class="btn-custom-default">
+                  <span>Thay đổi mật khẩu</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ./Content Sub Page -->
+{% endblock content %}

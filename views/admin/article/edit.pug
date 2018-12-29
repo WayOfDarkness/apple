@@ -1,0 +1,219 @@
+extends ./../layout.pug
+
+block pre-include
+  - var menu = 'article'
+  - var childMenu = 'list'
+  title   
+    =data.title
+
+block post-include
+  script(src=staticURI() + '/js/admin/article.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li.hidden-xs
+        a(href='/admin/article') Bài viết
+      li.hidden-xs
+        a Chỉnh sửa
+      li.title-ellipsis
+        a(title=data.title)=data.title
+    ol.button-action-mobile.button-right.col-md-4.col-sm-5.visible-xs.visible-sm.visible-md
+      .dropdown
+        button.btn.btn-default.btn-dropdown.dropdown-toggle(type='button', data-toggle='dropdown')
+          | Hành động &#09;
+          span.caret
+        ul.dropdown-menu
+          li  
+            a(data-toggle="modal" data-target="#modal-duplicate-artile")
+              i.fa.fa-clone
+              | Nhân bản
+          li
+            a(href=data.url, target="_blank")
+              i.fa.fa-eye
+              | Xem trên web
+          li
+            a.btn-delete-object(data-id=data.id,data-type='article')
+              i.fa.fa-trash-o
+              | Xóa
+          li
+            a.btn-create-update(data-id=data.id)
+              i.fa.fa-floppy-o
+              | Cập nhật
+    ol.button-right.col-md-5.col-sm-6.hidden-xs.hidden-sm.hidden-md
+      li
+        a.btn.btn-admin(data-toggle="modal" data-target="#modal-duplicate-artile")
+          i.fa.fa-clone
+          | Nhân bản
+      li
+        a.btn.btn-review(href=data.url, target="_blank")
+          i.fa.fa-eye
+          | Xem trên web
+      li
+        a.btn.btn-admin.btn-delete-object(data-id=data.id,data-type='article')
+          i.fa.fa-trash-o
+          | Xóa
+      span.middle-inline-block(style="height:60%")
+      li
+        a.btn.btn-admin.btn-create-update(data-id=data.id)
+          i.fa.fa-floppy-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Cập nhật
+  .clearfix
+  section.content.article
+    .row
+      .col-xs-12.col-sm-12.col-md-8
+        .box.box-info
+          .form-horizontal
+            .box-title.clearfix
+              .pull-left.title-tab THÔNG TIN
+              if multiLang
+                include ../snippet/nav-tabs-lang
+            .box-body
+              .tab-content
+                #tab-vi.tab-pane.fade.in.active
+                  .form-group
+                    .col-sm-2.control-label Tiêu đề
+                      strong.required  *
+                    .col-sm-10
+                      input.form-control.text-overflow-title(name="title", placeholder="Tiêu đề", value=data.title)
+                  .form-group
+                    .col-sm-2.control-label Đường dẫn
+                      strong.required  *
+                    .col-sm-10
+                      .input-group
+                        span.hidden-xs.input-group-addon=generateUrl("", "article", "vi")
+                        input.form-control.handle(name="handle", placeholder="duong-dan", value=data.handle)
+                        i.icon-refresh-handle.fa.fa-refresh
+                  .form-group
+                    .col-sm-2.control-label Mô tả
+                    .col-sm-10
+                      textarea.form-control(rows="4" data-autoresize name="description" placeholder="Mô tả")=data.description
+                  .form-group
+                    .col-sm-2.control-label Nội dung
+                    .col-sm-10
+                      textarea.form-control.tinymce#content=data.content
+                if multiLang
+                  each item, index in languages()
+                    - var data_lang = getObjectLanguage(data.id, "article", item)
+                    input(type="hidden" name="translattion_" + item value=data_lang.id)
+                    .tab-pane.fade.in(id="tab-" + item data-lang=item)
+                      .form-group
+                        .col-sm-2.control-label Tiêu đề
+                        .col-sm-10
+                          input.form-control(name="title_" + item, placeholder="Tiêu đề" value=data_lang.title)
+                      .form-group
+                        .col-sm-2.control-label Đường dẫn
+                        .col-sm-10
+                          .input-group
+                            span.input-group-addon=generateUrl("", "article", item)
+                            input.form-control.handle(name="handle_" + item, placeholder="duong-dan", value=data_lang.handle)
+                            i.icon-refresh-handle.fa.fa-refresh
+                      .form-group
+                        .col-sm-2.control-label Mô tả
+                        .col-sm-10
+                          textarea.form-control(rows="4" data-autoresize name="description_" + item placeholder="Mô tả")=data_lang.description
+                      .form-group
+                        .col-sm-2.control-label Nội dung
+                        .col-sm-10
+                          textarea.form-control.tinymce(id="content_" + item)=data_lang.content
+        - var post_type = 'article'
+        - var post_id = data.id
+        include ../snippet/box-custom-field.pug
+        - var seo = getSEO('article', data.id)
+        include ../snippet/box-seo.pug
+      .col-xs-12.col-sm-12.col-md-4
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title NHÓM BÀI VIẾT
+            .box-body
+              select.chosen-select.chosen-blog(data-placeholder="Chọn nhóm bài viết" multiple, data-value=data.blogs)
+                each item in blogs
+                  label
+                    option(value=item.id)=item.title
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title THẺ
+            .box-body
+              if count(data.tags)
+                input(type="text" data-role="tagsinput", name="tags", value=data.tags)
+              else
+                input(type="text" data-role="tagsinput", name="tags")
+              include ../snippet/tag-suggest.pug
+
+        .box.hidden
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title ĐỘ ƯU TIÊN
+            .box-body
+              input.form-control.value(type="text" name="priority" maxlength="8" value=data.priority min=1 )
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title HÌNH ĐẠI DIỆN
+                if (getMetaAdmin("image_resolution_article_text"))
+                  span.title-size=' (' + getMetaAdmin("image_resolution_article_text") + ')'
+            .box-body
+              if data.image
+                .item-choose-image.active(data-default=staticURI() + "/img/default.jpg")
+                  img(src='/uploads/' + resize(data.image, 480))
+                  span.remove-image
+                    i.fa.fa-times
+                  input.value(type="hidden", name="image", value=data.image)
+              else
+                .item-choose-image(data-default=staticURI() + "/img/default.jpg")
+                  img(src=staticURI() + "/img/default.jpg")
+                  input.value(type="hidden", name="image")
+        - var templates = getViewTemplate('article');
+        if countArr(templates)
+          .box
+            .form-horizontal
+              .box-title.clearfix
+                .col-xs-6.title GIAO DIỆN
+              .box-body
+                select.form-control(name="template" data-value=data.template)
+                  option(value="") Mặc định
+                  each item in templates
+                    option(value=item)=item
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title TRẠNG THÁI
+            .box-body
+              select.form-control(name="status", data-value=data.status)
+                option(value="active") Hiển thị
+                option(value="inactive") Ẩn
+                option(value="notPublish") Chưa xuất bản
+        - var date_publish = ''
+        if data.status != 'notPublish' 
+          - var date_publish = 'hidden'
+        .box.publish-date(class=date_publish)
+          .form-horizontal    
+            .box-body
+              .col-sm-12
+                .form-group
+                  .text-title Giờ xuất bản
+                  .input-group.bootstrap-timepicker.timepicker
+                    input.form-control.timepicker(name='publish_time', placeholder="H:MM:P",value=timestamps2time(data.publish_date,'h:i A'))
+                    span.input-group-addon
+                      i.glyphicon.glyphicon-time
+                  .text-title Ngày xuất bản
+                  input.form-control.datepicker(name='publish_date', placeholder="dd-mm-yyyy",value=ymd2dmy(data.publish_date))
+  #modal-duplicate-artile.modal.fade(role='dialog')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal') ×
+          .modal-title
+            h4.modal-title Nhân bản bài viết
+            .modal-body
+          .form-horizontal
+            .col-xs-12
+              label Tên sản bài viết mới
+            .box-body
+              input.form-control(name='name-duplicate-artile' value="Nhân bản của " + data.title type="text")
+        .modal-footer
+          button.btn.btn-default(type='button', data-dismiss='modal') Hủy
+          button.btn.btn-primary.btn-duplicate-artile(data-id=data.id) Nhân bản

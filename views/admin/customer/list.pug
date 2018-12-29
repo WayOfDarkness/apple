@@ -1,0 +1,66 @@
+extends ./../layout.pug
+
+block pre-include
+  - var menu = 'order';
+  - var childMenu = 'customer';
+  title Khách hàng
+block post-include
+  script(src=staticURI() +'/js/admin/customer.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a Khách hàng
+      li
+        a Danh sách khách hàng
+  section.content
+    .box.box-table
+      .row.box-header
+        h3.box-title DANH SÁCH
+      .box-body
+        table.table.table-condensed.table-bordered.table-striped.display.nowrap.customer-table(cellspacing="0" width="100%")
+          .action-box.hidden
+            .dropdown
+              button.btn.btn-danger.dropdown-toggle(type="button" data-toggle="dropdown")
+                i.fa.fa-share
+                |  Chọn thao tác (đang chọn
+                span.num-select
+                |  khách hàng) &ensp;
+                span.caret
+              ul.dropdown-menu
+                //li
+                //  a.status-active(data-value='active') Ẩn
+                //li
+                //  a.status-inactive(data-value='inactive') Hiện
+                //li
+                //  a.status-delete(data-value='delete') Xóa
+          thead
+            tr
+              //- th.all.text-center
+              //-   input.select-all(type="checkbox")
+              td Mã
+              th.all Họ tên
+              th Email
+              th Số điện thoại
+              th Địa chỉ
+              //th Tỉnh thành
+              //th Quận huyện
+              th Ngày tạo
+          tbody
+            each item in customers
+              tr
+                //- td.all.text-center
+                //-   input.checkboxes(type="checkbox" value=item.id)
+                td
+                  a(href="/admin/customer/" + item.id) #
+                    =item.id
+                td.all
+                  a(href="/admin/customer/" + item.id)=item.name
+                  span.hidden=createEnglishName(item.name)
+                td=item.email
+                td=item.phone
+                td.tr-title=item.address
+                //td=item.region
+                //td=item.subregion
+                td=item.created_at

@@ -1,0 +1,5 @@
+a.tags-header(href="#tags-input" data-toggle="collapse") Chọn từ những thẻ mới nhất
+.collapse#tags-input
+  .list-tags
+    each item in tags
+      span.tag-name(data-id=item.id)=item.name

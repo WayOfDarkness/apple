@@ -1,0 +1,182 @@
+- fetchPermissions()
+.header-mobile.hidden-sm.hidden-md
+  nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
+    .container
+      .navbar-header
+        button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar').button-menu-mobile
+          span.sr-only Menu
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        a.navbar-brand(href='/admin/dashboard')
+          img(src=staticURI() + '/img/lazi-logo.png')
+      #navbar.navbar-collapse.collapse(aria-expanded='false', style='height: 1px;')
+        ul.nav.navbar-nav
+          li
+            a(href='/admin/dashboard') Bảng điều khiển
+          if (hasPermission('order'))
+            li
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                | Đơn hàng
+                span.caret
+              ul.dropdown-menu(role='menu')
+                li
+                  a(href='/admin/order?order_status=new') Mới
+                li
+                  a(href='/admin/order?order_status=confirm') Đã xác nhận
+                li
+                  a(href='/admin/order?payment_status=0') Chưa thanh toán
+                li
+                  a(href='/admin/order?order_status=done') Hoàn tất
+                li
+                  a(href='/admin/order?order_status=return') Bị hoàn trả
+                li
+                  a(href='/admin/order?order_status=cancel') Bị hủy
+                li
+                  a(href='/admin/order') Tất cả
+                li
+                  a(href='/admin/order/search') Tìm kiếm
+                li
+                  a(href='/admin/bank') Ngân hàng
+                if (hasPermission('customer'))
+                  li
+                    a(href='/admin/customer') Khách hàng
+          if (hasPermission('product') || hasPermission('collection') || hasPermission('product_buy_together') || hasPermission('attribute'))
+            li
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                | Sản phẩm
+                span.caret
+              ul.dropdown-menu(role='menu')
+                if (hasPermission('product'))
+                  li
+                    a(href='/admin/product/create') Thêm mới
+                  li
+                    a(href="/admin/product") Danh sách
+                if (hasPermission('collection'))
+                  li
+                    a(href='/admin/collection') Nhóm sản phẩm
+                //- if (hasPermission('product_buy_together'))
+                //-   li
+                //-     a(href='/admin/product_buy_together') Sản phẩm mua kèm
+                if (hasPermission('attribute'))
+                  li
+                    a(href='/admin/attribute') Thuộc tính
+                  li
+                    a(href='/admin/import_product') Nhập sản phẩm
+                if (hasPermission('comment'))
+                  li
+                    a(href='/admin/product/comment') Bình luận
+          if (hasPermission('article') || hasPermission('blog') || hasPermission('page'))
+            li
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                | Bài viết
+                span.caret
+              ul.dropdown-menu(role='menu')
+                if (hasPermission('article'))
+                  li
+                    a(href='/admin/article/create') Viết bài mới
+                  li
+                    a(href="/admin/article") Danh sách
+                if (hasPermission('blog'))
+                  li
+                    a(href="/admin/blog") Nhóm bài viết
+                if (hasPermission('page'))
+                  li
+                    a(href='/admin/page') Trang nội dung
+                if (hasPermission('article'))
+                  li
+                    a(href='/admin/article/comment') Bình luận
+          if (hasPermission('coupon') || hasPermission('sale'))
+            li
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                | Khuyến mãi
+                span.caret
+              ul.dropdown-menu(role='menu')
+                if (hasPermission('coupon'))
+                  li
+                    a(href='/admin/coupon')
+                      | Mã giảm giá
+                if (hasPermission('sale'))
+                  li
+                    a(href="/admin/sale")
+                      | Chương trình khuyến mãi
+          if (hasPermission('customer'))
+            li
+              a(href='/admin/customer') Khách hàng
+          if (hasPermission('gallery'))
+            li
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                | Gallery
+                span.caret
+              ul.dropdown-menu(role='menu')
+                li
+                  a(href="/admin/gallery/create") Thêm mới
+                li
+                  a(href="/admin/gallery") Danh sách
+          if (hasPermission('contact'))
+            li
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                | Liên hệ
+                span.caret
+              ul.dropdown-menu(role='menu')
+                li
+                  a(href="/admin/contact?read=1") Mới
+                li
+                  a(href="/admin/contact?reply=1") Chưa phản hồi
+                li
+                  a(href="/admin/contact") Tất cả
+          if (hasPermission('review'))
+            li
+              a(href='/admin/review') Đánh giá
+          if (hasPermission('subscriber'))
+            li
+              a(href='/admin/subscriber') Subscriber
+          if (hasPermission('setting') || hasPermission('menu') || hasPermission('shipping_fee'))
+            li
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                | Cấu hình
+                span.caret
+              ul.dropdown-menu(role='menu')
+                li
+                  a(href='/admin/setting') Thiết lập chung
+                if (hasPermission('menu'))
+                  li
+                    a(href='/admin/menu') Menu
+                if (hasPermission('library'))
+                  li
+                    a(href='/admin/library') Library
+                if (hasPermission('shipping_fee'))
+                  li
+                    a(href='/admin/shipping_fee') Phí giao hàng
+                if (hasPermission('testimonial'))
+                  li
+                    a(href='/admin/testimonial') Nói về chúng tôi
+                if (hasPermission('client'))
+                  li
+                    a(href='/admin/client') Tiêu biểu
+                if (hasPermission('tag'))
+                  li
+                    a(href='/admin/tag') Thẻ
+          if (hasPermission('user'))
+            li
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                | Quản trị viên
+                span.caret
+              ul.dropdown-menu(role='menu')
+                li
+                  a(href='/admin/user') Danh sách
+                li
+                  a(href='/admin/user/history') Lịch sử hoạt động
+                if (getRole() == -1)
+                  li
+                    a(href='/admin/user/setting') Thiết lập Admin
+                  li
+                    a(href='/admin/role') Phân quyền
+                  li
+                    a(href='/admin/restore') Khôi phục
+                  li
+                    a(href='/admin/remove-order') Xóa đơn hàng
+          li
+            a(data-toggle="modal" data-target="#modal-change-password" href="#" ) Đổi mật khẩu
+          li
+            a(href='/admin/logout') Đăng xuất

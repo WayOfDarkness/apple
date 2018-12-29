@@ -1,0 +1,101 @@
+{% extends "layout.twig" %}
+
+{% block pre_include %}
+  <title>Tài khoản</title>
+{% endblock pre_include %}
+
+{% block content %}
+  <!-- Content Sub Page -->
+  <section class="account-dashboad padding-wrap" id="account-dashboad">
+    <div class="container box-1400">
+      <div class="row">
+        {% include 'customer/sidebar.twig' %}
+        <div class="col-md-9">
+          <div class="account--title">
+            <h3 class="title-default">Quản lý Tài Khoản</h3>
+          </div>
+          <div class="row">
+
+            <div class="col-lg-12 col-sm-12 right">
+              <div class="address">
+                <div class="row">
+                  <div class="col-md-12 address__receive">
+                    <div class="address__title">
+                      <p>Thông tin cá nhân
+                      </p>
+                      <a href="/customer/edit-account">Chỉnh sửa</a>
+                    </div>
+                    <div class="address__name">
+                      <h4>{{customer.name}}</h4>
+                    </div>
+                    <div class="address__ads">
+                      <p>{{customer.email}}</p>
+                      <p>{{customer.phone}}</p>
+                      <p>{{customer.address}}</p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row-done">
+            <div class="order">
+              <div class="order__title">
+                <p>{{customer.orders |  length}} Đơn hàng gần đây</p>
+              </div>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th class="code">Đơn hàng số #</th>
+                      <th>Ngày đặt hàng</th>
+                      <th>Sản phẩm</th>
+                      <th colspan="2">Tổng cộng</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in customer.orders %}
+                      <tr>
+                        <th class="code">{{item.created_at | date('Ymd')}}{{item.id}}</th>
+                        <th>{{item.created_at | date('d/m/Y')}}</th>
+                        <th class="th-list-prod">
+                          <ul class="list-inline">
+                            {% for prod in item.cart %}
+                            <li>
+                              <a href="{{prod.url}}"><img src="{{prod.image | upload_url | resize(100)}}" alt=""></a>
+                            </li>
+                            {% endfor %}
+                          </ul>
+                        </th>
+                        <th>{{item.total | money('.')}}
+                          đ</th>
+                        <th>
+                          <a href="/customer/order/{{item.id}}">Quản lý</a>
+                        </th>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ./Content Sub Page -->
+
+  {% endblock content %}
+  {% block post_include %}
+  <script type="text/javascript">
+    $(document).ready(function() {
+      if (localStorage.getItem('name')) {
+        $('.name_default').html(localStorage.getItem('name'));
+        $('.add_default').html(localStorage.getItem('address'));
+        $('.phone_default').html(localStorage.getItem('phone'));
+      }
+    })
+  </script>
+  {% endblock %}

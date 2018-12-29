@@ -1,0 +1,20 @@
+{% extends "layout.twig" %}
+
+{% block pre_include %}
+  <title>Trang không tồn tại</title>
+{% endblock pre_include %}
+
+{% block content %}
+  <div class="container error-page text-center">
+    <div class="col-sm-12">
+      <img src="{{shop.static}}/img/404.gif" style="width:480px" alt="Page Not Found">
+    </div>
+    <div class="col-sm-12" style="margin-top:40px">
+      <p>Chào bạn, địa chỉ này không tồn tại.</p>
+      <p>Cuộc dạo chơi đến đây là kết thúc.</p>
+    </div>
+    <div class="col-sm-12 back-to-home" style="margin-top:40px">
+      <a href="/">Về trang chủ</a>
+    </div>
+  </div>
+{% endblock content %}

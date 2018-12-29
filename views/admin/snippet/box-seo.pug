@@ -1,0 +1,100 @@
+.box.box-seo
+  .form-horizontal
+    .box-title.clearfix
+      .pull-left.title-tab TỐI ƯU SEO
+      if multiLang
+        ul.nav.nav-tabs.nav-tabs-lang.no-padding.pull-right
+          li.active
+            a.tab-lang(data-toggle='tab', href='#tab-seo-vi') Tiếng Việt
+          each item, index in languages()
+            li
+              if item == 'en'
+                - var title = "Tiếng Anh";
+              if item == 'jp'
+                - var title = "Tiếng Nhật";
+              if item == 'ko'
+                - var title = "Tiếng Hàn";
+              a.tab-lang(data-toggle='tab', href='#tab-seo-' + item)=title
+    .box-body
+      .tab-content
+        #tab-seo-vi.tab-pane.fade.in.active
+          .form-group
+            .col-sm-2.control-label Tiêu đề trang
+            .col-sm-10
+              input.form-control(name="meta_title", value=seo.meta_title, placeholder="Tiêu đề trang")
+          .form-group
+            .col-sm-2.control-label Mô tả trang
+            .col-sm-10
+              textarea.form-control(name="meta_description", placeholder="Mô tả trang")=seo.meta_description
+          .form-group
+            .col-sm-2.control-label Từ khóa
+            .col-sm-10
+              textarea.form-control(name="meta_keyword", placeholder="Từ khóa")=seo.meta_keyword
+          .form-group
+            .col-sm-2.control-label Meta robots
+            .col-sm-10
+              select.form-control(name="meta_robots", data-value=seo.meta_robots, value=seo.meta_robots)
+                option(value="index, follow") Index, Follow
+                option(value="noindex, follow") No Index, Follow
+                option(value="index, nofollow") Index, No Follow
+                option(value="noindex, nofollow") No Index, No Follow
+          .form-group
+            .col-sm-2.control-label Hình đại diện
+            .col-sm-10
+              if seo.meta_image
+                .item-choose-image(data-default=staticURI() + "/img/default.jpg")
+                  img(src='/uploads/' + resize(seo.meta_image, 480))
+                  span.remove-image
+                    i.fa.fa-times
+                  input.value(type="hidden", name="meta_image", value=seo.meta_image)
+              else
+                .item-choose-image(data-default=staticURI() + "/img/default.jpg")
+                  img(src=staticURI() + "/img/default.jpg")
+                  span.remove-image
+                    i.fa.fa-times
+                  input.value(type="hidden", name="meta_image")
+        if multiLang
+          each item, index in languages()
+            if seo && seo.id
+              - var meta_title = '';
+              - var meta_description = '';
+              - var meta_keyword = '';
+              - var meta_robots = seo.meta_robots;
+              - var meta_image = seo.meta_image;
+              - var data_lang = getObjectLanguage(seo.id, "seo", item)
+              if data_lang
+                - var meta_title = data_lang.meta_title;
+                - var meta_description = data_lang.meta_description;
+                - var meta_keyword = data_lang.meta_keyword;
+
+            input(type="hidden" name="translattion_seo_" + item value=data_lang.id)
+            .tab-pane.fade.in(id="tab-seo-" + item data-lang=item)
+              .form-group
+                .col-sm-2.control-label Tiêu đề trang
+                .col-sm-10
+                  input.form-control(name="meta_title_" + item, value=meta_title, placeholder="Tiêu đề trang")
+              .form-group
+                .col-sm-2.control-label Mô tả trang
+                .col-sm-10
+                  textarea.form-control(name="meta_description_" + item, placeholder="Mô tả trang")=meta_description
+              .form-group
+                .col-sm-2.control-label Từ khóa
+                .col-sm-10
+                  textarea.form-control(name="meta_keyword_" + item, placeholder="Từ khóa")=meta_keyword
+              .form-group
+                .col-sm-2.control-label Meta robots
+                .col-sm-10
+                  select.form-control.disabled(name="meta_keyword_other", data-value=meta_robots, value=meta_robots)
+                    option(value="index, follow") Index, Follow
+                    option(value="noindex, follow") No Index, Follow
+                    option(value="index, nofollow") Index, No Follow
+                    option(value="noindex, nofollow") No Index, No Follow
+              .form-group
+                .col-sm-2.control-label Hình đại diện
+                .col-sm-10
+                  if meta_image
+                    .item-image.meta_images_other(data-default=staticURI() + "/img/default.jpg")
+                      img(src='/uploads/' + resize(meta_image, 480))
+                  else
+                    .item-image.meta_images_other(data-default=staticURI() + "/img/default.jpg")
+                      img(src=staticURI() + "/img/default.jpg")

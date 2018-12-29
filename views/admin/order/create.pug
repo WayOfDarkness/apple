@@ -1,0 +1,162 @@
+extends ./../layout.pug
+
+block pre-include
+  title Tạo mới đơn hàng
+  - var menu = 'order';
+  - var childMenu = 'all';
+block post-include
+  script(src=staticURI() + '/js/admin/order.js')
+
+block content
+  include ../snippet/modal-view-image
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a(href="/admin/order") Đơn hàng
+      li
+        a Tạo mới
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      li
+        a.btn.btn-admin.btn-create-order(data-id=order.id)
+          i.fa.fa-floppy-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Lưu lại
+  section.content
+    input(type="hidden" value=order.id name="order_id")
+    .row
+      .col-xs-12.col-sm-12.col-md-8
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title DANH SÁCH SẢN PHẨM
+            .box-body
+                .tab-content
+                  .row.search-order
+                    .col-xs-12
+                      input.form-control.search-product(placeholder='Tìm kiếm và chọn sản phẩm...')
+                    .col-xs-12
+                      .panel.panel-default.panel-custom.hidden
+                        .panel-body.text-left
+                          .col-xs-12.order-search-result
+                            ul.list-unstyled
+                table.table.table-bordered.table-list-product.table-custom-c
+                  thead
+                    th Hình
+                    th Tên sản phẩm
+                    th Đơn giá
+                    th Số lượng
+                    th Tổng
+                    th 
+                  tbody
+                
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title THÔNG TIN KHÁCH HÀNG
+            .box-body
+              .tab-content.info-user-order
+                .form-group
+                  .col-sm-2.text-left.control-label Họ tên:
+                    strong.required  *
+                  .col-sm-10
+                    input.form-control(name='name' placeholder='Họ tên khách hàng')
+                .form-group
+                  .col-sm-2.text-left.control-label Email:
+                    strong.required  *
+                  .col-sm-10
+                    input.form-control.inputmark-email(name='email' type='email' placeholder='Email khách hàng')
+                .form-group
+                  .col-sm-2.text-left.control-label Số điện thoại:
+                    strong.required  *
+                  .col-sm-10
+                    input.form-control.inputmark-phone(name='phone' type='number' placeholder='Số điện thoại khách hàng')
+                .form-group
+                  .col-sm-2.text-left.control-label Địa chỉ:
+                    strong.required  *
+                  .col-sm-10
+                    input.form-control(name='address' placeholder='Địa chỉ giao hàng')
+                .form-group
+                  .col-sm-2.text-left.control-label Tỉnh/Thành phố:
+                    strong.required  *
+                  .col-sm-10
+                    select.form-control.select-region-order(name='order_region')
+                      option(value=0) Chọn tỉnh/thành phố...
+                      each region in regions
+                        option(value=region.id)=region.name
+                .form-group
+                  .col-sm-2.text-left.control-label Quận/Huyện:
+                    strong.required  *
+                  .col-sm-10
+                    select.form-control.select-subregion(name='subregion')
+                      option(value=0) Chọn quận/huyện...
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-sm-6.col-xs-12.title THÔNG TIN GIAO HÀNG
+              .col-sm-6.col-xs-12.checkbox
+                label
+                  input(type = "checkbox" name ="getInfoCustomer" ) 
+                  | Thông tin giao hàng giống với thông tin khách hàng
+            .box-body
+              .tab-content
+                .form-group
+                  .col-sm-2.text-left.control-label Họ tên:
+                  .col-sm-10
+                    input.form-control(name='name_shipping' placeholder='Họ tên giao hàng')
+                .form-group
+                  .col-sm-2.text-left.control-label Email:
+                  .col-sm-10
+                    input.form-control.inputmark-email(name='email_shipping' type='email' placeholder='Email giao hàng')
+                .form-group
+                  .col-sm-2.text-left.control-label Số điện thoại:
+                  .col-sm-10
+                    input.form-control.inputmark-phone(name='phone_shipping' type='number' placeholder='Số điện thoại giao hàng')
+                .form-group
+                  .col-sm-2.text-left.control-label Địa chỉ:
+                    strong.required  *
+                  .col-sm-10
+                    input.form-control(name='address_shipping' placeholder='Địa chỉ giao hàng')
+                .form-group
+                  .col-sm-2.text-left.control-label Tỉnh/Thành phố:
+                    strong.required  *
+                  .col-sm-10
+                    select.form-control.select-region-order(name='order_region_shipping')
+                      option(value=0) Chọn tỉnh/thành phố...
+                      each region in regions
+                        option(value=region.id)=region.name
+                .form-group
+                  .col-sm-2.text-left.control-label Quận/Huyện:
+                    strong.required  *
+                  .col-sm-10
+                    select.form-control.select-subregion(name='subregion_shipping')
+                      option(value=0) Chọn quận/huyện...
+                .form-group
+                  .col-sm-2.text-left.control-label Ghi chú:
+                  .col-sm-10
+                    textarea.form-control(name='notes')
+      .col-xs-12.col-sm-12.col-md-4
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title THÔNG TIN ĐƠN HÀNG
+            .box-body
+              .col-xs-12
+                .row
+                  .col-xs-12.pd-0
+                    label Phương thức vận chuyển:
+                  .col-xs-12.pd-0
+                    select.form-control.shipping-fee
+                      option(value=0) Tùy chỉnh phí vận chuyển
+                .row
+                  br
+                  input.form-control.input-shipping-fee.formatMoney(placeholder='Nhập giá vận chuyển' onkeypress="inputPositiveNumbers( event )")
+                br
+                .row
+                  .col-xs-6.pd-0 Tổng cộng:
+                  .col-xs-6.text-right.price-craft.pd-0(data-value=0)=money(0)
+                .row
+                  .col-xs-6.pd-0 Phí vận chuyển:
+                  .col-xs-6.text-right.order_fee.pd-0(data-value=0) #{money(0)}
+                .row
+                  .col-xs-6.text-bold.pd-0 Thành tiền:&nbsp;
+                  .col-xs-6.text-right.price-total.text-bold.pd-0=money(0)

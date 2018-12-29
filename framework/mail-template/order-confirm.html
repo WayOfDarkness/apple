@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<title>Order confirm</title>
+	<link href="https://fonts.googleapis.com/css?family=Muli:400,400i,600,600i,700,700i&amp;subset=vietnamese" rel="stylesheet">
+	<style media="screen">
+		body{
+			font-family: 'Muli', sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+		table {
+			border-collapse: collapse;
+		}
+
+		td,
+		th {
+			padding: 5px;
+		}
+		.table-responsive{
+			max-width: 100%;
+			overflow-x: auto;
+		}
+	</style>
+</head>
+<body>
+	<div class="content-box" style="max-width: 800px; width: 100%; margin: auto;">
+		<header style="padding: 0 15px;">
+			<div class="greet" style="border-bottom: 1px solid #000">
+				<h2 class="logo" style="text-align: center; margin-bottom: 20px;">
+					<a href="{{website}}">
+						<img src="http://vanlang.demo3.laziweb.com/uploads/logo_1543546501.png" alt="">
+					</a>
+				</h2>
+				<p style="text-align: center">Hi <span>{{customer_name}}</span>! - Cảm ơn <span>{{customer_name}}</span> đã mua hàng tại {{shop_name}}</p>
+			</div>
+		</header>
+		<div class="content" style="padding: 0 15px;">
+			<p style="text-align: center; text-transform: uppercase;">Giao hàng</p>
+			<div class="customer-info" style="border-bottom: 1px solid #000; padding-bottom: 20px; margin-bottom: 30px;">
+				<p style="text-transform: uppercase; margin-bottom: 25px">Người nhận</p>
+				<p>Họ tên: <span>{{customer_name}}</span></p>
+        <p>Địa chỉ: <span>{{customer_address}}, {{customer_address_subregion_name}}</span></p>
+				<p>Thành phố: <span>{{customer_address_region_name}}</span></p>
+				<p>{{order_notes}}</p>
+			</div>
+			<div class="order-info">
+				<p style="margin-bottom: 25px; font-weight: 700; font-size: 18px">Thông tin đơn hàng</p>
+				<p>Mã đơn hàng: <span>{{order_id}}</span></p>
+				<p>Ngày và giờ đặt hàng: <span>{{order_create}}</span></p>
+				<div class="table-responsive" style="margin-bottom: 40px;">
+					<table style="width: 100%; max-width: 100%">
+						<thead style="border-bottom: 1px dotted #808080;">
+							<tr>
+								<th style="text-align: left"><p>Tên sản phẩm</p></th>
+								<th style="text-align: right"><p>VND</p></th>
+							</tr>
+						</thead>
+						<tbody style="border-bottom: 1px dotted #808080;">
+							{{order_cart}}
+						</tbody>
+					</table>
+				</div>
+				<div class="total-price" style="text-align: right; margin-bottom: 80px;">
+					<p>Tổng thành tiền: <span>{{order_subtotal}}đ</span></p>
+					<p>Shipping: <span>{{order_shipping}}đ</span></p>
+					<p>Giảm giá: <span>{{order_coupon_discount}}đ</span></p> <!-- Hiện lên khi có xài mã promo -->
+					<p><span style="font-weight: 700; font-size: 18px">Tổng: </span> <span>{{order_total}}đ</span></p>
+					<p><span>Phương thức thanh toán: </span><span>{{payment_method}}</span></p>
+				</div>
+			</div>
+		</div>
+		<footer style="padding: 0 15px;">
+			<p>Nếu bạn có bất kỳ thắc mắc nào cần giải đáp về đơn hàng hoặc giao hàng, xin liên hệ qua email: <a href="{{shop_email}}">{{shop_email}}</a> hoặc gọi đến hotline <a href="tel:{{shop_phone}}">{{shop_phone}}</a> để được tư vấn và giải đáp nhé!</p>
+		</footer>
+	</div>
+</body>
+
+</html>

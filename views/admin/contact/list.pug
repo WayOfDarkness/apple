@@ -1,0 +1,84 @@
+extends ./../layout.pug
+
+block pre-include
+  - var menu = 'contact';
+  case type
+    when 'read'
+      - var childMenu = 'read';
+    when 'reply'
+      - var childMenu = 'reply';
+    default
+      - var childMenu = 'all';
+  title Liên hệ
+  link(rel="stylesheet" href=staticURI() + "/libs/jquery-ui.min.css")
+  
+block post-include
+  script(src=staticURI() + '/js/admin/contact.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a Liên hệ
+      li
+        case type
+          when 'read'
+            a Danh sách chưa đọc
+          when 'reply'
+            a Danh sách chưa phản hồi
+          default
+            a Danh sách
+  section.content.clearfix
+    .box.box-table
+      .row.box-header
+        h3.box-title DANH SÁCH
+      .box-body
+        table.table.table-condensed.table-bordered.table-striped.display.nowrap(cellspacing="0" width="100%")
+          .action-box.hidden
+            .dropdown
+              button.btn.btn-danger.dropdown-toggle(type="button" data-toggle="dropdown")
+                i.fa.fa-share
+                |  Chọn thao tác (đang chọn
+                span.num-select
+                |  liên hệ) &ensp;
+                span.caret
+              ul.dropdown-menu
+                li
+                  a.contact-status(data-value='read') Đã đọc
+                li
+                  a.contact-status(data-value='unreply') Chưa phản hồi
+                li
+                  a.contact-status(data-value='reply') Đã phản hồi
+                if (checkRemovePug('contact'))
+                  li
+                    a.contact-status(data-value='delete') Xóa
+          thead
+            tr
+              th.all.text-center
+                input.select-all(type="checkbox")
+              th Mã
+              th Tên
+              th Email
+              th Số điện thoại
+              th Ngày cập nhật
+              th Trạng thái
+              
+          tbody
+            each item in data
+              tr
+                td.all.text-center
+                  input.checkboxes(type="checkbox" value=item.id)
+                td
+                  a(href="/admin/contact/" + item.id) #
+                    =item.id
+                td
+                  a(href="/admin/contact/" + item.id)=item.name
+                td=item.email
+                td=item.phone
+                td=item.updated_at
+                td
+                  case item.reply
+                    when 1
+                      label.label.label-success Đã phản hồi
+                    when 0
+                      label.label.label-warning Chưa phản hồi

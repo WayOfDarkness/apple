@@ -1,0 +1,120 @@
+extends ./../layout.pug
+
+block pre-include
+  - var menu = 'setting';
+  - var childMenu = 'library';
+  title Library
+
+block post-include
+  script.
+    $(document).ready(function() {
+      if (ENABLE_NEW_EXPLORER) {
+        $("#library").removeClass('hidden');
+        $("#library").height($(window).height() - 70);
+        $('#library').on('load', function() {
+          $("#library").contents().find(".btn.btn-outline-warning").addClass("hidden");
+        });
+      } else {
+        $('.box.box-table').removeClass('hidden');
+      }
+    });
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a Library
+  section.content(style="padding-top: 55px; padding-bottom:0; overflow:hidden; padding-left: 0;padding-right: 0;")
+    iframe#library.hidden(src="/xpl/finder.html" style="width: 100%;border: 0;")
+    .box.box-table.hidden(style="padding: 0; padding-left: 15px;")
+      - var dataModal = getUploads()
+      #modal-upload.content-library
+        .modal-dialog
+          .modal-content.row
+            .folder-content.folder-tree.col-md-2.col-sm-2.col-xs-2
+              .visible-xs.btn-close.btn-hide-folder 
+                i.glyphicon.glyphicon-remove
+              .row.tree-header
+                .folder-name
+                  span.title.fa Chọn thư mục                   
+              ul.nav.nav-tabs
+                - var i = 1
+                each element, index in dataModal
+                  if i == 1
+                    li.tab-folder.active.tab-home
+                      a(data-toggle='tab' data-target='#' + index)
+                        i.fa.fa-folder-open(aria-hidden='true')
+                          span #{' /'}
+                  else
+                    li.tab-folder(data-name=index)
+                      a(data-toggle='tab' data-target='#' + index)
+                        i.fa.fa-folder-open(aria-hidden='true')
+                          span #{' ' + index}
+                        span.remove-folder.pull-right
+                          i.fa.fa-times
+                  -- i++        
+              .btn.btn-default.tab-new-folder
+                a(href='#' title="Thêm mới thư mục" data-toggle="modal" data-target="#modal-create-folder")
+                  i.fa.fa-plus #{' Thêm thư mục'}
+            .btn.btn-link.show-folder.visible-xs 
+              i.glyphicon.glyphicon-chevron-right
+            .folder-content.folder-images.col-md-10.col-sm-10.col-xs-10      
+              .folder-header
+                .folder-name-show
+                  span.name Home
+                .dropdown.pull-right
+                  button.btn.dropdown-toggle(type="button" data-toggle="dropdown")
+                    i.fa.fa-cogs
+                      span.num-select
+                        span.caret
+                  ul.dropdown-menu
+                    li
+                      a.btn-select-all Chọn tất cả
+                    li
+                      a.btn-delete Xóa
+                    li
+                      a.btn-move(data-toggle="modal", data-target="#modal-move") Chuyển qua thư mục
+              .modal-body
+                .tab-content
+                  - var n = 1
+                  each element,index in dataModal
+                    if n == 1
+                      .tab-pane.fade.active.in(id=index data-name=index)
+                        .container-fuild.file-manager.clearfix
+                          .list-image.clearfix
+                            label.col-xs-3.col-sm-4.col-md-4.col-lg-3.image.add-image(for="upload-image-" + index)
+                              form.item(style="background: url('" + staticURI() + "/img/add_image.png')", enctype="multipart/form-data")
+                                i.fa.fa-circle-o-notch.fa-spin
+                                input.hidden.upload-image(id='upload-image-' + index, type="file" name="upload[]" accept="image/*" multiple="multiple")
+                            each t in element
+                              .col-xs-3.col-sm-4.col-md-4.col-lg-3.image
+                                .item(style='background: url("/uploads/' + resize(t, 480) + '")', data-src=t)
+                                  span.remove-image
+                                    i.fa.fa-times
+                    else
+                      .tab-pane.fade(id=index data-name=index)
+                        .container-fuild.file-manager.clearfix
+                          .list-image.clearfix
+                            label.col-xs-3.col-sm-4.col-md-4.col-lg-3.image.add-image(for="upload-image-" + index)
+                              form.item(style="background: url('" + staticURI() + "/img/add_image.png')", enctype="multipart/form-data")
+                                i.fa.fa-circle-o-notch.fa-spin
+                                input.hidden.upload-image(id='upload-image-' + index, type="file" name="upload[]" accept="image/*" multiple="multiple")
+                            each t in element
+                              .col-xs-3.col-sm-4.col-md-4.col-lg-3.image
+                                .item(style='background: url("/uploads/' + resize(t, 480) + '")', data-src=t)
+                                  span.remove-image
+                                    i.fa.fa-times
+                    -- n++
+  #modal-create-folder.modal.modal-showreel.fade(role="dialog")
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button.close(type='button', data-dismiss='modal') ×
+          h4.modal-title Thêm mới thư mục
+        .modal-body
+          .form-group.clearfix
+            .col-sm-12
+              input.form-control(name="name_folder" placeholder="Tên thư mục" maxlength="50")
+        .modal-footer
+          button.btn.btn-default(type='button', data-dismiss='modal') Hủy
+          button.btn.btn-primary.btn-create-folder Thêm
