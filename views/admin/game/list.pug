@@ -1,0 +1,89 @@
+extends ./../layout.pug
+block pre-include
+  - var menu = 'game'
+  title Game
+
+block post-include
+  script(src=staticURI() + '/js/admin/game.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a(href='/admin/game') Game
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      li
+        a.btn.btn-admin(href="/admin/game/create") Thêm mới
+
+  section.content
+    .box.box-table
+      .row.box-header
+        h3.box-title DANH SÁCH
+      .box-body
+        table.table.table-condensed.table-bordered.table-striped.nowrap(cellspacing="0" width="100%")
+          .action-box.hidden
+            .dropdown
+              button.btn.btn-danger.dropdown-toggle(type="button" data-toggle="dropdown")
+                i.fa.fa-share
+                |  Chọn thao tác (đang chọn
+                span.num-select
+                |  nhóm bài viết) &ensp;
+                span.caret
+              ul.dropdown-menu
+                li
+                  a.status-active(data-value='active') Ẩn
+                li
+                  a.status-inactive(data-value='inactive') Hiện
+                if (checkRemovePug('game'))
+                  li
+                    a.status-delete(data-value='delete') Xóa
+          thead
+            tr
+              th.all.text-center
+                input.select-all(type="checkbox")
+              th Mã
+              th Tên game
+              th Ngày cập nhật
+              th Trạng thái
+          tbody
+            each item in data
+              tr
+                td.all.text-center
+                  input.checkboxes(type="checkbox" value=item.id)
+                td
+                  a(href="/admin/game/" + item.id target="_blank") #
+                    =item.id
+                td.all.tr-title
+                  a(href="/admin/game/" + item.id target="_blank")=item.name
+                td=item.updated_at
+                td
+                  case item.status
+                    when 'active'
+                      label.label.label-info Đang hiện
+                    when 'inactive'
+                      label.label.label-warning Đang ẩn
+              +listChild(item.subGame)
+                          
+mixin listChild(childs)
+  each child in childs
+    tr.subcollection(data-parent_id=parent_id.id, data-id=child.id, data-priority=child.priority)
+      td.all.text-center
+        input.checkboxes(type="checkbox" value=child.id)
+      td
+        a(href="/admin/game/" + child.id target="_blank") has child
+      td.all(style="padding-left:" +( child.lv * 15 )+ 'px')
+        i.fa.fa-level-down(style="margin-right: 5px;")
+        a(href="/admin/game/" + child.id target="_blank")=child.name
+      td=child.priority
+      td=child.view
+      td=child.updated_at
+      td
+        case child.status
+          when 'active'
+            label.label.label-info Đang hiện
+          when 'inactive'
+            label.label.label-warning Đang ẩn
+    if (child.subGame != 0)
+      +listChild(child.subGame, lv + 15)
+                    
+                  

@@ -372,6 +372,13 @@ $app->group('/admin', function () use ($app) {
   $app->post('/blog', '\AdminBlogController:store');
   $app->put('/blog/{id}', '\AdminBlogController:update');
   $app->delete('/blog/{id}', '\AdminBlogController:delete');
+  //game
+  $app->get('/game', '\AdminGameController:fetch');
+  $app->get('/game/create', '\AdminGameController:create');
+  $app->get('/game/{id}', '\AdminGameController:get');
+  $app->post('/game', '\AdminGameController:store');
+  $app->put('/game/{id}', '\AdminGameController:update');
+  $app->delete('/game/{id}', '\AdminGameController:delete');
 
   //page
   $app->get('/page', '\AdminPageController:fetch');

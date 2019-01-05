@@ -125,7 +125,12 @@ $sqls = [
   "ALTER TABLE `article` ADD COLUMN `raw_text` text",
   'ALTER TABLE `article` ADD FULLTEXT (raw_text)',
   'ALTER TABLE `product` ADD FULLTEXT (raw_title)',
-  'ALTER TABLE `product` ADD FULLTEXT (raw_full)'
+  'ALTER TABLE `product` ADD FULLTEXT (raw_full)',
+  "ALTER TABLE `blog` ADD COLUMN `game_id` INT(11) DEFAULT '0'",
+  "ALTER TABLE `article` ADD COLUMN `game_id` INT(11) DEFAULT '0'",
+  "ALTER TABLE `article` ADD COLUMN `admin_point` INT(11) DEFAULT '0'",
+  "ALTER TABLE `article` ADD COLUMN `user_point` INT(11) DEFAULT '0'",
+
 ];
 
 

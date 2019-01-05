@@ -12,104 +12,6 @@ aside.main-sidebar
         a(href="/admin/dashboard" class=itemClass)
           i.fa.fa-home
           span Bảng điều khiển
-      if (hasPermission('order'))
-        - var itemClass = (menu == 'order' ? 'active' : '');
-        li.treeview.order(class=itemClass)
-          a.main-item(class=itemClass)
-            i.fa.fa-shopping-cart
-            span Đơn hàng
-            span.pull-right.icon-number-sidebar(data-type="new")
-            i.fa.fa-angle-left.pull-right
-          ul.treeview-menu
-            - var liClass = (childMenu == 'new' ? 'active' : '');
-            li
-              a(href='/admin/order?order_status=new' class=liClass)
-                | Mới
-                span.pull-right.icon-number-sidebar(data-type="new")
-            - var liClass = (childMenu == 'confirm' ? 'active' : '');
-            li
-              a(href='/admin/order?order_status=confirm' class=liClass)
-                | Đã xác nhận
-                span.pull-right.icon-number-sidebar(data-type="confirm")
-            - var liClass = (childMenu == 'unpaid' ? 'active' : '');
-            li
-              a(href='/admin/order?payment_status=0' class=liClass)
-                | Chưa thanh toán
-                span.pull-right.icon-number-sidebar(data-type="payment")
-            - var liClass = (childMenu == 'done' ? 'active' : '');
-            li
-              a(href='/admin/order?order_status=done' class=liClass)
-                | Hoàn tất
-                span.pull-right.icon-number-sidebar(data-type="done")
-            - var liClass = (childMenu == 'return' ? 'active' : '');
-            li
-              a(href='/admin/order?order_status=return' class=liClass)
-                | Bị hoàn trả
-                span.pull-right.icon-number-sidebar(data-type="return")
-            - var liClass = (childMenu == 'cancel' ? 'active' : '');
-            li
-              a(href='/admin/order?order_status=cancel' class=liClass)
-                | Bị hủy
-                span.pull-right.icon-number-sidebar(data-type="cancel")
-            - var liClass = (childMenu == 'all' ? 'active' : '');
-            li
-              a(href='/admin/order' class=liClass)
-                | Tất cả
-                span.pull-right.icon-number-sidebar(data-type="all")
-            - var liClass = (childMenu == 'search' ? 'active' : '');
-            li
-              a(href='/admin/order/search' class=liClass)
-                | Tìm kiếm
-            - var liClass = (childMenu == 'bank' ? 'active' : '');
-            li
-              a(href='/admin/bank' class=liClass)
-                  | Ngân hàng
-            if (hasPermission('customer'))
-              - var liClass = (childMenu == 'customer' ? 'active' : '');
-              li
-                a(href='/admin/customer' class=liClass)
-                  | Khách hàng
-            - var liClass = (childMenu == 'bank' ? 'active' : '');
-      if (hasPermission('product') || hasPermission('collection') || hasPermission('product_buy_together') || hasPermission('attribute'))
-        - var itemClass = (menu == 'product' ? 'active' : '');
-        li.treeview(class=itemClass)
-          a.main-item(class=itemClass)
-            i.fa.fa-product-hunt
-            span Sản phẩm
-            i.fa.fa-angle-left.pull-right
-          ul.treeview-menu
-            if (hasPermission('product'))
-              - var liClass = (childMenu == 'create' ? 'active' : '');
-              li
-                a(href='/admin/product/create' class=liClass)
-                  | Thêm mới
-              - var liClass = (childMenu == 'list' ? 'active' : '');
-              li
-                a(href="/admin/product" class=liClass)
-                  | Danh sách
-            if (hasPermission('collection'))
-              - var liClass = (childMenu == 'collection' ? 'active' : '');
-              li
-                a(href='/admin/collection' class=liClass)
-                  | Nhóm sản phẩm
-            //- if (hasPermission('product_buy_together'))
-            //-   - var liClass = (childMenu == 'product_buy_together' ? 'active' : '');
-            //-   li
-            //-     a(href='/admin/product_buy_together' class=liClass)
-            //-       | Sản phẩm mua kèm
-            if (hasPermission('attribute'))
-              - var liClass = (childMenu == 'attribute' ? 'active' : '');
-              li
-                a(href='/admin/attribute' class=liClass)
-                  | Thuộc tính
-            - var liClass = (childMenu == 'import_product' ? 'active' : '');
-            li
-              a(href='/admin/import_product' class=liClass) Nhập sản phẩm
-            if (hasPermission('comment'))
-              - var liClass = (childMenu == 'comment' ? 'active' : '');
-              li
-                a(href="/admin/product/comment" class=liClass)
-                  | Bình luận
       if (hasPermission('article') || hasPermission('blog') || hasPermission('page'))
         - var itemClass = (menu == 'article' ? 'active' : '');
         li.treeview(class=itemClass)
@@ -142,24 +44,6 @@ aside.main-sidebar
               li
                 a(href="/admin/article/comment" class=liClass)
                   | Bình luận
-      if (hasPermission('coupon') || hasPermission('sale'))
-        - var itemClass = (menu == 'coupon' ? 'active' : '');
-        li.treeview(class=itemClass)
-          a.main-item(class=itemClass)
-            i.fa.fa-gift
-            span Khuyến mãi
-            i.fa.fa-angle-left.pull-right
-          ul.treeview-menu
-            if (hasPermission('coupon'))
-              - var liClass = (childMenu == 'coupon' ? 'active' : '');
-              li
-                a(href='/admin/coupon' class=liClass)
-                  | Mã giảm giá
-            if (hasPermission('sale'))
-              - var liClass = (childMenu == 'sale' ? 'active' : '');
-              li
-                a(href="/admin/sale" class=liClass)
-                  | Chương trình khuyến mãi
       if (hasPermission('gallery'))
         - var itemClass = (menu == 'gallery' ? 'active' : '');
         li.treeview(class=itemClass)
@@ -197,6 +81,12 @@ aside.main-sidebar
             li
               a(href="/admin/contact" class=liClass)
                 | Tất cả
+      
+      - var itemClass = (menu == 'game' ? 'active' : '');
+      li.treeview
+        a.main-item(href="/admin/game" class=itemClass)
+          i.fa.fa-gamepad
+          span Game
       if hasPermission('review')
         - var itemClass = (menu == 'review' ? 'active' : '');
         li.treeview

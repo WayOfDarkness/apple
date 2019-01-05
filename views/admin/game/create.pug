@@ -1,0 +1,90 @@
+extends ./../layout.pug
+
+block pre-include
+  - var menu = 'game'
+  title Tạo game mới
+
+block post-include
+  script(src=staticURI() + '/js/admin/game.js')
+
+block content
+  section.content-header.clearfix
+    ol.breadcrumb.col-md-8.col-sm-7
+      li
+        a(href='/admin/game') Game
+      li
+        a Tạo mới
+    ol.button-right.col-md-4.col-sm-5.col-xs-12
+      li
+        a.btn.btn-admin.btn-create-update
+          i.fa.fa-floppy-o
+          i.fa.fa-circle-o-notch.fa-spin
+          | Lưu lại
+  section.content
+    .row
+      .col-xs-12.col-sm-12.col-md-8
+        .box.box-info
+          .form-horizontal
+            .box-title.clearfix
+              .pull-left.title-tab THÔNG TIN
+            .box-body
+              .tab-content
+                #tab-vi.tab-pane.fade.in.active
+                  .form-group
+                    .col-sm-2.control-label Tên game
+                      strong.required  *
+                    .col-sm-10
+                      input.form-control.title(name="title", placeholder="Tên game")
+                  .form-group
+                    .col-sm-2.control-label Đường dẫn
+                      strong.required  *
+                    .col-sm-10
+                      .input-group
+                        span.input-group-addon=generateUrl("", "game", "vi")
+                        input.form-control.handle(name="handle", placeholder="duong-dan")
+                        i.icon-refresh-handle.fa.fa-refresh
+                  .form-group
+                    .col-sm-2.control-label Mô tả
+                    .col-sm-10
+                      textarea.form-control(rows="4" data-autoresize name="description" placeholder="Mô tả")
+                  .form-group
+                    .col-sm-2.control-label Requirement
+                    .col-sm-10
+                      textarea.form-control.tinymce#requirement
+        //- - var post_type = 'game'
+        //- include ../snippet/box-custom-field.pug
+        include ../snippet/box-seo.pug
+      .col-xs-12.col-sm-12.col-md-4
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title GAME CHA
+            .box-body
+              select.game_parent.form-control(name="parent_id")
+                option(value="-1" selected) Chọn game cha(nhóm game)...
+                each item in games
+                  option(value=item.id)=item.name
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title ĐỘ ƯU TIÊN
+            .box-body
+              input.form-control.value(type="text" name="priority" maxlength="8" value=1000 min=1)
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title HÌNH ĐẠI DIỆN
+            .box-body
+              .item-choose-image(data-default=staticURI() + "/img/default.jpg")
+                img(src=staticURI() + "/img/default.jpg")
+                span.remove-image
+                  i.fa.fa-times
+                input.value(type="hidden" name="image")
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-6.title TRẠNG THÁI
+            .box-body
+              select.form-control(name="status")
+                option(value="active") Hiển thị
+                option(value="inactive") Ẩn

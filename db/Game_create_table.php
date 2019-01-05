@@ -16,19 +16,14 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 
 $Schema = $capsule->schema();
 
-$Schema->create('blog', function (Blueprint $table) {
+$Schema->create('game', function (Blueprint $table) {
   $table->increments('id');
-  $table->string('title');
+  $table->string('name');
   $table->string('image')->default('');
-  $table->text('description')->default('');
-  $table->text('content')->default('');
+  $table->text('description');
+  $table->text('requirement');
   $table->string('status')->default('');
-  $table->integer('view')->default(0);
-  $table->integer('game_id')->default(0);
-  $table->text('tags')->default('');
-  $table->text('article_tags')->default('');
   $table->integer('parent_id')->default(-1);
   $table->integer('priority')->default(1000);
-  $table->string('template')->default('');
   $table->timestamps();
 });
