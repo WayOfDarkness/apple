@@ -14,6 +14,7 @@
       $item->description = $data['description'] ?: '';
       $item->content = $data['content'] ?: '';
       $item->status = $data['status'] ?: 'active';
+      $item->game_id = $data['game_id']?: 0;
       $item->parent_id = $data['parent_id'] ?: -1;
       $item->priority = $data['priority'] ?: 1000;
       $item->template = $data['template'] ?: '';
@@ -40,6 +41,7 @@
       $item->description = $data['description'] ?: '';
       $item->content = $data['content'] ?: '';
       $item->status = $data['status'];
+      $item->game_id = $data['game_id']?: 0;
       $item->parent_id = $data['parent_id'] ?: -1;
       $item->priority = $data['priority'] ?: 1000;
       $item->updated_at = date('Y-m-d H:i:s');

@@ -1,8 +1,24 @@
 // initDataTable('table');
 var modelName = 'article';
 
+$( function() {
+    var value = $('#slider').data('value') ? $('#slider').data('value') : 0;
+    var handle = $( "#custom-handle" );
+    $( "#slider" ).slider({
+      value: value,
+      min: 0,
+      max: 10,
+      create: function() {
+        handle.text( $( this ).slider( "value" ) );
+      },
+      slide: function( event, ui ) {
+        handle.text( ui.value );
+      }
+    });
+  } );
+
 $(document).ready(function() {
-    initDataTableAjax('table', '/admin/api/getArticlePaginate', '/admin/api/exportArticleExcel');
+    initDataTableAjax('table', '/admin/api/getArticlePaginate?type='+type_article, '/admin/api/exportArticleExcel');
 });
 
 $('.tinymce').each(function () {
@@ -20,21 +36,37 @@ $(".chosen-select").chosen({width: "100%"});
 $('.btn-create-update').click(function (event) {
   $(document).find('.error').removeClass('error');
   var data = {};
+  data.type = type_article ? type_article : 'news';
   data.title = $('input[name="title"]').val();
   data.handle = $('input[name="handle"]').val();
   data.description = $('textarea[name="description"]').val();
   data.content = tinyMCE.get('content').getContent();
-  data.blogs = $('.chosen-blog').val();
+  data.game_id = $('.chosen-game[name="game"]').val();
+  data.blogs = $('.chosen-blog[name="blog"]').val();
   data.image = $('input[name="image"]').val();
   data.status = $('select[name="status"]').val();
   data.priority = parseInt($('input[name=priority]').val());
-
+  data.admin_point = typeof $("#slider").slider("value") === "number" ? $("#slider").slider("value") : 0;
   data.publish_date = $('input[name=publish_date]').val();
   data.publish_date = dmy2ymd(data.publish_date);
   data.publish_time = $('input[name="publish_time"]').val();
   data.tags = $("input[name='tags']").tagsinput('items');
-  data.author = $("input[name='author']").val();
+  // data.author = $("input[name='author']").val();
   data.template = $('select[name="template"]').val() || '';
+
+  data.listImage = [];
+  $('.article-images').find('.list-image .image').each(function () {
+    data.listImage.push($(this).attr('data-name'));
+  });
+
+  data.arrOption = [];
+
+  $('.list-attributes .item-attribute').each(function (index, elem) {
+    var option_value = $(this).find('select').val();
+    if (option_value) {
+      data.arrOption[index] = option_value;
+    }
+  });
 
   if (!data.title.trim().length) {
     toastr.error('Chưa nhập tiêu đề');
@@ -49,20 +81,9 @@ $('.btn-create-update').click(function (event) {
 
   data.multiLang = [];
 
-  if (languages) {
-    $.each(languages, function (index, elem) {
-      var obj = {};
-      obj.lang = elem;
-      obj.id = $('input[name="translattion_' + elem + '"]').val()
-      obj.title = $('input[name="title_' + elem + '"]').val();
-      obj.handle = $('input[name="handle_' + elem + '"]').val() || data.handle;
-      obj.description = $('textarea[name="description_' + elem + '"]').val();
-      obj.content = tinyMCE.get("content_" + elem).getContent();
-      data.multiLang.push(obj);
-    });
-  }
-
   $(this).addClass('disabled');
+  console.log(data);
+  // return;
 
   var id = $(this).data('id');
   if (id) updateArticle(id, data);
@@ -79,7 +100,10 @@ function createArticle(data) {
         toastr.success('Tạo thành công');
         updateSEO('article', json.id);
         updateMetafield('article', json.id);
-        reloadPage('/admin/article/' + json.id);
+        if (type_article == "review")
+          reloadPage('/admin/article/' + json.id + "?template=analysis");
+        else
+          reloadPage('/admin/article/' + json.id);
       } else if (json.code == -1) {
         toastr.error('Bài viết đã tồn tại');
         $(document).find('.disabled').removeClass('disabled');

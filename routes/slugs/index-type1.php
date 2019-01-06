@@ -4,5 +4,7 @@
 
   // custom slug
   $app->get('/{handle}', function($request, $response) {
-    return SlugController::getResponseFromHandle($request, $response);
+    $logger = $this->get('logger');
+    $ctrl = new SlugController($this);
+    return $ctrl->getResponseFromHandle($request, $response);
   });

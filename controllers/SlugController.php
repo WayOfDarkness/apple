@@ -21,6 +21,7 @@ require_once("../controllers/PageController.php");
 class SlugController extends Controller {
 
   public function getResponseFromHandle(Request $request, Response $response) {
+    $ci = $this->ci;
     $handle = $request->getAttribute('handle');
     $langCode = $request->getAttribute("lang");
     $subParent = $request->getAttribute("sub_parent");
@@ -107,31 +108,31 @@ class SlugController extends Controller {
       $type = $slug['post_type'];
       switch ($slug->post_type) {
         case 'gallery':
-          $ctrl = new GalleryController(new ContainerInterface);
+          $ctrl = new GalleryController($ci);
           $slug = Gallery::where('id', $slug['post_id'])->first();
           break;
         case 'page':
-          $ctrl = new PageController(new ContainerInterface);
+          $ctrl = new PageController($ci);
           $slug = Page::where('id', $slug['post_id'])->first();
           break;
         case 'collection':
-          $ctrl = new CollectionController(new ContainerInterface);
+          $ctrl = new CollectionController($ci);
           $slug = Collection::where('id', $slug['post_id'])->first();
           break;
         case 'article';
-          $ctrl = new ArticleController(new ContainerInterface);
+          $ctrl = new ArticleController($ci);
           $slug = Article::where('id', $slug['post_id'])->first();
           break;
         case 'product';
-          $ctrl = new ProductController(new ContainerInterface);
+          $ctrl = new ProductController($ci);
           $slug = Product::where('id', $slug['post_id'])->first();
           break;
         case 'blog';
-          $ctrl = new BlogController(new ContainerInterface);
+          $ctrl = new BlogController($ci);
           $slug = Blog::where('id', $slug['post_id'])->first();
           break;
         default:
-          $ctrl = new PageController(new ContainerInterface);
+          $ctrl = new PageController($ci);
           return $ctrl->PageNotFound($request, $response);
           break;
       }

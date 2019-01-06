@@ -1,6 +1,6 @@
 extends ./../layout.pug
 block pre-include
-  - var menu = 'article'
+  - var menu = 'blog'
   - var childMenu = 'blog'
   title Nhóm bài viết
 
@@ -77,7 +77,8 @@ mixin listChild(childs)
       td.all.text-center
         input.checkboxes(type="checkbox" value=child.id)
       td
-        a(href="/admin/blog/" + child.id target="_blank") has child
+        a(href="/admin/blog/" + child.id target="_blank") #
+          =child.id
       td.all(style="padding-left:" +( child.lv * 15 )+ 'px')
         i.fa.fa-level-down(style="margin-right: 5px;")
         a(href="/admin/blog/" + child.id target="_blank")=child.title

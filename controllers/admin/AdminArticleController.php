@@ -135,7 +135,12 @@ class AdminArticleController extends AdminController {
   }
 
   public function fetch(Request $request, Response $response) {
+    $params = $request->getQueryParams();
 
+    $type = $params['type'] ?: 'news';
+    error_log("type" .$type);
+
+    $template = $params['template'] ?: 'article';
     $blogs = Blog::where('status', '!=', 'delete')->orderBy('title', 'asc')->get();
     $data = Article::where('status', '!=', 'delete')
       ->orderBy('updated_at', 'desc')
@@ -150,17 +155,34 @@ class AdminArticleController extends AdminController {
         $value->blog_name = implode(",", $blog);
       }
     }
-    return $this->view->render($response, 'admin/article/list', array(
-      'data' => $data,
+
+    return $this->view->render($response, 'admin/' . $template . '/list', array(
+      // 'data' => $data,
+      'type' => $type,
       'blogs' => $blogs
     ));
   }
 
   public function create(Request $request, Response $response) {
+    $params = $request->getQueryParams();
+    $type = $params['type'] ?: 'news';
+    $template = $params['template'] ?: 'article';
+    error_log("tesst  ".$template);
     $blogs = Blog::where('status', '!=', 'delete')->orderBy('title', 'asc')->get();
     $tags = Tag::orderBy('name', 'asc')->take(20)->get();
-    return $this->view->render($response, 'admin/article/create', array(
+    $attributes = Attribute::where('parent_id', -1)->where('status', 1)->get();
+    $games = Game::where('status', '!=', 'delete')->orderBy('name', 'asc')->get();
+
+    foreach ($attributes as $key => $value) {
+			$child = Attribute::where('parent_id', $value->id)->where('parent_id', '!=', -1)->get();
+			$value->child = $child;
+    }
+
+    return $this->view->render($response, 'admin/' . $template . '/create', array(
       'blogs' => $blogs,
+      'games' => $games,
+      'type' => $type,
+      'attributes' => $attributes,
       'tags'  => $tags
     ));
   }
@@ -168,7 +190,6 @@ class AdminArticleController extends AdminController {
   public function store(Request $request, Response $response) {
     $body = $request->getParsedBody();
     $code = Article::store($body);
-
     if ($code) {
       if (count($body['blogs'])) BlogArticle::storeBlogArticle($code, $body['blogs']);
       if ($body['tags'] && count($body['tags'])) Tag::storeListTags($body['tags']);
@@ -179,6 +200,12 @@ class AdminArticleController extends AdminController {
                     ->get();
       foreach ($blogs as $key => $blog) {
         Blog::updateArticleTags($blog->blog_id);
+      }
+
+      if ($body['listImage']) {
+        foreach ($body['listImage'] as $key => $image) {
+          Image::store($image, 'article', $code);
+        }
       }
 
       if ($body['multiLang'] && count($body['multiLang'])) {
@@ -196,6 +223,8 @@ class AdminArticleController extends AdminController {
   }
 
   public function get(Request $request, Response $response) {
+    $params = $request->getQueryParams();
+    $template = $params['template'] ?: 'article';
     $id = $request->getAttribute('id');
     $article = Article::find($id);
 
@@ -209,15 +238,26 @@ class AdminArticleController extends AdminController {
     $article['blogs'] = $blogs;
 
     $blogs = Blog::where('status', '!=', 'delete')->orderBy('title', 'asc')->get();
+    $games = Game::where('status', '!=', 'delete')->orderBy('name', 'asc')->get();
+    $listImage = Image::where('type','article')->where('type_id',$id)->get();
 
     if ($article['tags']) $article['tags'] = str_replace("#", ",", $article['tags']);
 
     $tags = Tag::orderBy('name', 'asc')->take(20)->get();
     $authors = Author::orderBy('name', 'asc')->take(20)->get();
+    $attributes = Attribute::where('parent_id', -1)->where('status', 1)->get();
+    foreach ($attributes as $key => $value) {
+			$child = Attribute::where('parent_id', $value->id)->where('parent_id', '!=', -1)->get();
+			$value->child = $child;
+    }
 
-    return $this->view->render($response, 'admin/article/edit', array(
+    return $this->view->render($response, 'admin/' . $template . '/edit', array(
       'data' => $article,
+      'games' => $games,
       'blogs' => $blogs,
+      'listImage' => $listImage,
+      'attributes' => $attributes,
+      'type' => $article['type'],
       'tags' => $tags,
       'authors' => $authors
     ));
@@ -228,7 +268,7 @@ class AdminArticleController extends AdminController {
     $id = $request->getAttribute('id');
     $code = Article::update($id, $body);
 
-    if (!$code) {
+    if ($code) {
       BlogArticle::storeBlogArticle($id, $body['blogs']);
       if ($body['tags'] && count($body['tags'])) Tag::storeListTags($body['tags']);
       if ($body['author'] && count($body['author'])) Author::store($body['author']);
@@ -238,6 +278,10 @@ class AdminArticleController extends AdminController {
                     ->get();
       foreach ($blogs as $key => $blog) {
         Blog::updateArticleTags($blog->blog_id);
+      }
+
+      foreach ($body['listImage'] as $key => $image) {
+        Image::store($image, 'article', $id);
       }
 
       if ($body['multiLang'] && count($body['multiLang'])) {
@@ -302,8 +346,8 @@ class AdminArticleController extends AdminController {
   }
 
   public function getArticlePaginate(Request $request, Response $response) {
-
     $params = $request->getQueryParams();
+    $type = $params['type'] ?: 'news';
     $draw = $params['draw'];
     $perpage = $params['length'];
     $skip = $params['start'];
@@ -316,6 +360,7 @@ class AdminArticleController extends AdminController {
     $sort = array( $orderArr[$column_order] , $order['dir'] );
 
     $data = Article::where('status', '!=', 'delete')
+                        ->where('type', $type)
                         ->where('title', 'LIKE' , '%'. $search_value .'%' );
 
     $all_data_count = $data->get()->count();

@@ -6,6 +6,8 @@ $('.tinymce').each(function() {
   initTinymce('#' + id);
 });
 
+$(".chosen-select").chosen({width: "100%"});
+
 $('.btn-create-update').click(function () {
   $(document).find('.error').removeClass('error');
   var data = {};
@@ -16,6 +18,7 @@ $('.btn-create-update').click(function () {
   data.content = tinyMCE.get('content').getContent();
   data.status = $('select[name="status"]').val();
   data.priority = $('input[name="priority"]').val();
+  data.game_id = $('.chosen-game[name="game"]').val();
   data.parent_id = $('select[name="parent_id"]').val();
   data.tags = $("input[name='tags']").tagsinput('items');
   data.template = $('select[name="template"]').val() || '';

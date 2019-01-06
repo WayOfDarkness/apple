@@ -1,6 +1,6 @@
 extends ./../layout.pug
 block pre-include
-  - var menu = 'article'
+  - var menu = 'blog'
   - var childMenu = 'blog'
   title=data.title
 
@@ -129,6 +129,15 @@ block content
                 else
                   p Chưa có bài viết nào
       .col-xs-12.col-sm-12.col-md-4
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title GAME
+            .box-body
+              select.chosen-select.chosen-game(name="game", data-placeholder="Chọn game" data-value=data.game_id)
+                each item in games
+                  label
+                    option(value=item.id)=item.name
         .box
           .form-horizontal
             .box-title.clearfix

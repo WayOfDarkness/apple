@@ -12,38 +12,85 @@ aside.main-sidebar
         a(href="/admin/dashboard" class=itemClass)
           i.fa.fa-home
           span Bảng điều khiển
+      - var itemClass = (menu == 'game' ? 'active' : '');
+      li.treeview
+        a.main-item(href="/admin/game" class=itemClass)
+          i.fa.fa-gamepad
+          span Game
       if (hasPermission('article') || hasPermission('blog') || hasPermission('page'))
-        - var itemClass = (menu == 'article' ? 'active' : '');
+        - var itemClass = (menu == 'analysis' ? 'active' : '');        
         li.treeview(class=itemClass)
           a.main-item(class=itemClass)
             i.fa.fa-pencil-square-o
-            span Bài viết
+            span Đánh giá
             i.fa.fa-angle-left.pull-right
           ul.treeview-menu
             if (hasPermission('article'))
               - var liClass = (childMenu == 'create' ? 'active' : '');
               li
-                a(href='/admin/article/create' class=liClass)
+                a(href='/admin/article/create?template=analysis&type=review' class=liClass)
                   | Viết bài mới
               - var liClass = (childMenu == 'list' ? 'active' : '');
               li
-                a(href="/admin/article" class=liClass)
+                a(href="/admin/article?template=analysis&type=review" class=liClass)
                   | Danh sách
-            if (hasPermission('blog'))
-              - var liClass = (childMenu == 'blog' ? 'active' : '');
-              li
-                a(href="/admin/blog" class=liClass)
-                  | Nhóm bài viết
-            if (hasPermission('page'))
-              - var liClass = (childMenu == 'page' ? 'active' : '');
-              li
-                a(href='/admin/page' class=liClass)
-                  | Trang nội dung
             if (hasPermission('article'))
               - var liClass = (childMenu == 'comment' ? 'active' : '');
               li
-                a(href="/admin/article/comment" class=liClass)
+                a(href="/admin/article/comment?template=analysis&type=review" class=liClass)
                   | Bình luận
+        - var itemClass = (menu == 'article' ? 'active' : '');
+        li.treeview(class=itemClass)
+          a.main-item(class=itemClass)
+            i.fa.fa-pencil-square-o
+            span Tin tức
+            i.fa.fa-angle-left.pull-right
+          ul.treeview-menu
+            if (hasPermission('article'))
+              - var liClass = (childMenu == 'create' ? 'active' : '');
+              li
+                a(href='/admin/article/create?type=news' class=liClass)
+                  | Viết bài mới
+              - var liClass = (childMenu == 'list' ? 'active' : '');
+              li
+                a(href="/admin/article?type=news" class=liClass)
+                  | Danh sách
+            if (hasPermission('article'))
+              - var liClass = (childMenu == 'comment' ? 'active' : '');
+              li
+                a(href="/admin/article/comment?type=news" class=liClass)
+                  | Bình luận
+        - var itemClass = (menu == 'walkthrough' ? 'active' : '');        
+        li.treeview(class=itemClass)
+          a.main-item(class=itemClass)
+            i.fa.fa-pencil-square-o
+            span Hướng dẫn
+            i.fa.fa-angle-left.pull-right
+          ul.treeview-menu
+            if (hasPermission('article'))
+              - var liClass = (childMenu == 'create' ? 'active' : '');
+              li
+                a(href='/admin/article/create?type=walkthrough' class=liClass)
+                  | Viết bài mới
+              - var liClass = (childMenu == 'list' ? 'active' : '');
+              li
+                a(href="/admin/article?type=walkthrough" class=liClass)
+                  | Danh sách
+            if (hasPermission('article'))
+              - var liClass = (childMenu == 'comment' ? 'active' : '');
+              li
+                a(href="/admin/article/comment?type=walkthrough" class=liClass)
+                  | Bình luận
+      - var itemClass = (menu == 'blog' ? 'active' : '');
+      li.treeview
+        a.main-item(href="/admin/blog" class=itemClass)
+          i.fa.fa-gamepad
+          span Nhóm bài viết
+      - var itemClass = (menu == 'page' ? 'active' : '');
+      li.treeview
+        a.main-item(href="/admin/page" class=itemClass)
+          i.fa.fa-gamepad
+          span Trang nội dung
       if (hasPermission('gallery'))
         - var itemClass = (menu == 'gallery' ? 'active' : '');
         li.treeview(class=itemClass)
@@ -81,18 +128,12 @@ aside.main-sidebar
             li
               a(href="/admin/contact" class=liClass)
                 | Tất cả
-      
-      - var itemClass = (menu == 'game' ? 'active' : '');
-      li.treeview
-        a.main-item(href="/admin/game" class=itemClass)
-          i.fa.fa-gamepad
-          span Game
       if hasPermission('review')
         - var itemClass = (menu == 'review' ? 'active' : '');
         li.treeview
           a.main-item(href="/admin/review" class=itemClass)
             i.fa.fa-star-o
-            span Đánh giá
+            span Người dùng đánh giá
       if hasPermission('subscriber')
         - var itemClass = (menu == 'subscriber' ? 'active' : '');
         li.treeview

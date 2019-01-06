@@ -82,6 +82,23 @@ $(document).on('click', '.choose-image-product .add-image', function() {
   }
 });
 
+$(document).on('click', '.choose-image-article .add-image', function() {
+  elementImage = $(this).parent();
+  if (!ENABLE_NEW_EXPLORER) {
+    chooseMultipleImage = true;
+    uploadType = 'product';
+    $('#modal-upload').modal('show');
+  } else {
+    EXPLORER.setMode({
+      multiple: true
+    });
+    EXPLORER.setCustomAttr({
+      uploadType: 'product'
+    });
+    EXPLORER.open();
+  }
+});
+
 $(document).on('click', '.item:not(form)', function() {
   if (!chooseMultipleImage) $('.file-manager').find('.item.active').removeClass('active');
   if ($(this).hasClass('active')) {

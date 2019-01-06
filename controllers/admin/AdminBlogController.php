@@ -107,7 +107,7 @@ class AdminBlogController extends AdminController {
       ->orderBy('blog_article.priority', 'desc')
       ->select('article.*')
       ->get();
-    
+
 
     $blog['articles'] = $articles;
 
@@ -146,8 +146,10 @@ class AdminBlogController extends AdminController {
   public function create(Request $request, Response $response) {
     $blogs = Blog::where('status', '!=', 'delete')->get();
     $tags = Tag::orderBy('name', 'asc')->take(20)->get();
+    $games = Game::where('status', '!=', 'delete')->where('parent_id', '!=', -1)->get();
     return $this->view->render($response, 'admin/blog/create', [
       'blogs' => $blogs,
+      'games' => $games,
       'tags' => $tags
     ]);
   }
@@ -180,8 +182,8 @@ class AdminBlogController extends AdminController {
 
     $tags = Tag::orderBy('name', 'asc')->take(20)->get();
 
-    $blogs = Blog::where('status', '!=', 'delete')
-      ->where('id', '!=', $id)->get();
+    $blogs = Blog::where('status', '!=', 'delete')->where('id', '!=', $id)->get();
+    $games = Game::where('status', '!=', 'delete')->where('parent_id', '!=', -1)->get();
     if ($blog['tags']) $blog['tags'] = str_replace("#", ",", $blog['tags']);
 
     $articles = Article::join('blog_article', 'blog_article.article_id', '=', 'article.id')
@@ -193,6 +195,7 @@ class AdminBlogController extends AdminController {
 
     return $this->view->render($response, 'admin/blog/edit', [
       'data' => $blog,
+      'games' => $games,
       'blogs' => $blogs,
       'articles' => $articles,
       'tags' => $tags

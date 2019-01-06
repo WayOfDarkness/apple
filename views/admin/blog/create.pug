@@ -1,7 +1,7 @@
 extends ./../layout.pug
 
 block pre-include
-  - var menu = 'article'
+  - var menu = 'blog'
   - var childMenu = 'blog'
   title Tạo nhóm bài viết
 
@@ -82,6 +82,15 @@ block content
         include ../snippet/box-custom-field.pug
         include ../snippet/box-seo.pug
       .col-xs-12.col-sm-12.col-md-4
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title GAME
+            .box-body
+              select.chosen-select.chosen-game(name="game", data-placeholder="Chọn game")
+                each item in games
+                  label
+                    option(value=item.id)=item.name
         .box
           .form-horizontal
             .box-title.clearfix

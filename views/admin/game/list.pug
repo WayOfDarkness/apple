@@ -70,12 +70,11 @@ mixin listChild(childs)
       td.all.text-center
         input.checkboxes(type="checkbox" value=child.id)
       td
-        a(href="/admin/game/" + child.id target="_blank") has child
+        a(href="/admin/game/" + child.id target="_blank") #
+          =child.id
       td.all(style="padding-left:" +( child.lv * 15 )+ 'px')
         i.fa.fa-level-down(style="margin-right: 5px;")
         a(href="/admin/game/" + child.id target="_blank")=child.name
-      td=child.priority
-      td=child.view
       td=child.updated_at
       td
         case child.status

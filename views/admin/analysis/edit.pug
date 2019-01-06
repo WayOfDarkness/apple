@@ -1,7 +1,7 @@
 extends ./../layout.pug
 
 block pre-include
-  - var menu = type ? type : 'article'
+  - var menu = 'analysis'
   - var childMenu = 'list'
   title   
     =data.title
@@ -10,12 +10,21 @@ block post-include
   script .
     var type_article = "#{type}";
   script(src=staticURI() + '/js/admin/article.js')
+  style .
+    #custom-handle {
+      width: 3em;
+      height: 1.6em;
+      top: 50%;
+      margin-top: -.8em;
+      text-align: center;
+      line-height: 1.6em;
+    }
 
 block content
   section.content-header.clearfix
     ol.breadcrumb.col-md-8.col-sm-7
       li.hidden-xs
-        a(href='/admin/article') Bài viết
+        a(href='/admin/article') Review
       li.hidden-xs
         a Chỉnh sửa
       li.title-ellipsis
@@ -187,7 +196,21 @@ block content
                 .item-choose-image(data-default=staticURI() + "/img/default.jpg")
                   img(src=staticURI() + "/img/default.jpg")
                   input.value(type="hidden", name="image")
-        - var templates = getViewTemplate('article');
+        .box.hidden
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-6.title GIAO DIỆN
+            .box-body
+              select.form-control(name="template" data-value="review")
+                option(value="") Default
+                option(value="review") Review
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-6.title ĐIỂM ĐÁNH GIÁ
+            .box-body
+              #slider(data-value=data.admin_point)
+                #custom-handle.ui-slider-handle
         .box
           .form-horizontal
             .box-title.clearfix

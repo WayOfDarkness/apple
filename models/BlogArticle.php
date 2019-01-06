@@ -20,6 +20,12 @@ class BlogArticle extends Illuminate\Database\Eloquent\Model {
     }
 
     public function storeBlogArticle($article_id, $blogs) {
+      if (count($blogs)) {
+        BlogArticle::where('article_id', $article_id)->whereNotIn('blog_id', $blogs)->delete();
+      }
+      else {
+        BlogArticle::where('article_id', $article_id)->delete();
+      }
       BlogArticle::where('article_id', $article_id)->whereNotIn('blog_id', $blogs)->delete();
       foreach ($blogs as $key => $blog_id) {
         BlogArticle::storeInArticle($article_id, $blog_id);

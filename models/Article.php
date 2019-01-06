@@ -17,10 +17,13 @@ class Article extends Illuminate\Database\Eloquent\Model {
     $item = new Article;
     $item->title = $data['title'];
     $item->image = $data['image'] ?: '';
+    $item->type = $data['type'] ?: 'news';
     $item->description = $data['description'] ?: '';
     $item->content = $data['content'] ?: '';
     $item->priority = $data['priority'] ?: 1000;
     $item->status = $data['status'] ?: 'active';
+    $item->game_id = $data['game_id'] ?: 0;
+    $item->admin_point = $data['admin_point'] ?: 0;
     $item->view = 0;
 
     $item->raw_text = parse_raw_title($data);
@@ -34,6 +37,10 @@ class Article extends Illuminate\Database\Eloquent\Model {
     if ($data['tags'] && count($data['tags'])) $item->tags ='#' . implode('#', $data['tags']) . '#';
     $item->author = $data['author'] ?: '';
     $item->template = $data['template'] ?: '';
+
+    foreach ($data['arrOption'] as $index => $value) {
+      $item['option_' . ($index + 1)] = $value ? $value : '';
+    }
 
     $item->created_at = date('Y-m-d H:i:s');
     $item->updated_at = date('Y-m-d H:i:s');
@@ -56,6 +63,7 @@ class Article extends Illuminate\Database\Eloquent\Model {
     $item = Article::find($id);
     if (!$item) return -2;
     $item->title = $data['title'];
+    $item->type = $data['type'] ?: 'news';
     $item->image = $data['image'] ?: '';
     $item->description = $data['description'] ?: '';
     $item->content = $data['content'] ?: '';
@@ -63,6 +71,9 @@ class Article extends Illuminate\Database\Eloquent\Model {
     $item->status = $data['status'];
     $item->updated_at = date('Y-m-d H:i:s');
     $item->author = $data['author'] ?: '';
+    $item->game_id = $data['game_id'] ?: 0;
+    $item->admin_point = $data['admin_point'] ?: 0;
+
     if ($data['publish_date']) {
       $item->publish_date = date('Y-m-d H:i:s', strtotime($data['publish_date'].' '.$data['publish_time']));
     }
@@ -72,12 +83,14 @@ class Article extends Illuminate\Database\Eloquent\Model {
 
     $item->template = $data['template'] ?: '';
 
+    $item->raw_text = parse_raw_title($data);
+
     $item->save();
 
     $handle = $data['handle'] ?: createHandle($data['title']);
     Slug::store($item->id, "article", $handle);
 
-    return 0;
+    return $item->id;
   }
 
   public function remove($id) {

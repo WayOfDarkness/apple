@@ -1,21 +1,31 @@
 extends ./../layout.pug
 block pre-include
-  - var menu = type ? type : 'article'
+  - var menu = 'analysis'
   - var childMenu = 'create'
   title Viết bài mới
 
 block post-include
   script .
-    var type_article = "#{type}";
+   var template = "analysis";
+   var type_article = "#{type}";
   script(src=staticURI() + '/js/admin/article.js')
+  style .
+    #custom-handle {
+      width: 3em;
+      height: 1.6em;
+      top: 50%;
+      margin-top: -.8em;
+      text-align: center;
+      line-height: 1.6em;
+    }
 
 block content
   section.content-header.clearfix
     ol.breadcrumb.col-md-6.col-sm-6.col-xs-12
       li
-        a(href='/admin/article') Bài viết
+        a(href='/admin/article') Reviews
       li
-        a Viết bài mới
+        a Viết review mới
 
     ol.button-right.col-md-6.col-sm-6.col-xs-12
       li
@@ -151,6 +161,29 @@ block content
                 span.remove-image
                   i.fa.fa-times
                 input.value(type="hidden" name="image")
+        .box.hidden
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-6.title GIAO DIỆN
+            .box-body
+              select.form-control(name="template" data-value="review")
+                option(value="") Default
+                option(value="review") Review
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-6.title ĐIỂM ĐÁNH GIÁ
+            .box-body
+              #slider
+                #custom-handle.ui-slider-handle
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-6.title GIAO DIỆN
+            .box-body
+              select.form-control(name="template" data-value="review")
+                option(value="") Default
+                option(value="review") Review
         .box
           .form-horizontal
             .box-title.clearfix
