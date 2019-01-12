@@ -40,14 +40,14 @@ use Illuminate\Database\Schema\Blueprint;
   Capsule::statement($sql);
 
 
-  $passwordHash = password_hash('admin@123', PASSWORD_DEFAULT);
-  $passwordSupperHash = password_hash('superadmin@123', PASSWORD_DEFAULT);
+  $passwordHash = password_hash('adminmario@987', PASSWORD_DEFAULT);
+  $passwordSupperHash = password_hash('supermario@987', PASSWORD_DEFAULT);
 
   Capsule::insert('INSERT INTO ' . Capsule::getTablePrefix()
     . 'user (id, role_id, name, email, phone, password, random, created_at, updated_at) '
     . 'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
     [
-      1, -1, 'Super Admin', 'superadmin@gmail.com', '0123456789', $passwordSupperHash,
+      1, -1, 'Super Admin', 'supermario@choigiday.com', '0987654321', $passwordSupperHash,
       '', date('Y-m-d H:i:s'), date('Y-m-d H:i:s')
     ]
   );
@@ -56,7 +56,7 @@ use Illuminate\Database\Schema\Blueprint;
     . 'user (id, role_id, name, email, phone, password, random, created_at, updated_at) '
     . 'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
     [
-      2, 0, 'Admin', 'admin@gmail.com', '0123456789', $passwordHash,
+      2, 0, 'Admin', 'adminmario@choigiday.com', '0987654321', $passwordHash,
       '', date('Y-m-d H:i:s'), date('Y-m-d H:i:s')
     ]
   );
