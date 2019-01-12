@@ -31,7 +31,7 @@ class CustomerController extends Controller {
 
   public function fbLogin(Request $request, Response $response) {
     $token = randomString(50);
-    $fb_login_url = getMetaAdmin('fb_login_url') ?: 'https://fb.demo3.laziweb.com/';
+    $fb_login_url = getMetaAdmin('fb_login_url') ?: 'https://fb.demo3.choigiday.com/';
     $_SESSION['login_token'] = $token;
     $url =  $fb_login_url . '?cb_url=' . HOST . '/facebook/callback&login_token=' . $token;
     return $response->withStatus(302)->withHeader('Location', $url);

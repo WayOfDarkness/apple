@@ -1,7 +1,7 @@
 extends ./layout.pug
 
 block pre-include
-  title Laziweb Admin System
+  title Choigiday Admin System
   - var menu = 'dashboard'
 block post-include
   script(src=staticURI() + '/libs/chart.min.js')
@@ -16,24 +16,6 @@ block content
     h3.page-title Trang bảng điều khiển &nbsp;
       small Bảng điều khiển & thống kê
     .row.dashboard-statistic
-      .col-xs-6.col-sm-4.col-md-2.box-statistic
-        .small-box(style="background-color:#1074b5;").no-margin
-          .inner
-            h3.count(data-value=data.orderPriceTotal) 0
-            p Tổng giá trị đơn hàng
-          .icon
-            i.fa.fa-money
-          a.small-box-footer(href="/admin/order") Xem chi tiết &nbsp;
-            i.fa.fa-arrow-circle-right
-      .col-xs-6.col-sm-4.col-md-2.box-statistic
-        .small-box(style="background-color:#3cc5d1;").no-margin
-          .inner
-            h3.count(data-value=data.orderCount) 0
-            p Tổng đơn hàng
-          .icon
-            i.fa.fa-shopping-cart
-          a.small-box-footer(href="/admin/order") Xem chi tiết &nbsp;
-            i.fa.fa-arrow-circle-right
       .col-xs-6.col-sm-4.col-md-2.box-statistic
         .small-box(style="background-color:#5DE082;").no-margin
           .inner
