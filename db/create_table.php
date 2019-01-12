@@ -40,27 +40,6 @@ use Illuminate\Database\Schema\Blueprint;
   Capsule::statement($sql);
 
 
-  $passwordHash = password_hash('adminmario@987', PASSWORD_DEFAULT);
-  $passwordSupperHash = password_hash('supermario@987', PASSWORD_DEFAULT);
-
-  Capsule::insert('INSERT INTO ' . Capsule::getTablePrefix()
-    . 'user (id, role_id, name, email, phone, password, random, created_at, updated_at) '
-    . 'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-    [
-      1, -1, 'Super Admin', 'supermario@choigiday.com', '0987654321', $passwordSupperHash,
-      '', date('Y-m-d H:i:s'), date('Y-m-d H:i:s')
-    ]
-  );
-
-  Capsule::insert('INSERT INTO ' . Capsule::getTablePrefix()
-    . 'user (id, role_id, name, email, phone, password, random, created_at, updated_at) '
-    . 'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-    [
-      2, 0, 'Admin', 'adminmario@choigiday.com', '0987654321', $passwordHash,
-      '', date('Y-m-d H:i:s'), date('Y-m-d H:i:s')
-    ]
-  );
-
   $arrOptions = [
     [1, -2, 'Option 1', date('Y-m-d H:i:s'), date('Y-m-d H:i:s')],
     [2, -2, 'Option 2', date('Y-m-d H:i:s'), date('Y-m-d H:i:s')],
