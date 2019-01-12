@@ -21,7 +21,7 @@ aside.main-sidebar
         - var itemClass = (menu == 'analysis' ? 'active' : '');        
         li.treeview(class=itemClass)
           a.main-item(class=itemClass)
-            i.fa.fa-pencil-square-o
+            i.fa.fa-registered
             span Đánh giá
             i.fa.fa-angle-left.pull-right
           ul.treeview-menu
@@ -42,7 +42,7 @@ aside.main-sidebar
         - var itemClass = (menu == 'article' ? 'active' : '');
         li.treeview(class=itemClass)
           a.main-item(class=itemClass)
-            i.fa.fa-pencil-square-o
+            i.fa.fa-id-card-o
             span Tin tức
             i.fa.fa-angle-left.pull-right
           ul.treeview-menu
@@ -84,12 +84,12 @@ aside.main-sidebar
       - var itemClass = (menu == 'blog' ? 'active' : '');
       li.treeview
         a.main-item(href="/admin/blog" class=itemClass)
-          i.fa.fa-gamepad
+          i.fa.fa-object-group
           span Nhóm bài viết
       - var itemClass = (menu == 'page' ? 'active' : '');
       li.treeview
         a.main-item(href="/admin/page" class=itemClass)
-          i.fa.fa-gamepad
+          i.fa.fa-file
           span Trang nội dung
       if (hasPermission('gallery'))
         - var itemClass = (menu == 'gallery' ? 'active' : '');
@@ -163,11 +163,6 @@ aside.main-sidebar
               li
                 a(href='/admin/library' class=liClass)
                   | Library
-            if (hasPermission('shipping_fee'))
-              - var liClass = (childMenu == 'shipping_fee' ? 'active' : '');
-              li
-                a(href='/admin/shipping_fee' class=liClass)
-                  | Phí vận chuyển
             if (hasPermission('testimonial'))
               - var liClass = (childMenu == 'testimonial' ? 'active' : '');
               li
@@ -213,9 +208,6 @@ aside.main-sidebar
                 a(href='/admin/restore' class=liClass)
                   | Khôi phục
               - var liClass = (childMenu == 'remove-order' ? 'active' : '');
-              li
-                a(href='/admin/remove-order' class=liClass)
-                  | Xóa đơn hàng
 input(type="hidden" name="user_roles" value=userRoles())
 script.
   var roles = $('input[name="user_roles"]').val();

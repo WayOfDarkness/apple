@@ -40,12 +40,12 @@ class AdminDashboardController extends AdminController {
   }
 
   public function fetch(Request $request, Response $response) {
-    $data['orderPriceTotal'] = Order::sum('order.total');
-    $data['orderCount'] = Order::count();
+    // $data['orderPriceTotal'] = Order::sum('order.total');
+    // $data['orderCount'] = Order::count();
     $data['contactCount'] = Contact::where('status', '!=', 'delete')->count();
-    $data['productCount'] = Product::where('status', '!=', 'delete')->count();
     $data['articleCount'] = Article::where('status', '!=', 'delete')->count();
     $data['contactNewCount'] = Contact::where('status', '!=', 'delete')->where('read', 0)->count();
+    $data['commentCount'] = Comment::count();
     $data['customerCount'] = Customer::count();
     $data['subscriberCount'] = Subscriber::count();
     $data['contact'] = Contact::contactNew();

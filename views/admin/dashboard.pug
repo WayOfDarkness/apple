@@ -16,26 +16,25 @@ block content
     h3.page-title Trang bảng điều khiển &nbsp;
       small Bảng điều khiển & thống kê
     .row.dashboard-statistic
-      .col-xs-6.col-sm-4.col-md-2.box-statistic
+      .col-xs-6.col-sm-4.col-md-3.box-statistic
         .small-box(style="background-color:#5DE082;").no-margin
           .inner
-            - var average = data.orderPriceTotal/data.orderCount;
-            h3.count(data-value=average) 0
-            p Giá trị trung bình/đơn
+            h3.count(data-value=commentCount) 0
+            p Tổng bình luận
           .icon
-            i.fa.fa-usd
+            i.fa.fa-comments
           a.small-box-footer(href="/admin/order") Xem chi tiết &nbsp;
             i.fa.fa-arrow-circle-right
-      .col-xs-6.col-sm-4.col-md-2.box-statistic
+      .col-xs-6.col-sm-4.col-md-3.box-statistic
         .small-box(style="background-color:#e5515d;").no-margin
           .inner
-            h3.count(data-value=data.productCount) 0
-            p Tổng sản phẩm
+            h3.count(data-value=data.customerCount) 0
+            p Tổng tài khoản
           .icon
-            i.fa.fa-product-hunt
+            i.fa.fa-user-circle-o
           a.small-box-footer(href="/admin/product") Xem chi tiết &nbsp;
             i.fa.fa-arrow-circle-right
-      .col-xs-6.col-sm-4.col-md-2.box-statistic
+      .col-xs-6.col-sm-4.col-md-3.box-statistic
         .small-box(style="background-color:#8d48ab;").no-margin
           .inner
             h3.count(data-value=data.articleCount) 0
@@ -44,7 +43,7 @@ block content
             i.fa.fa-newspaper-o
           a.small-box-footer(href="/admin/article") Xem chi tiết &nbsp;
             i.fa.fa-arrow-circle-right
-      .col-xs-6.col-sm-4.col-md-2.box-statistic
+      .col-xs-6.col-sm-4.col-md-3.box-statistic
         .small-box(style="background-color:#3b99da;").no-margin
           .inner
             h3.count(data-value=data.contactCount) 0
@@ -54,7 +53,7 @@ block content
           a.small-box-footer(href="/admin/contact") Xem chi tiết &nbsp;
             i.fa.fa-arrow-circle-right
     .row.chart-row
-      .col-xs-12.col-sm-6.box-parent
+      .col-xs-12.col-sm-12.box-parent
         .row(style="border:solid #d9d9d9 1px; margin:1px").box
           .box-body
             .col-xs-12.box-visit
@@ -72,31 +71,31 @@ block content
                       button.btn.btn-default.btn-fullscreen-visit(style="border-radius:50%; margin-left:5px")
                         i.fa.fa-expand
                 canvas(style="max-height: 80%;")#visitchart
-      .col-xs-12.col-sm-6.box-parent(style="padding: 5px 6px 5px 4px;")
-        .row(style="border:solid #d9d9d9 1px; margin:1px").box
-          .box-body
-            .col-xs-12.second.box-revenue
-              .row.chart-block
-                .row.first-block.portlet-title(style="margin-bottom: 15px")
-                  h3.title-chart.text-red 
-                    i.fa.fa-money 
-                    | &nbsp DOANH THU
-                  .optionchart.text-center
-                    #revenue-action.pull-right
-                      i.glyphicon.glyphicon-calendar.fa.fa-calendar &nbsp;
-                      span &nbsp;
-                      b.caret
-                    .btn-chartzoom.pull-right
-                      button.btn.btn-default.btn-fullscreen-revenue(style="border-radius:50%; margin-left:5px")
-                        i.fa.fa-expand
-                canvas(style="max-height: 80%;")#revenuechart
-                .row.revenue-info
-                  .col-xs-6.revenue-block
-                    p.pd5.bg-primary Tổng doanh thu:
-                    p.revenue-total
-                  .col-xs-6.order-block
-                    p.pd5.bg-info Số đơn hàng:
-                    p.revenue-count
+      //- .col-xs-12.col-sm-6.box-parent(style="padding: 5px 6px 5px 4px;")
+      //-   .row(style="border:solid #d9d9d9 1px; margin:1px").box
+      //-     .box-body
+      //-       .col-xs-12.second.box-revenue
+      //-         .row.chart-block
+      //-           .row.first-block.portlet-title(style="margin-bottom: 15px")
+      //-             h3.title-chart.text-red 
+      //-               i.fa.fa-money 
+      //-               | &nbsp DOANH THU
+      //-             .optionchart.text-center
+      //-               #revenue-action.pull-right
+      //-                 i.glyphicon.glyphicon-calendar.fa.fa-calendar &nbsp;
+      //-                 span &nbsp;
+      //-                 b.caret
+      //-               .btn-chartzoom.pull-right
+      //-                 button.btn.btn-default.btn-fullscreen-revenue(style="border-radius:50%; margin-left:5px")
+      //-                   i.fa.fa-expand
+      //-           canvas(style="max-height: 80%;")#revenuechart
+      //-           .row.revenue-info
+      //-             .col-xs-6.revenue-block
+      //-               p.pd5.bg-primary Tổng doanh thu:
+      //-               p.revenue-total
+      //-             .col-xs-6.order-block
+      //-               p.pd5.bg-info Số đơn hàng:
+      //-               p.revenue-count
     .row.log-contact
       .col-xs-12.col-sm-6.box-parent
         .nav-tabs-custom
