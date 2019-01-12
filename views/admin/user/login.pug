@@ -1,35 +1,69 @@
 doctype html
-html
+html(lang='en')
   head
-    title Login
-    meta(charset='utf-8')
-    meta(http-equiv='X-UA-Compatible', content='IE=edge')
-    meta(content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no', name='viewport')
+    title Admin Login Choigiday
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    // ===============================================================================================
     link(rel="icon" href="/static/img/favicon.png")
-    link(rel="stylesheet" href='/static/libs/bootstrap.min.css')
-    link(rel='stylesheet', href='/static/libs/AdminLTE.min.css')
-    link(rel='stylesheet', href='/static/libs/toastr.min.css')
-
-    script(src='/static/libs/jquery.min.js')
-    script(src='/static/libs/toastr.min.js')
-    style.
-      .login-box { width: 300px; margin:100px auto 0; text-align: center; }
-      .btn-login { background-color: $main_color !important; box-shadow: none !important; border: none !important; outline: 0 !important;}
+    // ===============================================================================================
+    link(rel='stylesheet', type='text/css', href='/static/libs/vendor/bootstrap/css/bootstrap.min.css')
+    // ===============================================================================================
+    link(rel='stylesheet', type='text/css', href='/static/libs/admin/fonts/font-awesome-4.7.0/css/font-awesome.min.css')
+    // ===============================================================================================
+    link(rel='stylesheet', type='text/css', href='/static/libs/vendor/animate/animate.css')
+    // ===============================================================================================
+    link(rel='stylesheet', type='text/css', href='/static/libs/vendor/css-hamburgers/hamburgers.min.css')
+    // ===============================================================================================
+    link(rel='stylesheet', type='text/css', href='/static/libs/vendor/select2/select2.min.css')
+    // ===============================================================================================
+    link(rel='stylesheet', type='text/css', href='/static/libs/admin/css/util.css')
+    link(rel='stylesheet', type='text/css', href='/static/libs/admin/css/main.css')
+    // ===============================================================================================
   body
-    .login-box
-      h3 ĐĂNG NHẬP
-      .login-box-body
-        form
-          .form-group.has-feedback
-            input.form-control(type='email', placeholder='Email' name='email' required)
-            span.glyphicon.glyphicon-envelope.form-control-feedback
-          .form-group.has-feedback
-            input.form-control(type='password', placeholder='Password' name='password' required)
-            span.glyphicon.glyphicon-lock.form-control-feedback
-          .row
-            .col-xs-12
-              button.btn.btn-primary.btn-block.btn-flat.btn-login(type='submit') Đăng Nhập
-              a(href="/user/forgotpassword" style="display: block; margin-top: 5px;text-align:right") Quên mật khẩu?
+    .limiter
+      .container-login100
+        .wrap-login100
+          .login100-pic.js-tilt(data-tilt='')
+            img(src='/static/libs/admin/images/img-01.png', alt='IMG')
+          form.login100-form.validate-form
+            span.login100-form-title
+              | Admin Login
+            .wrap-input100.validate-input(data-validate='Valid email is required: ex@abc.xyz')
+              input.input100(type='text', name='email', placeholder='Email')
+              span.focus-input100
+              span.symbol-input100
+                i.fa.fa-envelope(aria-hidden='true')
+            .wrap-input100.validate-input(data-validate='Password is required')
+              input.input100(type='password', name='password', placeholder='Password')
+              span.focus-input100
+              span.symbol-input100
+                i.fa.fa-lock(aria-hidden='true')
+            .container-login100-form-btn
+              button.login100-form-btn
+                | Login
+            .text-center.p-t-12
+              span.txt1
+                | Forgot
+              a.txt2(href='#')
+                | Username / Password?
+            .text-center.p-t-136
+              a.txt2(href='#')
+                | Contact with admin
+                i.fa.fa-long-arrow-right.m-l-5(aria-hidden='true')
+    // ===============================================================================================
+    script(src='/static/libs/vendor/jquery/jquery-3.2.1.min.js')
+    // ===============================================================================================
+    script(src='/static/libs/vendor/bootstrap/js/popper.js')
+    script(src='/static/libs/vendor/bootstrap/js/bootstrap.min.js')
+    // ===============================================================================================
+    script(src='/static/libs/vendor/select2/select2.min.js')
+    // ===============================================================================================
+    script(src='/static/libs/vendor/tilt/tilt.jquery.min.js')
+    script.
+      $('.js-tilt').tilt({
+      scale: 1.1
+      })
     script.
       $('form').on('submit', function(e) {
         e.preventDefault();
@@ -49,3 +83,5 @@ html
           }
         });
       });
+    // ===============================================================================================
+    script(src='/static/libs/admin/js/main.js')
