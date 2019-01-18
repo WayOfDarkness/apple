@@ -159,6 +159,7 @@ class AdminArticleController extends AdminController {
     return $this->view->render($response, 'admin/' . $template . '/list', array(
       // 'data' => $data,
       'type' => $type,
+      'template' => $template,
       'blogs' => $blogs
     ));
   }
@@ -182,6 +183,7 @@ class AdminArticleController extends AdminController {
       'blogs' => $blogs,
       'games' => $games,
       'type' => $type,
+      'template' => $template,
       'attributes' => $attributes,
       'tags'  => $tags
     ));
@@ -351,11 +353,14 @@ class AdminArticleController extends AdminController {
     $draw = $params['draw'];
     $perpage = $params['length'];
     $skip = $params['start'];
+    $template = $params['template'];
     $search = $params['search'];
     $search_value = $search['value'];
     $order = $params['order'][0];
     $orderArr = array( 'id', 'id', 'title', 'view', 'blog_name', 'updated_at', 'status');
     $column_order = $order['column'];
+
+    $template = $template ? '?template='.$template : '';
 
     $sort = array( $orderArr[$column_order] , $order['dir'] );
 
@@ -379,8 +384,8 @@ class AdminArticleController extends AdminController {
         $value->blog_name = implode(",", $blog);
       }
       $column = array( '<input class="checkboxes" type="checkbox" value="'. $value->id .'">' ,
-                      '<a href="/admin/article/'. $value->id .'" target="_blank" > '. $value->id .'</a>',
-                      '<a href="/admin/article/'. $value->id .'" target="_blank" > '. $value->title .'</a>',
+                      '<a href="/admin/article/'. $value->id . $template .'" target="_blank" >'. $value->id .'</a>',
+                      '<a href="/admin/article/'. $value->id . $template .'" target="_blank" > '. $value->title .'</a>',
                       $value->view,
                       $value->blog_name,
                       $value->updated_at,

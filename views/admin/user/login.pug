@@ -77,6 +77,7 @@ html(lang='en')
             password: password
           },
           success: function(json) {
+            console.log(json)
             if(!json.code) {
               location.href = json.href;
             } else toastr.error(json.message);

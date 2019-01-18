@@ -18,7 +18,7 @@ $( function() {
   } );
 
 $(document).ready(function() {
-    initDataTableAjax('table', '/admin/api/getArticlePaginate?type='+type_article, '/admin/api/exportArticleExcel');
+    initDataTableAjax('table', '/admin/api/getArticlePaginate?type='+type_article + '&template='+template, '/admin/api/exportArticleExcel');
 });
 
 $('.tinymce').each(function () {
