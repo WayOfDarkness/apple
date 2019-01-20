@@ -187,7 +187,15 @@ block content
                 .item-choose-image(data-default=staticURI() + "/img/default.jpg")
                   img(src=staticURI() + "/img/default.jpg")
                   input.value(type="hidden", name="image")
-        - var templates = getViewTemplate('article');
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-6.title THỂ LOẠI
+            .box-body
+              select.form-control(name="type" data-value=data.type)
+                option(value="news") Bài viết
+                option(value="review") Đánh giá
+                option(value="walkthrough") Hướng dẫn
         .box
           .form-horizontal
             .box-title.clearfix

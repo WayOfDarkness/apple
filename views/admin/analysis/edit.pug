@@ -214,12 +214,12 @@ block content
         .box
           .form-horizontal
             .box-title.clearfix
-              .col-xs-12.title TRẠNG THÁI
+              .col-xs-6.title THỂ LOẠI
             .box-body
-              select.form-control(name="status", data-value=data.status)
-                option(value="active") Hiển thị
-                option(value="inactive") Ẩn
-                option(value="notPublish") Chưa xuất bản
+              select.form-control(name="type" data-value=data.type)
+                option(value="news") Bài viết
+                option(value="review") Đánh giá
+                option(value="walkthrough") Hướng dẫn
         - var date_publish = ''
         if data.status != 'notPublish' 
           - var date_publish = 'hidden'
