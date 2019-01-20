@@ -138,8 +138,6 @@ class AdminArticleController extends AdminController {
     $params = $request->getQueryParams();
 
     $type = $params['type'] ?: 'news';
-    error_log("type" .$type);
-
     $template = $params['template'] ?: 'article';
     $blogs = Blog::where('status', '!=', 'delete')->orderBy('title', 'asc')->get();
     $data = Article::where('status', '!=', 'delete')
@@ -157,7 +155,7 @@ class AdminArticleController extends AdminController {
     }
 
     return $this->view->render($response, 'admin/' . $template . '/list', array(
-      // 'data' => $data,
+      // 'data' => $data
       'type' => $type,
       'template' => $template,
       'blogs' => $blogs
