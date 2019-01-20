@@ -136,7 +136,10 @@ $sqls = [
   "ALTER TABLE `article` ADD COLUMN `option_3` VARCHAR(255) DEFAULT ''",
   "ALTER TABLE `article` ADD COLUMN `option_4` VARCHAR(255) DEFAULT ''",
   "ALTER TABLE `article` ADD COLUMN `option_5` VARCHAR(255) DEFAULT ''",
-  "ALTER TABLE `article` ADD COLUMN `option_6` VARCHAR(255) DEFAULT ''"
+  "ALTER TABLE `article` ADD COLUMN `option_6` VARCHAR(255) DEFAULT ''",
+  "ALTER TABLE `article` ADD COLUMN `like` INT(11) DEFAULT 0",
+  "ALTER TABLE `article` ADD COLUMN `dislike` INT(11) DEFAULT 0",
+  "ALTER TABLE `customer_review` ADD COLUMN `post_type` VARCHAR(255) DEFAULT ''",
 ];
 
 

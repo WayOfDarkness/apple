@@ -30,6 +30,8 @@ $Schema->create('article', function (Blueprint $table) {
   $table->integer('game_id')->default(0);
   $table->integer('admin_point')->default(0);
   $table->integer('user_point')->default(0);
+  $table->integer('like')->default(0);
+  $table->integer('dislike')->default(0);
   $table->datetime('publish_date')->default(date('Y-m-d H:i:s'));
   $table->string('template')->default('');
   $table->timestamps();
