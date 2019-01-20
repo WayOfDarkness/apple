@@ -37,10 +37,12 @@ $('.btn-create-update').click(function (event) {
   $(document).find('.error').removeClass('error');
   var data = {};
   data.type = type_article ? type_article : 'news';
-  var update_type = $('input[name="type"]').val();
+  var update_type = $('select[name="type"]').val();
   if (update_type != type_article) {
     data.type =  update_type;
   }
+  console.log(update_type);
+
 
   data.title = $('input[name="title"]').val();
   data.handle = $('input[name="handle"]').val();
