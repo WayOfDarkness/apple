@@ -138,7 +138,7 @@ class BlogController extends Controller {
     $query = Article::join('blog_article', 'blog_article.article_id', '=', 'article.id')
       ->where('blog_article.blog_id', $blog['id'])
       ->where('article.status', 'active')
-      ->select( 'article.*' , 'blog_article.priority as priority');
+      ->select('article.id', 'article.title', 'article.description', 'article.content', 'article.image', 'article.tags', 'article.author', 'article.view', 'article.created_at', 'article.updated_at', 'article.admin_point', 'blog_article.priority as priority');
 
     $all_articles = $query->get();
 
