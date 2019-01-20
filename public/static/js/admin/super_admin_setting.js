@@ -287,7 +287,6 @@ function loadData(data) {
         }
       }
     }
-    initTinymce('.tinymce');
   });
   $('.content').find('form input[type="hidden"]').each(function () {
     var inputPrev = $(this).closest('form').find('img');
@@ -295,4 +294,6 @@ function loadData(data) {
     if (value) inputPrev.attr('src', '/uploads/' + value);
     else inputPrev.attr('src', '/static/img/default.jpg');
   });
+  initTinymce('.tinymce');
+  
 }
