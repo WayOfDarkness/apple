@@ -150,9 +150,9 @@ block content
               .col-xs-12.title GAME
             .box-body
               select.chosen-select.chosen-game(name="game", data-placeholder="Chọn game" data-value=data.game_id)
+                option(value='') Chọn game  
                 each item in games
-                  label
-                    option(value=item.id)=item.name
+                  option(value=item.id)=item.name
         .box
           .form-horizontal
             .box-title.clearfix

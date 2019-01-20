@@ -8,10 +8,11 @@
     public $timestamps = false;
     protected $table = 'customer_review';
 
-    public function store($review_id, $customer_id) {
+    public function store($review_id, $customer_id , $post_type) {
       $item = new CustomerReview;
       $item->review_id = $review_id;
       $item->customer_id = $customer_id;
+      $item->post_type = $post_type;
       $item->like = 0;
       $item->dislike = 0;
       $item->created_at = date('Y-m-d H:i:s');

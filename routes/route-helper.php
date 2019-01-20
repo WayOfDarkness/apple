@@ -17,6 +17,7 @@ require_once('../controllers/CommentController.php');
 require_once('../controllers/CouponController.php');
 require_once('../controllers/ContactController.php');
 require_once('../controllers/SlugController.php');
+require_once('../controllers/ReactController.php');
 require_once("../controllers/PageController.php");
 require_once("../controllers/ShippingFeeController.php");
 require_once("../controllers/WishlistController.php");
@@ -222,6 +223,13 @@ function setupApiRoutes($app) {
   $app->post('/api/review', '\ReviewController:store');
   $app->post('/api/review/{id}/like', '\ReviewController:like');
   $app->post('/api/review/{id}/dislike', '\ReviewController:dislike');
+
+
+
+  // React
+
+  $app->post('/api/react/{id}/like', '\ReactController:like');
+  $app->post('/api/react/{id}/dislike', '\ReactController:dislike');
 
   //metafield
   $app->post('/api/metafield', 'updateMetafield');

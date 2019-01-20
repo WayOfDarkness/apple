@@ -42,7 +42,7 @@ class ReviewController extends Controller {
     if ($_SESSION['logged_in']) {
       $customer = json_decode($_SESSION['customer']);
       foreach ($review as $key => $value) {
-        $check = CustomerReview::where('customer_id', $customer->id)->where('review_id', $value->id)->first();
+        $check = CustomerReview::where('customer_id', $customer->id)->where('review_id', $value->id)->where('post_type', 'user_review')->first();
         if ($check->like) {
           $value->statusLike = 'like';
         }
@@ -73,8 +73,8 @@ class ReviewController extends Controller {
 
     $customer = json_decode($_SESSION['customer']);
 
-    $like = CustomerReview::where('customer_id', $customer->id)->where('like', true)->pluck('review_id') ?: [];
-    $dislike = CustomerReview::where('customer_id', $customer->id)->where('dislike', true)->pluck('review_id') ?: [];
+    $like = CustomerReview::where('customer_id', $customer->id)->where('post_type', 'user_review')->where('like', true)->pluck('review_id') ?: [];
+    $dislike = CustomerReview::where('customer_id', $customer->id)->where('post_type', 'user_review')->where('dislike', true)->pluck('review_id') ?: [];
 
     return $response->withJson([
       'code' => 0,
@@ -148,7 +148,7 @@ class ReviewController extends Controller {
     }
 
     $customer = json_decode($_SESSION['customer']);
-    CustomerReview::store($code, $customer->id);
+    CustomerReview::store($code, $customer->id, 'user_review');
 
     return $response->withJson([
       'code' => 0,
@@ -187,7 +187,7 @@ class ReviewController extends Controller {
 
     $customer = json_decode($_SESSION['customer']);
 
-    $check = CustomerReview::where('customer_id', $customer->id)->where('review_id', $review_id)->first();
+    $check = CustomerReview::where('customer_id', $customer->id)->where('review_id', $review_id)->where('post_type', 'user_review')->first();
 
     if ($check) {
 
@@ -229,9 +229,9 @@ class ReviewController extends Controller {
 
     } else {
 
-      CustomerReview::store($review_id, $customer->id);
+      CustomerReview::store($review_id, $customer->id, 'user_review');
 
-      $customer_review = CustomerReview::where('customer_id', $customer->id)->where('review_id', $review_id)->first();
+      $customer_review = CustomerReview::where('customer_id', $customer->id)->where('review_id', $review_id)->where('post_type', 'user_review')->first();
       $customer_review->like = true;
       $customer_review->save();
 
@@ -276,7 +276,7 @@ class ReviewController extends Controller {
 
     $customer = json_decode($_SESSION['customer']);
 
-    $check = CustomerReview::where('customer_id', $customer->id)->where('review_id', $review_id)->first();
+    $check = CustomerReview::where('customer_id', $customer->id)->where('review_id', $review_id)->where('post_type', 'user_review')->first();
 
     if ($check) {
 
@@ -317,8 +317,8 @@ class ReviewController extends Controller {
       ]);
     } else {
 
-      CustomerReview::store($review_id, $customer->id);
-      $customer_review = CustomerReview::where('customer_id', $customer->id)->where('review_id', $review_id)->first();
+      CustomerReview::store($review_id, $customer->id, 'user_review');
+      $customer_review = CustomerReview::where('customer_id', $customer->id)->where('review_id', $review_id)->where('post_type', 'user_review')->first();
       $customer_review->dislike = true;
       $customer_review->save();
 
