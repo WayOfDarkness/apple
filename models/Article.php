@@ -77,6 +77,10 @@ class Article extends Illuminate\Database\Eloquent\Model {
     if ($data['publish_date']) {
       $item->publish_date = date('Y-m-d H:i:s', strtotime($data['publish_date'].' '.$data['publish_time']));
     }
+    
+    foreach ($data['arrOption'] as $index => $value) {
+      $item['option_' . ($index + 1)] = $value ? $value : '';
+    }
 
     $item->tags = '';
     if ($data['tags'] && count($data['tags'])) $item->tags ='#' . implode('#', $data['tags']) . '#';
