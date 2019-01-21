@@ -72,9 +72,9 @@ try {
   if ($admin_setting && file_exists(SETTING_DIR . "/{$admin_setting}")) require(SETTING_DIR . "/{$admin_setting}");
   if ($superadmin_setting && file_exists(SETTING_DIR . "/{$superadmin_setting}")) {
     require(SETTING_DIR . "/{$superadmin_setting}");
-    $mailgunAPIKey = getenv('MAILGUN_API_KEY') ?: 'key-a435c7c000868856db662554bced44cc';
-    $mailgunDomain = getenv('MAILGUN_DOMAIN') ?: 'mail.eye-solution.vn';
-    $mailgunUser = getenv('MAILGUN_USER') ?: 'postmaster@mail.eye-solution.vn';
+    $mailgunAPIKey = getenv('MAILGUN_API_KEY') ?: '';
+    $mailgunDomain = getenv('MAILGUN_DOMAIN') ?: '';
+    $mailgunUser = getenv('MAILGUN_USER') ?: '';
     $adminSettings['mailgun_api_key'] = $adminSettings['mailgun_api_key'] ?: $mailgunAPIKey;
     $adminSettings['mailgun_domain'] = $adminSettings['mailgun_domain'] ?: $mailgunDomain;
     $adminSettings['mailgun_user'] = $adminSettings['mailgun_user'] ?: $mailgunUser;
