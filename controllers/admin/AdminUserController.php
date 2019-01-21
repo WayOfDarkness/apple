@@ -244,7 +244,7 @@ class AdminUserController extends AdminController {
     //UPDATE super_settings.json sau
 
     $path = ROOT . '/public/themes/' . getThemeDir() . '/views';
-    
+
     if (file_exists($path . '/super_settings.json')) {
       $settings = file_get_contents($path . '/super_settings.json');
       return $response->withJson([
@@ -338,7 +338,7 @@ class AdminUserController extends AdminController {
   }
 
   public function getLogout(Request $request, Response $response) {
-    History::admin('logout', 'user', 0, '');
+    // History::admin('logout', 'user', 0, '');
     session_start();
     session_unset();
     session_destroy();
