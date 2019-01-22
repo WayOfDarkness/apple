@@ -18,7 +18,7 @@ $( function() {
   } );
 
 $(document).ready(function() {
-    initDataTableAjax('table', '/admin/api/getArticlePaginate?type='+type_article + '&template='+template, '/admin/api/exportArticleExcel');
+    initDataTableAjax('.table-artile-list', '/admin/api/getArticlePaginate?type='+type_article + '&template='+template, '/admin/api/exportArticleExcel');
 });
 
 $('.tinymce').each(function () {
@@ -144,7 +144,7 @@ function updateArticle(id, data) {
   });
 }
 
-$(document).on('click', '.btn-remove', function () {
+$(document).on('click', '.btn-remove:not(.btn-remove-appreciation)', function () {
   var id = $(this).data('id');
   var tr = $(this).closest('tr');
   popupConfirm('Xóa bài viết', function (result) {
