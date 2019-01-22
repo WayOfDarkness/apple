@@ -9,6 +9,7 @@ block post-include
    var template = "analysis";
    var type_article = "#{type}";
   script(src=staticURI() + '/js/admin/article.js')
+  script(src=staticURI() + '/js/admin/analysis.js')
   style .
     #custom-handle {
       width: 3em;
@@ -115,6 +116,7 @@ block content
                               option(value=i.name)=i.name
         - var post_type = 'article'
         include ../snippet/box-custom-field.pug
+        include ../snippet/box-custom-article.pug
         include ../snippet/box-seo.pug
       .col-xs-12.col-sm-12.col-md-4
         .box

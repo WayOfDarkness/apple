@@ -1,0 +1,34 @@
+.box
+  #custom-appreciation-wrapper(style="display:none")
+    form.col-sm-12
+      label Ưu điểm :
+      textarea.form-control( name="advantages" type="text" placeholder="Ưu điểm .....")
+      a.btn-primary.btn.btn-add-advantages Thêm
+    div.col-sm-12.info-container
+      table.table
+        colgroup
+          col(style="width:10%")
+          col(style="width:80%")
+          col(style="width:10%")
+        thead
+          tr
+            th
+            th Nội dung
+            th Button
+        tbody#advantages-content
+    form.col-sm-12
+      label Nhược điểm :
+      textarea.form-control(name="disadvantages" type="text" placeholder="Nhược điểm .....")
+      a.btn-primary.btn.btn-add-disadvantages Thêm
+    div.col-sm-12.info-container
+      table.table
+        colgroup
+          col(style="width:10%")
+          col(style="width:80%")
+          col(style="width:10%")
+        thead
+          tr
+            th
+            th Nội dung
+            th Button
+        tbody#disadvantages-content

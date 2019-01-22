@@ -11,11 +11,11 @@ if custom_field
         .tab-content
           #tab-metafield-vi.tab-pane.fade.in.active
             each item, index in custom_field
-              .form-group(data-title=item.title data-handle=item.handle data-input_type=item.input_type)
+              .form-group(data-title=item.title data-handle=item.handle data-input_type=item.input_type id=item.handle + "-wrapper")
                 .col-sm-2.control-label=item.title
                   if item.input_type == 'image' || item.input_type == 'images'
                     p=item.default_value
-                .col-sm-10
+                .col-sm-10(id=item.handle + "-hidden")
                   case item.input_type
                     when 'input'
                       input.value.form-control(name=item.handle placeholder=item.title value=getCustomField(post_id, post_type, item.handle))

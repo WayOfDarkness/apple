@@ -1900,3 +1900,8 @@ function exportExcelGenerate($data) {
 
   return  HOST . '/static/excel/' . $file_name ;
 }
+
+
+//registered
+
+registerCustomField("appreciation","article","textarea");

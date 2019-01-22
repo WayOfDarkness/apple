@@ -8,8 +8,10 @@ block pre-include
 
 block post-include
   script .
+    var template = "analysis";
     var type_article = "#{type}";
   script(src=staticURI() + '/js/admin/article.js')
+  script(src=staticURI() + '/js/admin/analysis.js')
   style .
     #custom-handle {
       width: 3em;
@@ -141,6 +143,8 @@ block content
         - var post_type = 'article'
         - var post_id = data.id
         include ../snippet/box-custom-field.pug
+        include ../snippet/box-custom-article.pug
+        
         - var seo = getSEO('article', data.id)
         include ../snippet/box-seo.pug
       .col-xs-12.col-sm-12.col-md-4
@@ -220,6 +224,15 @@ block content
                 option(value="news") Bài viết
                 option(value="review") Đánh giá
                 option(value="walkthrough") Hướng dẫn
+        .box
+          .form-horizontal
+            .box-title.clearfix
+              .col-xs-12.title TRẠNG THÁI
+            .box-body
+              select.form-control(name="status")
+                option(value="active") Hiển thị
+                option(value="inactive") Ẩn
+                option(value="notPublish") Chưa xuất bản
         - var date_publish = ''
         if data.status != 'notPublish' 
           - var date_publish = 'hidden'
