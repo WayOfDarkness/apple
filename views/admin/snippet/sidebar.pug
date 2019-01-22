@@ -11,12 +11,22 @@ aside.main-sidebar
       li.treeview
         a(href="/admin/dashboard" class=itemClass)
           i.fa.fa-home
-          span Bảng điều khiển
+          span Bảng điều khiển  
       - var itemClass = (menu == 'game' ? 'active' : '');
-      li.treeview
-        a.main-item(href="/admin/game" class=itemClass)
+      li.treeview(class=itemClass)
+        a.main-item(class=itemClass)
           i.fa.fa-gamepad
           span Game
+          i.fa.fa-angle-left.pull-right
+        ul.treeview-menu
+          - var liClass = (childMenu == 'create' ? 'active' : '');
+          li
+            a(href='/admin/game/create' class=liClass)
+              | Viết Game mới
+          - var liClass = (childMenu == 'list' ? 'active' : '');
+          li
+            a(href="/admin/game" class=liClass)
+              | Danh sách
       if (hasPermission('article') || hasPermission('blog') || hasPermission('page'))
         - var itemClass = (menu == 'analysis' ? 'active' : '');        
         li.treeview(class=itemClass)
@@ -91,6 +101,11 @@ aside.main-sidebar
         a.main-item(href="/admin/page" class=itemClass)
           i.fa.fa-file
           span Trang nội dung
+      - var itemClass = (menu == 'attribute' ? 'active' : '');
+      li.treeview
+        a.main-item(href="/admin/attribute" class=itemClass)
+          i.fa.fa-object-ungroup
+          span Thuộc tính
       if (hasPermission('gallery'))
         - var itemClass = (menu == 'gallery' ? 'active' : '');
         li.treeview(class=itemClass)
