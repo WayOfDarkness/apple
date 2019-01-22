@@ -1,4 +1,6 @@
 // initDataTable('table');
+$('#appreciation-hidden').hide();
+$('#appreciation-wrapper .control-label').hide();
 var modelName = 'article';
 
 $( function() {
