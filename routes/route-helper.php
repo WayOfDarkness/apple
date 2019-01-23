@@ -200,6 +200,9 @@ function setupApiRoutes($app) {
   $app->get('/api/getInformationVariant', 'ProductController:getInformationVariant');
   $app->post('/api/fastBuy', 'ProductController:fastBuy');
 
+  //article
+  $app->get('/api/article/loadmore', 'ArticleController:loadmoreArticle');
+
   //backup DB
   $app->get('/api/exportDB', '\AdminExportController:exportDB');
 

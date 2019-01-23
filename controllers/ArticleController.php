@@ -127,4 +127,18 @@ class ArticleController extends Controller {
     ]);
   }
 
+  public function loadmoreArticle(Request $request, Response $response) {
+    $params = $request->getQueryParams();
+    $page = $params['page'] ?: 1;
+    $perpage = $params['perpage'] ?: 20;
+    $orderBy = $params['orderby'] ?: 'created_at-desc';
+
+    $data = Article($page, $perpage, $orderBy);
+
+    return  $response->withJson([
+      "code" => 0,
+      "data" => $data
+    ]);
+  }
+
 }
