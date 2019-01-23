@@ -78,6 +78,26 @@ class ArticleController extends Controller {
       }
     } else $_SESSION['seen_article'] = array($article->id);
 
+
+    //check like $dislike
+
+    if ($_SESSION['logged_in']) {
+      error_log("test nè ahihi");
+      $customer = json_decode($_SESSION['customer']);
+        $check = CustomerReview::where('customer_id', $customer->id)->where('review_id', $article->id)->where('post_type', 'article')->first();
+        if ($check->like) {
+          $article->statusLike = 'like';
+        }
+        elseif ($check->dislike) {
+          $article->statusLike = 'dislike';
+        }
+        else {
+          $value->statusLike = 'none';
+        }
+    }
+
+
+
     return $this->view->render($response, $view_template, [
       'id' => $article->id,
       'article' => $article,
