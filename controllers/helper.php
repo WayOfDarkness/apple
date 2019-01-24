@@ -249,9 +249,10 @@ public static function processQuery($query, $item) {
     $collection_id = $params['collection_id'] ?: '';
     $blog_id = $params['blog_id'] ?: '';
     $blog_id = $params['blog_id'] ?: '';
-    if (!$filter && $params['q']) {
-      $filter = 'title**' . $params['q'];
-    }
+    // if (!$filter && $params['q']) {
+    //   $filter = 'title**' . $params['q'];
+    // }
+    $q = $params['q'];
     $metafield = $params['metafield'];
     $metafieldPostType = $params['metafield_post_type'];
     if ($metafield) {
@@ -316,9 +317,14 @@ public static function processQuery($query, $item) {
             }
           }
         });
+
         $all = $all->orderBy($type.'.'.$sort[0],$sort[1]);
         if ($blog_id) {
           $all = $all->join('blog_article', 'blog_article.article_id', '=', 'article.id')->where('blog_article.blog_id', $blog_id);
+        }
+        if ($type = 'article' && $q) {
+          $q = vn_to_str($q);
+          $all = $all->where('article.raw_text', 'LIKE','%'. $q .'%');
         }
         break;
       case 'product':
