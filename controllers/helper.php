@@ -409,11 +409,12 @@ public static function processQuery($query, $item) {
         }
     }
 
+    $allCount = $all->pluck('id')->count();
+
     $data = $all->skip($skip)->take($perpage)->get();
 
-    $allCount = $all->get();
-
-    $total_pages = ceil(count($allCount) / $perpage);
+    $total_pages = ceil($allCount / $perpage);
+    error_log("test: ".$total_pages);
     $data = $all->skip($skip)->take($perpage)->get();
     if ($type == 'product'){
       if ($fields) {
