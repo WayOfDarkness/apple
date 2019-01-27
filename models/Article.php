@@ -7,6 +7,13 @@ class Article extends Illuminate\Database\Eloquent\Model {
   public $timestamps = false;
   protected $table = 'article';
 
+  public function game()
+  {
+    error_log("test game");
+    return $this->belongsTo(game::class, 'game_id');
+  }
+
+
   public function fetch($page_number = 1, $perpage = 50) {
     $skip = ($page_number - 1) * $perpage;
     $data = Article::orderBy('updated_at', 'desc')->skip($skip)->take($perpage)->get();
@@ -77,7 +84,7 @@ class Article extends Illuminate\Database\Eloquent\Model {
     if ($data['publish_date']) {
       $item->publish_date = date('Y-m-d H:i:s', strtotime($data['publish_date'].' '.$data['publish_time']));
     }
-    
+
     foreach ($data['arrOption'] as $index => $value) {
       $item['option_' . ($index + 1)] = $value ? $value : '';
     }

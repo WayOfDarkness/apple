@@ -7,6 +7,12 @@
     public $timestamps = false;
     protected $table = 'game';
 
+    public function articles()
+    {
+        return $this->hasMany(Article::class, 'game_id');
+    }
+
+
     public function store($data) {
       $item = new game;
       $item->name = $data['name'];

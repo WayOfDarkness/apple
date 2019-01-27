@@ -84,7 +84,7 @@ class Slug extends Illuminate\Database\Eloquent\Model {
         $obj = Page::where('status', 'active')->where('id', $post_id)->first();
         break;
       case 'article':
-        $obj = Article::where('status', 'active')->where('id', $post_id)->first();
+        $obj = Article::where('status', 'active')->where('id', $post_id)->with('game')->first();
         break;
       case 'blog':
         $obj = Blog::where('status', 'active')->where('id', $post_id)->first();
