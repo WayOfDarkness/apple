@@ -14,6 +14,7 @@ $('.btn-create-update').click(function () {
   data.image = $('input[name="image"]').val();
   data.description = $('textarea[name="description"]').val();
   data.requirement = tinyMCE.get('requirement').getContent();
+  data.infomation = tinyMCE.get('infomation').getContent();
   data.status = $('select[name="status"]').val();
   data.priority = $('input[name="priority"]').val();
   data.parent_id = $('select[name="parent_id"]').val();

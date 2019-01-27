@@ -21,6 +21,7 @@ $Schema->create('game', function (Blueprint $table) {
   $table->string('name');
   $table->string('image')->default('');
   $table->text('description');
+  $table->text('infomation');
   $table->text('requirement');
   $table->string('status')->default('');
   $table->integer('parent_id')->default(-1);

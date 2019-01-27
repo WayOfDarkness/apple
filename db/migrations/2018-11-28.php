@@ -140,6 +140,7 @@ $sqls = [
   "ALTER TABLE `article` ADD COLUMN `like` INT(11) DEFAULT 0",
   "ALTER TABLE `article` ADD COLUMN `dislike` INT(11) DEFAULT 0",
   "ALTER TABLE `customer_review` ADD COLUMN `post_type` VARCHAR(255) DEFAULT ''",
+  "ALTER TABLE `game` ADD COLUMN `infomation` text",
 ];
 
 

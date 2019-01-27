@@ -13,6 +13,7 @@
       $item->description = $data['description'] ?: '';
       $item->image = $data['image'] ?: '';
       $item->requirement = $data['requirement'] ?: '';
+      $item->infomation = $data['infomation'] ?: '';
       $item->status = $data['status'] ?: 'active';
       $item->parent_id = $data['parent_id'] ?: -1;
       $item->priority = $data['priority'] ?: 1000;

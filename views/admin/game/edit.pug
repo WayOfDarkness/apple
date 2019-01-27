@@ -78,7 +78,11 @@ block content
                     .col-sm-10
                       textarea.form-control(rows="4" data-autoresize name="description" placeholder="Mô tả")=data.description
                   .form-group
-                    .col-sm-2.control-label Nội dung
+                    .col-sm-2.control-label Thông tin
+                    .col-sm-10
+                      textarea.form-control.tinymce#infomation=data.infomation
+                  .form-group
+                    .col-sm-2.control-label Cấu hình
                     .col-sm-10
                       textarea.form-control.tinymce#requirement=data.requirement
         //- - var post_type = 'blog'
