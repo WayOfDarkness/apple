@@ -56,4 +56,20 @@ class Comment extends Illuminate\Database\Eloquent\Model {
     }
     return $comments;
   }
+
+  public function getCountComments($type, $type_id){
+    $comments = Comment::where('status', 'active')
+      ->where('type', $type)
+      ->where('type_id', $type_id)
+      ->where('parent_id', '-1')
+      ->join('customer', 'comment.customer_id', '=', 'customer.id')
+      ->select('comment.*', 'customer.name as name')
+      ->with('children')
+      ->pluck('id')->count();
+
+    if (!$comments) {
+      return 0;
+    }
+    return $comments;
+  }
 }
