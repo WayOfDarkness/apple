@@ -9,7 +9,6 @@ class Article extends Illuminate\Database\Eloquent\Model {
 
   public function game()
   {
-    error_log("test game");
     return $this->belongsTo(game::class, 'game_id');
   }
 
