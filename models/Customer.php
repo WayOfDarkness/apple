@@ -68,6 +68,16 @@ class Customer extends Illuminate\Database\Eloquent\Model {
     if($customer->delete()) return $customer->id;
     return -3;
   }
+  public function setPoint($id, $body){
+    $customer = Customer::find($id);
+    if(!$customer) return -2;
+    if($customer) {
+      $customer->point = $body['point'] ?: 0;
+      $customer->save();
+      return $customer->id;
+    }
+    return -3;
+  }
 
   public function loginSocial($name, $email) {
     $customer = Customer::where('email', $email)->first();

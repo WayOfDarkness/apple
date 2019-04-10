@@ -839,4 +839,50 @@ class CustomerController extends Controller {
       'message' => 'success'
     ]);
   }
+  public function setPointToCustomer(Request $request, Response $response) {
+    $id = $request->getAttribute('id');
+    $body = $request->getParsedBody();
+
+    $code = Customer::setPoint($id, $body);
+
+    return $response->withJson([
+      'code' => 0,
+      'customer_id' => $code,
+      'message' => 'success'
+    ]);
+  }
+
+  public function getCustomer(Request $request, Response $response) {
+    $params = $request->getQueryParams();
+
+    $page = $params['page'] ? $params['page'] : 1;
+    global $adminSettings;
+    $perpage = $adminSettings['setting_user_perpage'] ? $adminSettings['setting_user_perpage'] : 20;
+    $perpage = $params['perpage'] ? $params['perpage'] : $perpage;
+    $skip = ($page - 1) * $perpage;
+
+
+
+    $sortby = $params['sortby'] ?: 'manual';
+    if ($sortby == 'manual') $sort = ['created_at', 'desc'];
+    else $sort = explode('-', $sortby);
+
+
+
+    $query = Customer::orderBy($sort[0], $sort[1]);
+    $all_customer_count = $query->count();
+
+
+    $total_pages = ceil($all_customer_count / $perpage);
+
+    $customers = $query->orderBy($sort[0], $sort[1])->skip($skip)->take($perpage)->get();
+
+    $paginate = createPaginate($total_pages, $page, $perpage, count($customers), $_SERVER[REQUEST_URI], $all_customer_count);
+
+    return $response->withJson([
+      'code' => 0,
+      'customer' => $customers,
+      'paginate' => $paginate
+    ]);
+  }
 }

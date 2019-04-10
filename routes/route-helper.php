@@ -166,6 +166,13 @@ function setupApiRoutes($app) {
   $app->delete('/api/delete/AddressBook/{id}', '\CustomerController:deleteAddressBook');
   $app->post('/api/update/AddressBookDefault/{id}', '\CustomerController:updateDefaultAddress');
 
+  //customer info
+
+  $app->post('/api/customer/set-point/{id}', '\CustomerController:setPointToCustomer');
+  $app->get('/api/customer', '\CustomerController:getCustomer');
+
+
+
   //session
   $app->post('/api/setSession', 'IndexController:setSession');
   $app->get('/api/destroySession', 'IndexController:destroySession');
