@@ -6,6 +6,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 require_once("../models/Customer.php");
 require_once("../models/Region.php");
 require_once("../models/SubRegion.php");
+require_once("../models/GalleryCustomer.php");
 require_once("../models/Subscriber.php");
 require_once(ROOT . '/controllers/helper.php');
 use ControllerHelper as Helper;
@@ -239,6 +240,20 @@ class AdminCustomerController extends AdminController {
     return $response->withJson([
       'code' => 0,
       'data' => $subscriber
+    ], 200);
+  }
+
+  public function setGalleryRole(Request $request, Response $response) {
+    $body = $request->getParsedBody();
+
+    error_log('------'. json_encode($body));
+    $customer_id = $body['customer_id'];
+    $gallery_id = $body['gallery_id'];
+    $role = $body['role'];
+    $code = GalleryCustomer::update($customer_id, $gallery_id, $role);
+    return $response->withJson([
+      'code' => 0,
+      'CustomerGallery' => $code
     ], 200);
   }
 

@@ -4,8 +4,30 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 require_once("../models/Gallery.php");
+require_once("../models/GalleryCustomer.php");
 
 class GalleryController extends Controller {
+
+  public function getTop(Request $request, Response $response) {
+    $id = $request->getAttribute('id');
+    $params = $request->getQueryParams();
+    $role = $params['role'] ?: 3;
+    $check = Gallery::find($id);
+
+    if (!$check) {
+      return $response->withJson([
+        'code' => -1,
+        'message' => 'gallery not found'
+      ]);
+    }
+
+    $count = GalleryCustomer::where('gallery_id', $id)->where('role', $role)->count();
+
+    return $response->withJson([
+      'code' => 0,
+      'count' => $count
+    ]);
+  }
 
   public function get(Request $request, Response $response) {
     $params = $request->getQueryParams();
@@ -64,6 +86,13 @@ class GalleryController extends Controller {
     if ($gallery->template) $view_template = 'gallery.' . $gallery->template;
     if ($_GET['view']) $view_template = 'gallery.' . $_GET['view'];
     $paginate = createPaginate($total_pages, $page, $perpage, count($collection['products']), $_SERVER[REQUEST_URI], count($all_photos));
+
+    if ($_SESSION['logged_in']) {
+      $customer = json_decode($_SESSION['customer']);
+      $role = GalleryCustomer::where('gallery_id', $gallery->id)->where('customer_id', $customer->id)->first();
+      $gallery->role = $role ? $role->role : 0;
+    }
+
     return $this->view->render($response, $view_template, [
       'paginate' => $paginate,
       'gallery' => $gallery
