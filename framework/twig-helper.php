@@ -56,6 +56,7 @@ class Twig_Helper extends Twig_Extension {
         "company" => $customer->company ?: '',
         "member_type" => $customer->member_type ?: '',
         "gender" => $customer->gender ?: '',
+        "point" => $customer->point ?: '',
         "birthday" => $customer->birthday ?: '',
         "orders" => isset($_SESSION['orders']) ? json_decode($_SESSION['orders']) : [],
         "wishlist" => isset($_SESSION['wishlist']) ? $_SESSION['wishlist'] : []
