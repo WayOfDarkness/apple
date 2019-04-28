@@ -844,6 +844,9 @@ class CustomerController extends Controller {
     $body = $request->getParsedBody();
 
     $code = Customer::setPoint($id, $body);
+    $customer = Customer::find($id);
+
+    $_SESSION['customer'] = json_encode($customer);
 
     return $response->withJson([
       'code' => 0,
@@ -884,5 +887,17 @@ class CustomerController extends Controller {
       'customer' => $customers,
       'paginate' => $paginate
     ]);
+  }
+
+  public function setGalleryRole(Request $request, Response $response) {
+    $body = $request->getParsedBody();
+    $customer_id = $body['customer_id'];
+    $gallery_id = $body['gallery_id'];
+    $role = $body['role'];
+    $code = GalleryCustomer::update($customer_id, $gallery_id, $role);
+    return $response->withJson([
+      'code' => 0,
+      'CustomerGallery' => $code
+    ], 200);
   }
 }

@@ -251,6 +251,7 @@ function setupApiRoutes($app) {
   $app->get('/api/image', '\ImageController:get');
   //gallery
   $app->get('/api/getTop/{id}', '\GalleryController:getTop');
+  $app->post('/api/setRole', '\CustomerController:setGalleryRole');
 
   //other
   $app->get('/api/san-pham/search', 'smartSearch');

@@ -448,7 +448,6 @@ $app->group('/admin', function () use ($app) {
   $app->get('/api/review', '\AdminReviewController:list');
   $app->get('/api/comment', '\AdminCommentController:list');
 
-  $app->post('/api/setRole', '\AdminCustomerController:setGalleryRole');
   // $app->get('/api/comment', '\AdminCommentController:list');
 
   // article
