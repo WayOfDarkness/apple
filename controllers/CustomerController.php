@@ -894,7 +894,7 @@ class CustomerController extends Controller {
     $customer_id = $body['customer_id'];
     $gallery_id = $body['gallery_id'];
     $role = $body['role'];
-    $code = GalleryCustomer::update($customer_id, $gallery_id, $role);
+    $code = GalleryCustomer::update($gallery_id, $customer_id, $role);
     return $response->withJson([
       'code' => 0,
       'CustomerGallery' => $code
