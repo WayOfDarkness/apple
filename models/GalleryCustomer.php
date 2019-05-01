@@ -24,7 +24,7 @@ class GalleryCustomer extends Illuminate\Database\Eloquent\Model {
             ->where('customer_id', $customerId)
             ->first();
         if (!$item){
-          $code = GalleryCustomer::store($customerId, $galleryId, $role);
+          $code = GalleryCustomer::store($galleryId, $customerId, $role);
         }
         else {
           $item->role = $role ?: 0;
