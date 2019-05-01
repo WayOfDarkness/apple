@@ -18,8 +18,8 @@ class GalleryCustomer extends Illuminate\Database\Eloquent\Model {
         return $data->id;
       }
     }
-    
-    public function update($customerId, $galleryId, $role){
+
+    public function update ($galleryId, $customerId, $role){
         $item = GalleryCustomer::where('gallery_id', $galleryId)
             ->where('customer_id', $customerId)
             ->first();
