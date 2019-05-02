@@ -480,6 +480,15 @@ function Gallery($handle = null, $sortby = null) {
 
     GalleryController::getChildrenGallery($gallery);
 
+    $count_role = GalleryCustomer::where('gallery_id', $gallery->id)->where('role', 3)->count();
+
+    $gallery->top = $count_role;
+    if ($_SESSION['logged_in']) {
+      $customer = json_decode($_SESSION['customer']);
+      $role = GalleryCustomer::where('gallery_id', $gallery->id)->where('customer_id', $customer->id)->first();
+      $gallery->role = $role ? $role->role : 0;
+    }
+
     return $gallery;
 
   } else {
@@ -512,6 +521,14 @@ function Gallery($handle = null, $sortby = null) {
         }
 
         $value->photos = $photos;
+      }
+      $count_role = GalleryCustomer::where('gallery_id', $value->id)->where('role', 3)->count();
+
+      $value->top = $count_role;
+      if ($_SESSION['logged_in']) {
+        $customer = json_decode($_SESSION['customer']);
+        $role = GalleryCustomer::where('gallery_id', $value->id)->where('customer_id', $customer->id)->first();
+        $value->role = $role ? $role->role : 0;
       }
     }
     return $gallery;
@@ -1667,7 +1684,7 @@ function getCustomField($post_id, $post_type, $handle, $lang = 'vi') {
   }
 
   $data = $__CF[$post_type][$post_id][$handle];
-  
+
   if (!$data) return false;
 
   if ($lang != 'vi') {
