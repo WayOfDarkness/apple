@@ -170,6 +170,8 @@ function setupApiRoutes($app) {
 
   $app->post('/api/customer/set-point/{id}', '\CustomerController:setPointToCustomer');
   $app->get('/api/customer', '\CustomerController:getCustomer');
+  $app->get('/api/customer/increaseAllCustomerOne', '\CustomerController:increaseAllCustomerOne');
+  $app->get('/api/customer/decreaseCustomerOne/{id}', '\CustomerController:decreaseCustomerOne');
 
 
 

@@ -900,4 +900,20 @@ class CustomerController extends Controller {
       'CustomerGallery' => $code
     ], 200);
   }
+
+  public function increaseAllCustomerOne(Request $request, Response $response) {
+    Customer::increment('hint', 1, ['updated_at'=> date('Y-m-d H:i:s')]);
+    return $response->withJson([
+      'code' => 0,
+      'message' => 'Success'
+    ], 200);
+  }
+  public function decreaseCustomerOne(Request $request, Response $response) {
+    $id = $request->getAttribute('id');
+    Customer::where('id', $id)->decrement('hint', 1, ['updated_at'=> date('Y-m-d H:i:s')]);
+    return $response->withJson([
+      'code' => 0,
+      'message' => 'Success'
+    ], 200);
+  }
 }
