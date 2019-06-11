@@ -54,6 +54,7 @@ class Twig_Helper extends Twig_Extension {
         "region" => $customer->region ?: '',
         "subregion" => $customer->subregion ?: '',
         "company" => $customer->company ?: '',
+        "hint" => $customer->hint ?: 0,
         "member_type" => $customer->member_type ?: '',
         "gender" => $customer->gender ?: '',
         "point" => $customer->point ?: '',
