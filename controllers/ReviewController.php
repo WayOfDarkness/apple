@@ -96,7 +96,7 @@ class ReviewController extends Controller {
 
     $customer = json_decode($_SESSION['customer']);
 
-    $reviews = Review::where('customer_id', $customer->id)->orderBy($sortby[0], $sortby[1])->get();
+    $reviews = Review::where('status', 'active')->where('customer_id', $customer->id)->orderBy($sortby[0], $sortby[1])->get();
 
     foreach ($reviews as $key => $value) {
       $value->customer = Customer::select('id', 'name', 'email', 'phone', 'address', 'region', 'subregion', 'gender', 'avatar', 'birthday')->find($value->customer_id);
