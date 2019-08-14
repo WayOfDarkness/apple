@@ -87,7 +87,7 @@ class GalleryController extends Controller {
     if ($_GET['view']) $view_template = 'gallery.' . $_GET['view'];
     $paginate = createPaginate($total_pages, $page, $perpage, count($collection['products']), $_SERVER[REQUEST_URI], count($all_photos));
     
-    $count_role = GalleryCustomer::where('gallery_id', $gallery->id)->where('role', 3)->count();
+    $count_role = GalleryCustomer::where('gallery_id', $gallery->id)->where('role', 2)->count();
 
     $gallery->top = $count_role;
     if ($_SESSION['logged_in']) {
