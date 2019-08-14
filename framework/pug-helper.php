@@ -477,15 +477,12 @@ function Gallery($handle = null, $sortby = null) {
     }
 
     $gallery->photos = $photos;
-    
+
     $count_role = GalleryCustomer::where('gallery_id', $gallery->id)->where('role', 2)->count();
     $gallery->top = $count_role;
 
     GalleryController::getChildrenGallery($gallery);
-
-    $count_role = GalleryCustomer::where('gallery_id', $gallery->id)->where('role', 3)->count();
-
-    $gallery->top = $count_role;
+    
     if ($_SESSION['logged_in']) {
       $customer = json_decode($_SESSION['customer']);
       $role = GalleryCustomer::where('gallery_id', $gallery->id)->where('customer_id', $customer->id)->first();
