@@ -477,6 +477,9 @@ function Gallery($handle = null, $sortby = null) {
     }
 
     $gallery->photos = $photos;
+    
+    $count_role = GalleryCustomer::where('gallery_id', $gallery->id)->where('role', 2)->count();
+    $gallery->top = $count_role;
 
     GalleryController::getChildrenGallery($gallery);
 
