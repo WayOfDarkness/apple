@@ -1,7 +1,7 @@
 {
   "require": {
     "slim/slim": "^3.0",
-    "illuminate/database": "^5.2",
+    "illuminate/database": "^6.20",
     "monolog/monolog": "^1.20",
     "pug-php/pug": "^2.5",
     "mobiledetect/mobiledetectlib": "^2.8",
